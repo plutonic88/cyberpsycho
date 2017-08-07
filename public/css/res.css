@@ -1,0 +1,149 @@
+
+
+@media (min-width: 0px) and (min-height: 0px){
+  
+.node {
+    height: 88px;
+    width: 83px;
+
+    }
+
+
+
+
+.node0-pos {
+    position: absolute;
+    left: 20px;
+    top: 100px;
+    
+}
+
+.node1-pos {
+    position: absolute;
+    left: 110px;
+    top: 100px;
+}
+
+
+.node2-pos {
+    position: absolute;
+    left: 200px;
+    top: 100px;
+}
+
+.node3-pos {
+    position: absolute;
+    left: 290px;
+    top: 100px;
+}
+
+.node4-pos {
+    position: absolute;
+    left: 380px;
+    top: 100px;
+}
+.node5-pos {
+    position: absolute;
+    left: 470px;
+    top: 100px;
+}
+.node6-pos {
+    position: absolute;
+    left: 560px;
+    top: 100px;
+}
+.node7-pos {
+    position: relative;
+    left: 930px;
+    top: 100px;
+}
+.node8-pos {
+    position: absolute;
+    left: 750px;
+    top: 30px;
+}
+.node9-pos {
+    position: absolute;
+    left: 750px;
+    top: 120px;
+}
+
+}
+
+
+
+
+
+
+@media (min-width: 1260px) {
+  
+.node {
+    height: 95px;
+    width: 120px;
+    font-size:large;
+
+    }
+
+    .node0-pos {
+    position: absolute;
+    left: 20px;
+    top: 100px;
+    
+}
+
+.node1-pos {
+    position: absolute;
+    left: 150px;
+    top: 100px;
+}
+
+
+.node2-pos {
+    position: absolute;
+    left: 280px;
+    top: 100px;
+}
+
+.node3-pos {
+    position: absolute;
+    left: 410px;
+    top: 100px;
+}
+
+.node4-pos {
+    position: absolute;
+    left: 540px;
+    top: 100px;
+}
+.node5-pos {
+    position: absolute;
+    left: 670px;
+    top: 100px;
+}
+.node6-pos {
+    position: absolute;
+    left: 800px;
+    top: 100px;
+}
+.node7-pos {
+    position: relative;
+    left: 930px;
+    top: 100px;
+}
+.node8-pos {
+    position: absolute;
+    left: 750px;
+    top: 30px;
+}
+.node9-pos {
+    position: absolute;
+    left: 750px;
+    top: 120px;
+}
+
+
+
+}
+
+
+
