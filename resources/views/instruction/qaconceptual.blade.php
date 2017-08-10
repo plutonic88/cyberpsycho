@@ -29,18 +29,18 @@
 	 {{ csrf_field()}}
 						
 		<fieldset class="form-group row">
-						    <legend class="col-form-legend col-sm-10">1. How many points would you receive for <strong>a successful attack</strong> on <strong>Node Id: A</strong> in round 2?</legend>
+						    <legend class="col-form-legend col-sm-10">1. Given Node A with a value of 10 and a cost of 4, how many points would you receive for attacking and gaining control of that node?</legend>
 						    <div class="col-sm-10">
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_1"  value="1" >
-						            8
+						            6
 						          </label>
 						        </div>
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_1"  value="2">
-						            2
+						            4
 						          </label>
 						        </div>
 						        <div class="form-check">
@@ -49,12 +49,18 @@
 						            10
 						          </label>
 						        </div>
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_1" value="4" >
+						            14
+						          </label>
+						        </div>
 						        
 							</div>
 		</fieldset>	
 
 		<fieldset class="form-group row">
-						    <legend class="col-form-legend col-sm-10">2. Observe the picture above. You have the control on <strong>Node Id: B</strong>. How many points would you receive for retaining control of <strong>Node Id: B</strong> <strong>without attacking</strong> it and if defender does not take it back in round 2?</legend>
+						    <legend class="col-form-legend col-sm-10">2. If the defender does not retake Node A, how many points would you get for controlling it in the next round?</legend>
 						    <div class="col-sm-10">
 						        <div class="form-check">
 						          <label class="form-check-label">
@@ -65,13 +71,49 @@
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_2"  value="2">
-						            8
+						            10
 						          </label>
 						        </div>
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_2" value="3" >
-						            2
+						            4
+						          </label>
+						        </div>
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_2" value="4" >
+						            0
+						          </label>
+						        </div>
+						        
+							</div>
+		</fieldset>	
+		<fieldset class="form-group row">
+						    <legend class="col-form-legend col-sm-10">3. 1.	If you start the game with 50 points and finish with 45, how much will your additional monetary reward be?</legend>
+						    <div class="col-sm-10">
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_3"  value="1" >
+						            0 cent
+						          </label>
+						        </div>
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_3"  value="2">
+						            -5 cent
+						          </label>
+						        </div>
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_3" value="3" >
+						            45 cents
+						          </label>
+						        </div>
+						        <div class="form-check">
+						          <label class="form-check-label">
+						            <input class="form-check-input" type="radio" name="question_3" value="4" >
+						            50 cents
 						          </label>
 						        </div>
 						        

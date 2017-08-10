@@ -24,7 +24,7 @@
 
                   <a id="startbutton" class="btn btn-primary startbutton"  @click="startTimer">Click to start</a>
               
-                  <a href='{{ url("/instruction/gameend") }}' id="nextbutton" class="btn btn-primary visible disable nextbutton">Take Survey</a>
+                  <a href='{{ url("/instruction/gameend") }}' id="nextbutton" class="btn btn-primary visible disable nextbutton">Your total score</a>
 
                   <a href='#' @click="gotonextgame" id="nextgamebutton" class="btn btn-primary visible disable nextgamebutton">Next Game</a>
 

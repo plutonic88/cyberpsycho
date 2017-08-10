@@ -71462,7 +71462,7 @@ Vue.component('node', {
 
 	props: ['id', 'neighbors', 'cla', 'nodevalues'],
 
-	template: '<div class="node"  v-bind:id="id" @mousemove="mouseMove" >\n\t<button @click="tentativeattack"  class="btn node" v-bind:class="classobject" >\n\t\t<p v-if="this.nodevalue > 0" class="progress progress-bar" style="text-align: center; width=\'50%\';">Node Id: {{this.nodenames[this.id]}}</p>\n\t\t<div v-if="this.nodevalue > 0"  class="progress">\n\t\t\t\n\t  \t\t<div class="progress-bar bg-warning" role="progressbar" v-bind:style="styleobjectValue"  aria-valuemin="0" aria-valuemax="100"></div>\n\t\t\t<div style="padding=2px;">V: {{nodevalue}}</div>\n\t\t</div>\n\t\t<div v-if="this.nodevalue > 0"  class="progress">\n\t\t  \n\t\t  <div class="progress-bar bg-info" role="progressbar" v-bind:style="styleobjectCost"  aria-valuemin="0" aria-valuemax="100"></div>\n\t\t  <div style="padding=2px;">C: {{cost}}</div>\n\t\t</div>\n\t\t<div v-if="this.nodevalue == 0">\n\t\t \t<p> PASS </p>\n\t\t</div>\n\n\t</button>\n\t\n\t</div>',
+	template: '<div class="node"  v-bind:id="id" @mousemove="mouseMove" >\n\t<button @click="tentativeattack"  class="btn node" v-bind:class="classobject" >\n\t\t<p v-if="this.nodevalue > 0" class="progress progress-bar" style="background-color: white; color:black; text-align: center; width=\'50%\';">Node Id: {{this.nodenames[this.id]}}</p>\n\t\t<div v-if="this.nodevalue > 0"  class="progress">\n\t\t\t\n\t  \t\t<div class="progress-bar bg-warning" role="progressbar" v-bind:style="styleobjectValue"  aria-valuemin="0" aria-valuemax="100"></div>\n\t\t\t<div style="padding=2px;">V: {{nodevalue}}</div>\n\t\t</div>\n\t\t<div v-if="this.nodevalue > 0"  class="progress">\n\t\t  \n\t\t  <div class="progress-bar bg-info" role="progressbar" v-bind:style="styleobjectCost"  aria-valuemin="0" aria-valuemax="100"></div>\n\t\t  <div style="padding=2px;">C: {{cost}}</div>\n\t\t</div>\n\t\t<div v-if="this.nodevalue == 0">\n\t\t \t<p style="color:white;"> PASS </p>\n\t\t</div>\n\n\t</button>\n\t\n\t</div>',
 
 	data: function data() {
 		return {
@@ -71832,7 +71832,7 @@ new Vue({
 		numberofround: 1,
 		attackermoved: false,
 		defendermoved: false,
-		attackerpoints: 0,
+		attackerpoints: 40,
 		attackeraction: '',
 		msgtoplayer: 'Click start',
 		currentattackset: [],
@@ -71851,7 +71851,7 @@ new Vue({
 		gamehistory: {
 
 			gameid: 1,
-			userid: window.user_id,
+			userid: channel.user_id,
 			defender_action: '',
 			attacker_action: '',
 			time_defender_moved: '',
@@ -71877,8 +71877,8 @@ new Vue({
 		loadconfig: function loadconfig() {},
 
 		gotonextgame: function gotonextgame() {
-			//window.location.href = "http://127.0.0.1:8000/games/1/"+ window.defordertype; 
-			window.location.href = "http://cyberpsycho.cs.utep.edu/games/1/" + window.defordertype;
+			//window.location.href = "http://127.0.0.1:8000/games/1/"+ channel.defordertype; 
+			window.location.href = "http://cyberpsycho.cs.utep.edu/games/1/" + channel.defordertype;
 			//window.location.href = "http://129.108.156.42/games/1/"+ window.defordertype;
 		},
 
@@ -71897,8 +71897,9 @@ new Vue({
 			var vm = this;
 
 			axios.post('/gamehistory/saveinit', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				game_id: vm.gamehistory.gameid,
+				game_id_instance: channel.game_id_instance,
 				start_time: vm.starttime
 
 			}).then(function (response) {
@@ -71950,11 +71951,11 @@ new Vue({
 			}
 
 			if (vm.gamehistory.attacker_action < 5 && vm.gamehistory.attacker_action !== '') {
-				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red"> You attacked node ' + vm.nodenames[vm.gamehistory.attacker_action] + gain + cost + '</span> <span style="color: green">' + d_act + '</span></p>').appendTo('#log');
+				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red"> You attacked node ' + vm.nodenames[vm.gamehistory.attacker_action] + gain + cost + '</span> <span style="color: blue;">' + d_act + '</span></p>').prependTo('#log');
 			} else if (vm.gamehistory.attacker_action == 5) {
-				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red">You PASSED ' + gain + cost + '</span> <span style="color: green">' + d_act + '</span></p>').appendTo('#log');
+				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red">You PASSED ' + gain + cost + '</span> <span style="color: blue;">' + d_act + '</span></p>').prependTo('#log');
 			} else {
-				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red">You attacked NONE ' + gain + cost + '</span> <span style="color: green">' + d_act + '</span></p>').appendTo('#log');
+				$('<p style="font-size: 70%;">Round ' + vm.numberofround + ': <span style="color: red">You attacked NONE ' + gain + cost + '</span> <span style="color: blue;">' + d_act + '</span></p>').prependTo('#log');
 			}
 
 			vm.attacker_perround_cost = 0;
@@ -71975,7 +71976,7 @@ new Vue({
 			}
 
 			axios.post('/gamehistory/save', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				gameid: vm.gamehistory.gameid,
 				round: vm.numberofround,
 				defender_action: vm.defenderaction,
@@ -71983,11 +71984,15 @@ new Vue({
 				time_defender_moved: def_move_time,
 				time_attacker_moved: attckr_move_time,
 				defender_points: vm.gamehistory.defender_points,
-				attacker_points: vm.attackerpoints
+				attacker_points: vm.attackerpoints,
+				game_id_instance: channel.game_id_instance
 
 			}).then(function (response) {
 				return _this2.returndata = response.data;
 			});
+
+			// save the total points in assigned games
+
 		},
 
 		giveAdjustedTime: function giveAdjustedTime(time) {
@@ -72033,7 +72038,7 @@ new Vue({
 			//console.log('*********** saving in database');
 			console.log('*********** saving in tentative database vm.gamehistory.defender_action ' + vm.defenderaction);
 			axios.post('/gamehistory/savetentative', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				gameid: vm.gamehistory.gameid,
 				round: vm.numberofround,
 				defender_action: vm.defenderaction,
@@ -72041,7 +72046,8 @@ new Vue({
 				time_defender_moved: def_move_time,
 				time_attacker_moved: attckr_move_time,
 				defender_points: vm.gamehistory.defender_points,
-				attacker_points: vm.attackerpoints
+				attacker_points: vm.attackerpoints,
+				game_id_instance: channel.game_id_instance
 
 			}).then(function (response) {
 				return _this3.returndata = response.data;
@@ -72061,7 +72067,7 @@ new Vue({
 			//console.log(pageCoords + ' '+ mousetime);
 
 			axios.post('/gamehistory/saveeye', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				game_id: vm.gamehistory.gameid,
 				round: vm.numberofround,
 				timer: mousetime,
@@ -72085,7 +72091,7 @@ new Vue({
 			//console.log(pageCoords + ' '+ mousetime);
 
 			axios.post('/gamehistory/savemouse', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				game_id: vm.gamehistory.gameid,
 				round: vm.numberofround,
 				timer: mousetime,
@@ -72109,7 +72115,7 @@ new Vue({
 			//console.log(pageCoords + ' '+ mousetime);
 
 			axios.post('/gamehistory/savemouseonnode', {
-				user_id: window.user_id,
+				user_id: channel.user_id,
 				game_id: vm.gamehistory.gameid,
 				node_id: nodeid,
 				round: vm.numberofround,
@@ -72200,7 +72206,7 @@ new Vue({
 
 					$("#nodebuttons").addClass("disable");
 
-					if (window.done === 'yes') {
+					if (channel.done === 'yes') {
 
 						$('#nextbutton').removeClass("visible");
 						$('#nextbutton').removeClass("disable");
@@ -72351,7 +72357,7 @@ new Vue({
 			var defaction = 5;
 			//console.log('1111111111   defender moved.... timer ' + vm.timer);
 
-			if (window.defendertype === 0) //random
+			if (channel.defendertype === 0) //random
 				{
 					//console.log('1111111111   defender random move.... timer ' + vm.timer);
 					defaction = vm.defenderteststrategy[vm.defstrategycounter];
@@ -72363,7 +72369,7 @@ new Vue({
 					console.log('Defender action random %%%%%%% ' + vm.defenderaction + ' counter  ' + vm.defstrategycounter);
 					// console.log('defendermoved is ' + vm.defendermoved );
 					vm.defendermoved = true;
-				} else if (window.defendertype === 1) // maximizing expected utility
+				} else if (channel.defendertype === 1) // maximizing expected utility
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();
@@ -72513,6 +72519,10 @@ new Vue({
 
 	created: function created() {
 
+		if (channel.def_alert !== "") {
+			alert(channel.def_alert);
+		}
+
 		//webgazer.begin();
 
 
@@ -72572,11 +72582,11 @@ new Vue({
 			console.log('vm.public: ' + vm.public);
 			console.log('vm.round_start_time: ' + vm.round_start_time);
 
-			if (window.defendertype === 0) // random
+			if (channel.defendertype === 0) // random
 				{
 					//vm.defenderteststrategy = [0,2,0];
 					vm.defenderteststrategy = rand_defenderteststrategy.split(",");
-				} else if (window.defendertype === 1) // maximize expected utility
+				} else if (channel.defendertype === 1) // maximize expected utility
 				{
 					//vm.defenderteststrategy = [3,4,2];
 					vm.defenderteststrategy = max_defenderteststrategy.split(",");

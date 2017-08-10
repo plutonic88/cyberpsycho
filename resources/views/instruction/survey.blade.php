@@ -38,13 +38,21 @@
 
 
 	@endforeach	
+
    		
 
     <div class="form-group">
 	  	  	<button type="submit" class="btn btn-primary">Submit</button>
 	 </div>
 
+	 	<div>
+	  	 	
+	  	 	@if(count($errors))
+	  	 		<p>Do you want to skip? Click "Game Instruction" button</p> 
+	  	 		<a href='{{ url("/instruction") }}' id="nextbutton" class="btn btn-primary" style="margin-bottom: : 20px;">Game Instruction</a>
+	  	 	@endif
 
+	  	 </div>
 	  	  
 
 
@@ -53,6 +61,9 @@
 	  	  	@include('layouts.errors')
 
 	  	 </div>
+
+
+
 
 
 
@@ -72,5 +83,7 @@
 
 
 </div>
+
+
 
 @endsection('content')

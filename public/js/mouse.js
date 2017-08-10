@@ -71597,7 +71597,7 @@ var Component = __webpack_require__(210)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/anjonsunny/laravel/projects/vuelaravel/resources/assets/js/components/Mouse.vue"
+Component.options.__file = "/Users/anjonsunny/laravel/projects/cyberpsycho/resources/assets/js/components/Mouse.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Mouse.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -71608,9 +71608,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-de7f0624", Component.options)
+    hotAPI.createRecord("data-v-a9745cc0", Component.options)
   } else {
-    hotAPI.reload("data-v-de7f0624", Component.options)
+    hotAPI.reload("data-v-a9745cc0", Component.options)
   }
 })()}
 
@@ -71639,7 +71639,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-de7f0624", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-a9745cc0", module.exports)
   }
 }
 

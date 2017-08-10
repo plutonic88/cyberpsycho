@@ -7,8 +7,13 @@
 @section('content')
 
 	<div id="regform"  class="col-md-8" >
+
+
+
+	<h3>Congratulations! Your total score is : {{$total_point}}</h3>
+	<p style="margin-bottom: 50px;">Enter <span style="color: red;">{{$user_confirmation}}</span> when asked in MTurk</p>
 		
-	 <h3>Survey questions about your experience:</h3>
+	 <h3 >Survey questions about your experience:</h3>
 
 
 

@@ -33,7 +33,7 @@ Vue.component('node',{
 
 	template: `<div class="node">
 	<button @click="tentativeattack" class="btn node" v-bind:class="classobject">
-		<p v-if="this.nodevalue > 0" class="progress progress-bar" style="text-align: center; width='50%';">Node Id: {{this.nodenames[this.id]}}</p>
+		<p v-if="this.nodevalue > 0" class="progress progress-bar" style="background-color: white; color:black; text-align: center; width='50%';">Node Id: {{this.nodenames[this.id]}}</p>
 		<div v-if="this.nodevalue > 0"  class="progress">
 			
 	  		<div class="progress-bar bg-warning" role="progressbar" v-bind:style="styleobjectValue"  aria-valuemin="0" aria-valuemax="100"></div>
@@ -45,7 +45,7 @@ Vue.component('node',{
 		  <div style="padding=2px;">C: {{cost}}</div>
 		</div>
 		<div v-if="this.nodevalue == 0">
-		 	<p> PASS </p>
+		 	<p style="color:white;"> PASS </p>
 		</div>
 
 	</button>
@@ -655,7 +655,7 @@ Vue.component('node',{
 		numberofround : 1,
 		attackermoved : false,
 		defendermoved: false,
-		attackerpoints : 0,
+		attackerpoints : 40,
 		attackeraction : '',
 		msgtoplayer : 'Click start',
 		currentattackset : [], 
@@ -681,7 +681,7 @@ Vue.component('node',{
 
 
 			gameid : 1,
-			userid : window.user_id,
+			userid : channel.user_id,
 			defender_action : '',
 			attacker_action : '',
 			time_defender_moved : '',
@@ -709,9 +709,9 @@ Vue.component('node',{
 
 			gotonextgame: function()
 			{
-				//window.location.href = "http://127.0.0.1:8000/games/0/"+ window.defordertype; 
+				//window.location.href = "http://127.0.0.1:8000/games/0/"+ channel.defordertype; 
 
-				window.location.href = "http://cyberpsycho.cs.utep.edu/games/0/"+ window.defordertype; 
+				window.location.href = "http://cyberpsycho.cs.utep.edu/games/0/"+ channel.defordertype; 
 				
 				//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
 
@@ -735,9 +735,10 @@ Vue.component('node',{
 	   			var vm = this;
 
 	   			axios.post('/gamehistory/saveinit', {
-	   				user_id : window.user_id,
+	   				user_id : channel.user_id,
 	   				game_id : vm.gamehistory.gameid,
-	   				start_time : vm.starttime
+	   				start_time : vm.starttime,
+	   				game_id_instance: channel.game_id_instance
 
 	   			}).then(response => this.returndata = response.data);
 
@@ -804,15 +805,15 @@ Vue.component('node',{
 
 	   			if(vm.gamehistory.attacker_action < 5 && vm.gamehistory.attacker_action!== '')
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red"> You attacked node '+vm.nodenames[vm.gamehistory.attacker_action]+gain+cost+'</span> <span style="color: green">'+d_act+'</span></p>').appendTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red"> You attacked node '+vm.nodenames[vm.gamehistory.attacker_action]+gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 	   			else if(vm.gamehistory.attacker_action == 5)
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You PASSED ' +gain+cost+'</span> <span style="color: green">'+d_act+'</span></p>').appendTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You PASSED ' +gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 	   			else
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You played NONE '+gain+cost+'</span> <span style="color: green">'+d_act+'</span></p>').appendTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You played NONE '+gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 
 
@@ -850,7 +851,7 @@ Vue.component('node',{
 
 
 	   			axios.post('/gamehistory/save', {
-	   				user_id : window.user_id,
+	   				user_id : channel.user_id,
 	   				gameid : vm.gamehistory.gameid,
 	   				round : vm.numberofround,
 	   				defender_action : vm.defenderaction,
@@ -858,7 +859,8 @@ Vue.component('node',{
 	   				time_defender_moved : def_move_time,
 	   				time_attacker_moved : attckr_move_time,
 	   				defender_points : vm.gamehistory.defender_points,
-	   				attacker_points : vm.attackerpoints
+	   				attacker_points : vm.attackerpoints,
+	   				game_id_instance: channel.game_id_instance
 
 	   			}).then(response => this.returndata = response.data);
 	   		},
@@ -917,7 +919,7 @@ Vue.component('node',{
 	   			//console.log('*********** saving in database');
 	   			console.log('*********** saving in tentative database vm.gamehistory.defender_action '+ vm.defenderaction);
 	   			axios.post('/gamehistory/savetentative', {
-	   				user_id : window.user_id,
+	   				user_id : channel.user_id,
 	   				gameid : vm.gamehistory.gameid,
 	   				round : vm.numberofround,
 	   				defender_action : vm.defenderaction,
@@ -925,7 +927,8 @@ Vue.component('node',{
 	   				time_defender_moved : def_move_time,
 	   				time_attacker_moved : attckr_move_time,
 	   				defender_points : vm.gamehistory.defender_points,
-	   				attacker_points : vm.attackerpoints
+	   				attacker_points : vm.attackerpoints,
+	   				game_id_instance: channel.game_id_instance
 
 	   			}).then(response => this.returndata = response.data);
 
@@ -1031,7 +1034,7 @@ Vue.component('node',{
 
 			        	
 
-			        	if(window.done === 'yes')
+			        	if(channel.done === 'yes')
 			        	{
 
 			        		$('#nextbutton').removeClass("visible");
@@ -1245,7 +1248,7 @@ Vue.component('node',{
 				var defaction = 5;
 				//console.log('1111111111   defender moved.... timer ' + vm.timer);
 
-				if(window.defendertype === 0) //random
+				if(channel.defendertype === 0) //random
 				{
 					//console.log('1111111111   defender random move.... timer ' + vm.timer);
 					defaction = vm.defenderteststrategy[vm.defstrategycounter];
@@ -1259,7 +1262,7 @@ Vue.component('node',{
 					// console.log('defendermoved is ' + vm.defendermoved );
 					vm.defendermoved = true;
 				}
-				else if(window.defendertype === 1) // maximizing expected utility
+				else if(channel.defendertype === 1) // maximizing expected utility
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();	
@@ -1464,6 +1467,13 @@ Vue.component('node',{
 
 
 
+
+			if(channel.def_alert !== "")
+			{
+				alert(channel.def_alert);
+			}
+
+
 			$("#nodebuttons").addClass("disable");
 			$("#confirmbutton").addClass("disable");
 			//$("#startbutton").removeClass("disable");
@@ -1513,12 +1523,12 @@ Vue.component('node',{
 
 
 
-				if(window.defendertype===0)// random
+				if(channel.defendertype===0)// random
 				{
 					//vm.defenderteststrategy = [0,2,0];
 					vm.defenderteststrategy = rand_defenderteststrategy.split(",");
 				}
-				else if(window.defendertype===1) // maximize expected utility
+				else if(channel.defendertype===1) // maximize expected utility
 				{
 					//vm.defenderteststrategy = [3,4,2];
 					vm.defenderteststrategy = max_defenderteststrategy.split(",");

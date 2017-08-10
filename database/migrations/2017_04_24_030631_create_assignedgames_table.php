@@ -21,6 +21,9 @@ class CreateAssignedgamesTable extends Migration
             $table->integer('game_played');
             $table->integer('random_defender_type');
             $table->integer('max_defender_type');
+            $table->integer('game_id')->default(1);
+            $table->integer('total_point')->default(40);
+            $table->string('user_confirmation')->default("");
             $table->timestamps();
         });
     }

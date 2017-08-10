@@ -44,7 +44,7 @@ input[type=radio] {
 }
 
 .public {
-	background-color: green;
+	background-color: blue;
 }
 
 

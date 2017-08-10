@@ -16,6 +16,7 @@ class CreateGameinitsTable extends Migration
         Schema::create('gameinits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('game_id');
+            $table->integer('game_id_instance');
             $table->string('user_id');
             $table->bigInteger('start_time');
             $table->timestamps();

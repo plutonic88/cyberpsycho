@@ -16,6 +16,7 @@ class CreateGamehistoriesTable extends Migration
         Schema::create('gamehistories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('game_id');
+            $table->integer('game_id_instance');
             $table->string('user_id');
             $table->integer('round');
             $table->integer('defender_action');

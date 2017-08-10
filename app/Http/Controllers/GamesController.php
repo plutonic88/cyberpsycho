@@ -656,8 +656,49 @@ class GamesController extends Controller
 	{
 
 
+
+		$answer = new \App\Answer;
+
+		$answer->user_id =  session('user_id','');
+
+		$answer->Question_1 = request('Question_1');
+		$answer->Question_2 = request('Question_2');
+		$answer->Question_3 = request('Question_3');
+		$answer->Question_4 = request('Question_4');
+		$answer->Question_5 = request('Question_5');
+		$answer->Question_6 = request('Question_6');
+		$answer->Question_7 = request('Question_7');
+		$answer->Question_8 = request('Question_8');
+		$answer->Question_9 = request('Question_9');
+		$answer->Question_10 = request('Question_10');
+
+		$answer->Question_11 = request('Question_11');
+		$answer->Question_12 = request('Question_12');
+		$answer->Question_13 = request('Question_13');
+		$answer->Question_14 = request('Question_14');
+		$answer->Question_15 = request('Question_15');
+		$answer->Question_16 = request('Question_16');
+		$answer->Question_17 = request('Question_17');
+		$answer->Question_18 = request('Question_18');
+		$answer->Question_19 = request('Question_19');
+		$answer->Question_20= request('Question_20');
+
+		$answer->Question_21 = request('Question_21');
+		$answer->Question_22 = request('Question_22');
+		$answer->Question_23 = request('Question_23');
+		$answer->Question_24 = request('Question_24');
+		$answer->Question_25 = request('Question_25');
+		$answer->Question_26 = request('Question_26');
+		$answer->Question_27 = request('Question_27');
+
+		$answer->save();
+		//session()->flash('message' , 'Thanks! for taking the survey');
+
+
+
+
 		//dd(request()->all());
-		$this->validate(request(), [
+	$validator = $this->validate(request(), [
 
 
     		'Question_1' => 'required',
@@ -720,43 +761,11 @@ class GamesController extends Controller
     		]);
 
 
+		
 
-		$answer = new \App\Answer;
 
-		$answer->user_id =  session('user_id','');
 
-		$answer->Question_1 = request('Question_1');
-		$answer->Question_2 = request('Question_2');
-		$answer->Question_3 = request('Question_3');
-		$answer->Question_4 = request('Question_4');
-		$answer->Question_5 = request('Question_5');
-		$answer->Question_6 = request('Question_6');
-		$answer->Question_7 = request('Question_7');
-		$answer->Question_8 = request('Question_8');
-		$answer->Question_9 = request('Question_9');
-		$answer->Question_10 = request('Question_10');
-
-		$answer->Question_11 = request('Question_11');
-		$answer->Question_12 = request('Question_12');
-		$answer->Question_13 = request('Question_13');
-		$answer->Question_14 = request('Question_14');
-		$answer->Question_15 = request('Question_15');
-		$answer->Question_16 = request('Question_16');
-		$answer->Question_17 = request('Question_17');
-		$answer->Question_18 = request('Question_18');
-		$answer->Question_19 = request('Question_19');
-		$answer->Question_20= request('Question_20');
-
-		$answer->Question_21 = request('Question_21');
-		$answer->Question_22 = request('Question_22');
-		$answer->Question_23 = request('Question_23');
-		$answer->Question_24 = request('Question_24');
-		$answer->Question_25 = request('Question_25');
-		$answer->Question_26 = request('Question_26');
-		$answer->Question_27 = request('Question_27');
-
-		$answer->save();
-		session()->flash('message' , 'Thanks! for taking the survey');
+		
 
 		return redirect('/instruction');
 
@@ -771,7 +780,31 @@ class GamesController extends Controller
 
 	public function showending()
 	{
-		return view('instruction.ending');
+
+		// generate a string 
+		// show it in the interface
+		// total point
+
+		
+
+		$user_confirmation = 'A' . substr(session('user_id') , 0, 15). '7';
+
+		//update user_confirmation in assignedgame
+
+
+		\DB::table('assignedgames')
+			            ->where('user_id', session('user_id'))
+			            ->update([ 'user_confirmation' => $user_confirmation ]);
+
+
+		$gameplay = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('total_point', 'pick_def_order', 'game_played')
+		            ->first();
+
+		$total_point = $gameplay->total_point;            
+
+		return view('instruction.ending', compact('user_confirmation', 'total_point'));
 	}
 
 
@@ -1193,7 +1226,7 @@ class GamesController extends Controller
 		// if none, redirect to home page or to games/play
 				$gameass = \DB::table('assignedgames')
 		            ->where('user_id', session('user_id'))
-		            ->select('game_type', 'pick_def_order', 'game_played')
+		            ->select('game_type', 'game_played', 'pick_def_order', 'game_played')
 		            ->first();
 
 		            //dd($gameass);
@@ -1215,6 +1248,16 @@ class GamesController extends Controller
 		\DB::table('assignedgames')
 		->where('user_id', session('user_id'))
 		->increment('game_played');
+
+
+		// keep the instance of the game_id
+		$game_id_instance = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('game_type', 'pick_def_order', 'game_played')
+		            ->first();
+
+		 
+
 
 		
 
@@ -1300,6 +1343,27 @@ class GamesController extends Controller
 
 		$id = $selecteddefender;
 
+
+
+		$def_alert = "";
+
+		if($current_play_freq == 1)
+		{
+			if($selecteddefender == 0)
+			{
+				$def_alert = "Next 3 games you will be playing against a random defender" ;
+			}
+			if($selecteddefender == 1)
+			{
+				$def_alert = "Next 3 games you will be playing against an intelligent defender" ;
+			}
+
+		}
+
+
+		//dd($game_id_instance->game_played);
+
+
 		if($gametype == 0)
 		{
 			// no info
@@ -1309,13 +1373,16 @@ class GamesController extends Controller
 					//GamesController::$defstratnoinfo = $def_strat;
 
 					
+
 			
 					JavaScript::put([
 					//'def_strategy'	=> $def_strat,
 			        'defendertype' => $selecteddefender,
 			        'defordertype' => $defordertype,
 			        'user_id' => session('user_id'),
-			        'done' => $done
+			        'done' => $done,
+			        'def_alert' => $def_alert,
+			        'game_id_instance' => $game_id_instance->game_played
 			    	]);
 
 			    	return view('games.two', compact('id'));
@@ -1338,7 +1405,9 @@ class GamesController extends Controller
 			        'defendertype' => $selecteddefender,
 			        'defordertype' => $defordertype,
 			        'user_id' => session('user_id'),
-			        'done' => $done
+			        'done' => $done,
+			        'def_alert' => $def_alert,
+			        'game_id_instance' => $game_id_instance->game_played
 			    	]);
 
 			    	return view('games.one', compact('id'));
@@ -1806,6 +1875,7 @@ class GamesController extends Controller
 
     		'question_1' => 'required|min:1|max:1',
     		'question_2' => 'required|min:1|max:1',
+    		'question_3' => 'required|min:1|max:1',
 
     	
 
@@ -1814,12 +1884,13 @@ class GamesController extends Controller
 
 		$wrongques1 = '';
 		$wrongques2 = '';
+		$wrongques3 = '';
 		
 
 
 		if(request('question_1') !== "1")
 		{
-			$wrongques1 = $wrongques1 . 'Question 1: Wrong! Correct answer is 8, because you pay cost 2.'; 
+			$wrongques1 = $wrongques1 . 'Question 1: Wrong! Correct answer is 6, because you pay cost 4.'; 
 		}
 		// else if(request('question_1') === "1")
 		// {
@@ -1830,8 +1901,15 @@ class GamesController extends Controller
 
 		if(request('question_2') !== "2")
 		{
-			$wrongques2 = $wrongques2 . ' Question 2: Wrong! Correct answer is 8, because you do not pay any cost if you have control of a node and defender does not take it back.'; 
+			$wrongques2 = $wrongques2 . ' Question 2: Wrong! Correct answer is 10, because you do not pay any cost if you have control of a node and defender does not take it back.'; 
 		}
+
+		if(request('question_3') !== "3")
+		{
+			$wrongques3 = $wrongques3 . ' Question 3: Wrong! Correct answer is 45 cents. Your monetary reward is based off of how many points you finish with. It does not matter how many you start with.'; 
+		}
+
+
 		// else if(request('question_2') === "2")
 		// {
 		// 	$wrongques2 = $wrongques2 . 'Question 2: Correct!'; 
@@ -1843,13 +1921,14 @@ class GamesController extends Controller
 
 
 
-		if(($wrongques1 !== '')   || ($wrongques2 !== '') )
+		if(($wrongques1 !== '')   || ($wrongques2 !== '')  || ($wrongques3 !== ''))
 		{
 
 			return redirect()->back()->withErrors([
 
                 'message' => $wrongques1, 
                 'message2' => $wrongques2, 
+                'message3' => $wrongques3, 
 
 
                 ]);

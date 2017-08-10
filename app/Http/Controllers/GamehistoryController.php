@@ -25,9 +25,33 @@ class GamehistoryController extends Controller
 		$gamehistory->time_attacker_moved = request('time_attacker_moved');
 		$gamehistory->defender_points = request('defender_points');
 		$gamehistory->attacker_points = request('attacker_points');
+		$gamehistory->game_id_instance = request('game_id_instance');
+
 		
 		
 		$gamehistory->save();
+
+
+		if(request('round') == 5) // the last round
+		{
+			// update total points in assigned games table
+
+
+			// get total points
+			$game_id_instance = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('total_point', 'pick_def_order', 'game_played')
+		            ->first();
+
+		    $total_point = $game_id_instance->total_point + request('attacker_points');
+
+
+		    \DB::table('assignedgames')
+		    	            ->where('user_id', session('user_id'))
+		    	            ->update([ 'total_point' => $total_point ]);
+		}
+
+
 
 		return request()->all();
 
@@ -47,6 +71,8 @@ class GamehistoryController extends Controller
 		$gameinit->game_id = request('game_id');
 		$gameinit->user_id = request('user_id');
 		$gameinit->start_time = request('start_time');
+
+		$gameinit->game_id_instance = request('game_id_instance');
 		
 		
 		
@@ -135,7 +161,9 @@ class GamehistoryController extends Controller
 		$gametentativehistory->time_attacker_moved = request('time_attacker_moved');
 		$gametentativehistory->defender_points = request('defender_points');
 		$gametentativehistory->attacker_points = request('attacker_points');
-		
+		$gametentativehistory->game_id_instance = request('game_id_instance');
+
+
 		
 		$gametentativehistory->save();
 
