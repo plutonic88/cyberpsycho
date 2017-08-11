@@ -84,8 +84,13 @@ class RegistrationController extends Controller
             // session variable
 
             //dd($user->user_id);
+            
             session('user_id', '');
-            session(['user_id' => $user->user_id ]);
+            session(['user_id' => $user->user_id]);
+            session(['n_game_type' => 2]);
+            session(['n_defender_type' => 2]);
+            session(['n_defender_order_type' => 2]);
+            session(['n_each_type_play_limit' => 3]);
              session()->flash('message' , 'Thank you so much for registering');
             //dd(session('user_id', ''));
 
