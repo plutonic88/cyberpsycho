@@ -90,7 +90,7 @@
 
 	  	  <div class="form-group" id="comm">
 
-	    	<label for="school">Any Comments(150 character minimum)</label>
+	    	<label for="school">Any Comments(50 character minimum)</label>
 	    	<textarea style="height: 200px" @keyup="countchar" v-model="message" class="form-control" name="comment" id="comment" required></textarea>
 	    	<div id="text-feedback">Comment length: @{{commentlength}}</div>
 	  	  </div>

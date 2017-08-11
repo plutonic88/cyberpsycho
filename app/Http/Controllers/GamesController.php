@@ -819,7 +819,7 @@ class GamesController extends Controller
 
     		'deftype2' => 'required',
 
-    		'comment' => 'required|min: 150'
+    		'comment' => 'required|min: 50'
 
     		]);
 
@@ -834,7 +834,24 @@ class GamesController extends Controller
 
 			session()->flash('message' , 'Thanks! for participating in our study');
 
-			return redirect('/home');
+			$user_confirmation = 'A' . substr(session('user_id') , 0, 15). '7';
+
+		//update user_confirmation in assignedgame
+
+
+		\DB::table('assignedgames')
+			            ->where('user_id', session('user_id'))
+			            ->update([ 'user_confirmation' => $user_confirmation ]);
+
+
+		$gameplay = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('total_point', 'pick_def_order', 'game_played')
+		            ->first();
+
+		$total_point = $gameplay->total_point;            
+
+		return view('instruction.end', compact('user_confirmation', 'total_point'));
 
 
 
