@@ -1368,11 +1368,11 @@ class GamesController extends Controller
 		{
 			if($selecteddefender == 0)
 			{
-				$def_alert = "Next 3 games you will be playing against a random defender" ;
+				$def_alert = "You are now playing against a purely RANDOM DEFENDER.  This means that there is an equal chance that the defender any node on any given round." ;
 			}
 			if($selecteddefender == 1)
 			{
-				$def_alert = "Next 3 games you will be playing against an intelligent defender" ;
+				$def_alert = "You are playing against a STRATEGIC DEFENDER.  This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
 			}
 
 		}
