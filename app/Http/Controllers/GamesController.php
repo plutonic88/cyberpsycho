@@ -1402,7 +1402,7 @@ class GamesController extends Controller
 			        'game_id_instance' => $game_id_instance->game_played
 			    	]);
 
-			    	return view('games.two', compact('id'));
+			    	return view('games.two', compact('game_id_instance'));
 
 		}
 		else if($gametype == 1)
@@ -1427,7 +1427,7 @@ class GamesController extends Controller
 			        'game_id_instance' => $game_id_instance->game_played
 			    	]);
 
-			    	return view('games.one', compact('id'));
+			    	return view('games.one', compact('game_id_instance'));
 
 		}
 
@@ -1902,12 +1902,19 @@ class GamesController extends Controller
 		$wrongques1 = '';
 		$wrongques2 = '';
 		$wrongques3 = '';
+		$flag = true;
 		
 
 
 		if(request('question_1') !== "1")
 		{
 			$wrongques1 = $wrongques1 . 'Question 1: Wrong! Correct answer is 6, because you pay cost 4.'; 
+			$flag = false;
+		}
+		else
+		{
+			$wrongques1 = $wrongques1 .'Question 1: Correct answer';
+
 		}
 		// else if(request('question_1') === "1")
 		// {
@@ -1919,11 +1926,23 @@ class GamesController extends Controller
 		if(request('question_2') !== "2")
 		{
 			$wrongques2 = $wrongques2 . ' Question 2: Wrong! Correct answer is 10, because you do not pay any cost if you have control of a node and defender does not take it back.'; 
+			$flag = false;
+		}
+		else
+		{
+			$wrongques2 = $wrongques2 .'Question 2: Correct answer';
+
 		}
 
 		if(request('question_3') !== "3")
 		{
 			$wrongques3 = $wrongques3 . ' Question 3: Wrong! Correct answer is 45 cents. Your monetary reward is based off of how many points you finish with. It does not matter how many you start with.'; 
+			$flag = false;
+		}
+		else
+		{
+			$wrongques3 = $wrongques3 .'Question 3: Correct answer';
+
 		}
 
 
@@ -1938,7 +1957,7 @@ class GamesController extends Controller
 
 
 
-		if(($wrongques1 !== '')   || ($wrongques2 !== '')  || ($wrongques3 !== ''))
+		if($flag == false)
 		{
 
 			return redirect()->back()->withErrors([
