@@ -787,7 +787,7 @@ class GamesController extends Controller
 
 		
 
-		$user_confirmation = 'A' . substr(session('user_id') , 0, 15). '7';
+		$user_confirmation = 'A' . substr(session('user_id') , 0, 30). '7';
 
 		//update user_confirmation in assignedgame
 
