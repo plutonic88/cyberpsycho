@@ -18,7 +18,7 @@
           <div class="card card-outline-primary" style="width: 100%; height: 21.5rem;">
             <div class="card-block">
 
-              <h5 class="card-title">Game {{ $game_id_instance }}</h5>
+              <h5 class="card-title">Game {{ $game_instance }}</h5>
 
                   
 

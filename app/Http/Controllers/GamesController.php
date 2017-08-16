@@ -1381,6 +1381,8 @@ class GamesController extends Controller
 		//dd($game_id_instance->game_played);
 
 
+		$game_instance = $game_id_instance->game_played;
+
 		if($gametype == 0)
 		{
 			// no info
@@ -1399,10 +1401,10 @@ class GamesController extends Controller
 			        'user_id' => session('user_id'),
 			        'done' => $done,
 			        'def_alert' => $def_alert,
-			        'game_id_instance' => $game_id_instance->game_played
+			        'game_id_instance' => $game_instance
 			    	]);
 
-			    	return view('games.two', compact('game_id_instance'));
+			    	return view('games.two', compact('game_instance'));
 
 		}
 		else if($gametype == 1)
@@ -1424,10 +1426,10 @@ class GamesController extends Controller
 			        'user_id' => session('user_id'),
 			        'done' => $done,
 			        'def_alert' => $def_alert,
-			        'game_id_instance' => $game_id_instance->game_played
+			        'game_id_instance' => $game_instance
 			    	]);
 
-			    	return view('games.one', compact('game_id_instance'));
+			    	return view('games.one', compact('game_instance'));
 
 		}
 
