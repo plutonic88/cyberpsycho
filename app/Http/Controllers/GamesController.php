@@ -1084,7 +1084,7 @@ class GamesController extends Controller
 		        		// also reset every entry 
 		        		\DB::table('assignedgames')
 		        		            ->where('user_id', session('user_id'))
-		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0 ]);
+		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0]);
 
 		        	}
 
@@ -1227,7 +1227,7 @@ class GamesController extends Controller
 		        		// also reset every entry 
 		        		\DB::table('assignedgames')
 		        		            ->where('user_id', session('user_id'))
-		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0 ]);
+		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
 
 		        	}
 
