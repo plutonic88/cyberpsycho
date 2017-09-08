@@ -1105,6 +1105,10 @@ class GamesController extends Controller
 		$gametype = $this->assigngametype();
 
 
+		// update start time here for instruction log
+		//dd(session('user_id'));
+
+
 
 		//dd($gametype);
 
@@ -1124,6 +1128,29 @@ class GamesController extends Controller
 		
 
 	}
+
+
+	// public function storestart()
+	// {
+
+
+	// }
+
+
+
+	public function storeend()
+	{
+		$ins_dur = new \App\Instructionduration;
+
+
+		$ins_dur->user_id = session('user_id');
+		$ins_dur->slide = request('slide');
+		$ins_dur->duration = request('duration');
+
+		$ins_dur->save();
+
+	}
+
 
 
 	

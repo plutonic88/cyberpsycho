@@ -7,7 +7,7 @@
 
 
 
-<a href='{{ url("/instruction/concept") }}' style="margin-left: 440px; margin-bottom: 10px;" id="nextbutton" class="btn btn-primary">Basic Questions and answers</a>
+<a href='{{ url("/instruction/concept") }}' style="margin-left: 440px; margin-bottom: 10px;" id="nextbutton" class="btn btn-primary disable">Basic Questions and answers</a>
 
 
 <div id="app">
@@ -94,13 +94,54 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 
+
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script type="text/javascript">
+
+
+var slides = [1, 0, 0, 0, 0, 0];
+var curslide = 0;
+var prevslide = -1;
+var d = new Date();
+var n = d.getTime();
+
+var starttime = d.getTime();
+var duration = 0.0;
+
+
+
+
+
   
 $(document).ready(function() { 
 
-  $("#nextbutton").addClass("disable");
 
-});
+  $("#nextbutton").click(function(){
+
+
+    d = new Date();
+    n = d.getTime();
+
+    duration = (n - starttime)/1000.0;
+
+
+      axios.post('/instruction/storeend', {
+                
+                slide : curslide,
+                duration : duration, 
+
+              }).then(response => this.returndata = response.data);
+
+        
+    });
+
+
+      
+  }); 
+
+
 
 
 $('#Carousel').carousel({
@@ -115,7 +156,11 @@ $('#Carousel').on('slid.bs.carousel', function (e) {
   
   var currentItem = $(e.relatedTarget);
 
-  slides[parseFloat($(currentItem).attr('id'))] = 1;
+  var index = parseFloat($(currentItem).attr('id'));
+
+  slides[index%6] = 1;
+
+  //console.log("slide "+ parseFloat($(currentItem).attr('id')));
 
   //if($(currentItem).attr('id') === "5")
  // {
@@ -123,6 +168,41 @@ $('#Carousel').on('slid.bs.carousel', function (e) {
  // }
  //// else
  // {
+
+
+
+    d = new Date();
+    n = d.getTime();
+
+    duration = (n - starttime)/1000.0;
+
+    starttime = n;
+
+
+    prevslide = curslide;
+    curslide = index;
+
+
+
+
+
+
+
+    axios.post('/instruction/storeend', {
+              
+              slide : prevslide,
+              duration : duration, 
+
+            }).then(response => this.returndata = response.data);
+
+    
+
+     console.log("curslide "+ curslide + ", prevslide "+prevslide + ", duration "+ duration);
+
+
+
+
+
     var flag = true;
     for(var i=0; i<6; i++)
     {

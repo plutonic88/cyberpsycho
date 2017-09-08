@@ -69,6 +69,15 @@ Route::get('home', ['as' => 'home', 'uses' => 'GamesController@index']);
 Route::get('/instruction', 'GamesController@show');
 
 
+//Route::post('/instruction/storestart', 'GamesController@storestart');
+
+Route::post('/instruction/storeend', 'GamesController@storeend');
+
+
+
+
+
+
 Route::get('/survey', 'GamesController@startsurvey');
 
 

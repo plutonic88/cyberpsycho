@@ -6,7 +6,51 @@
 
 
 
-<div id="app"></div>
+
+  
+
+  <div id="app" class="container">
+    
+
+  <!-- Button trigger modal -->
+
+  <button type="button"  class="btn btn-primary" style="margin-left: 358px;" data-toggle="modal" data-target="#exampleModalLong">
+    Quick Tips
+  </button>
+              
+
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Need a refresher on the rules?
+  </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <ul>
+            <li>In round 1, the defender controls all nodes.</li>
+            <li>You and the defender both make one move per round.</li>
+            <li>To attack a node, you pay the cost associated.</li>
+            <li>When you successfully take control of a node, it will turn <span style="color: red;">RED</span>  for 3 seconds to indicate that you won control.</li>
+            <li>Whenever you control a node, you gain its value points. If you hold a node for multiple rounds, you gain the points of that node every single one of those rounds.</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
 
 <div id="app2">
 
@@ -90,6 +134,7 @@
 
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 
 
 
