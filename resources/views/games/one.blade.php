@@ -32,8 +32,8 @@
         <ul>
           <li>In round 1, the defender controls all nodes.</li>
           <li>You and the defender both make one move per round.</li>
-          <li>To attack a node, you pay the cost associated.</li>
-          <li>When you successfully take control of a node, it will turn <span style="color: red;">RED</span>  for 3 seconds to indicate that you won control.</li>
+         <li>Defender controlled nodes are in <span style="color: blue;">BLUE</span>, and nodes you control are in <span style="color: red;">RED</span>.</li>
+           <li>To attack a node, you pay the cost associated.</li>
           <li>Whenever you control a node, you gain its value points. If you hold a node for multiple rounds, you gain the points of that node every single one of those rounds.</li>
         </ul>
       </div>
