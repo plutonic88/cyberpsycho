@@ -814,27 +814,30 @@ class GamesController extends Controller
 
 		$this->validate(request(), [
 
+    		'age' => 'required|numeric',
 
-    		'deftype' => 'required',
+    		'country' => 'required|min: 3',
 
-    		'deftype2' => 'required',
-
-    		'comment' => 'required|min: 50'
 
     		]);
 
 			$endsurvey = new \App\endsurvey;
 
 			$endsurvey->user_id = session('user_id');
-			$endsurvey->deftype = request('deftype');
-			$endsurvey->deftype2 = request('deftype2'); 
+			$endsurvey->gender = request('gender');
+			$endsurvey->age = request('age'); 
+			$endsurvey->country = request('country'); 
+			$endsurvey->education = request('education'); 
+			$endsurvey->income = request('income'); 
+			$endsurvey->race = request('race'); 
+			$endsurvey->device = request('device'); 
 			$endsurvey->comment = request('comment');
 
 			$endsurvey->save();
 
 			session()->flash('message' , 'Thanks! for participating in our study');
 
-			$user_confirmation = 'A' . substr(session('user_id') , 0, 15). '7';
+			$user_confirmation = 'A' . substr(session('user_id') , 0, 30). '7';
 
 		//update user_confirmation in assignedgame
 

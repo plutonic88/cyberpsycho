@@ -16,8 +16,13 @@ class CreateEndsurveysTable extends Migration
         Schema::create('endsurveys', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id');
-            $table->string('deftype');
-            $table->string('deftype2');
+            $table->string('gender');
+            $table->string('age');
+            $table->string('country');
+            $table->string('race');
+            $table->string('education');
+            $table->string('income');
+            $table->string('device');
             $table->string('comment');
             $table->timestamps();
         });

@@ -22,63 +22,76 @@
 	{{ csrf_field() }}
 
 			<fieldset class="form-group row" >
-			      <legend class="col-form-legend col-sm-10">What defender type you were playing against for first 3 game?</legend>
+			      <legend class="col-form-legend col-sm-10">What is your gender?</legend>
 			      <div class="col-sm-10">
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype" id="11" value="random" required>
-			            Uniform random : selects node randomly
+			            <input class="form-check-input" type="radio" name="gender"  value="male" required>
+			            Male
 			          </label>
 			        </div>
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype" id="12" value="Maximizing">
-			            Maximizing defender's own utility: selects node with maximum value and low cost
+			            <input class="form-check-input" type="radio" name="gender"  value="female">
+			            Female
 			          </label>
 			        </div>
-			        <div class="form-check">
-			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype" id="13" value="Minimizing" >
-			            Minimizing your utility: predicting your move and selects them
-			          </label>
-			        </div>
-			        <div class="form-check">
-			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype" id="14" value="None" >
-			            None of the above
-			          </label>
-			        </div>
-			        
-
-
 			      </div>
   		</fieldset>
+
+  		<div class="form-group">
+	    	<label for="age">What is your age?</label>
+	    	<input type="text" class="form-control" name="age" id="age" required>
+	  	</div>
+
+	  	<div class="form-group">
+	    	<label for="country">What country do you currently live in?</label>
+	    	<input type="text" class="form-control" name="country" id="country" required>
+	  	</div>
 
   		<fieldset class="form-group row" >
-			      <legend class="col-form-legend col-sm-10">What defender type you were playing against for last 3 games?</legend>
+			      <legend class="col-form-legend col-sm-10">What is your race/ethnicity?</legend>
 			      <div class="col-sm-10">
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype2" id="21" value="random" required>
-			            Uniform random : selects node randomly
+			            <input class="form-check-input" type="radio" name="race"  value="black" required>
+			            Black
 			          </label>
 			        </div>
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype2" id="22" value="Maximizing">
-			            Maximizing defender's own utility: selects node with maximum value and low cost
+			            <input class="form-check-input" type="radio" name="race" value="native north american">
+			            Native North American
 			          </label>
 			        </div>
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype2" id="23" value="Minimizing" >
-			            Minimizing your utility: predicting your move and selects them
+			            <input class="form-check-input" type="radio" name="race"  value="white" >
+			            White/Caucasian
 			          </label>
 			        </div>
 			        <div class="form-check">
 			          <label class="form-check-label">
-			            <input class="form-check-input" type="radio" name="deftype2" id="24" value="None" >
-			            None of the above
+			            <input class="form-check-input" type="radio" name="race"  value="asian" >
+			            Asian
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="race"  value="south asian" >
+			            South Asian (Indian/Pakistani)
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="race"  value="latino/a" >
+			            Latino/a
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="race"  value="other" >
+			            Other
 			          </label>
 			        </div>
 			        
@@ -86,6 +99,138 @@
 
 			      </div>
   		</fieldset>
+
+
+  		
+
+
+
+  		<fieldset class="form-group row" >
+			      <legend class="col-form-legend col-sm-10">What is your highest level of education?</legend>
+			      <div class="col-sm-10">
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Some high school" required>
+			            Some high school
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="High School Diploma / GED">
+			            High School Diploma / GED
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Some college" >
+			            Some college
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Associate’s Degree" >
+			            Associate’s Degree
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education" value="Bachelor’s Degree" >
+			            Bachelor’s Degree
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Some Graduate education" >
+			            Some Graduate education
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Master’s Degree" >
+			            Master’s Degree
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="education"  value="Ph.D." >
+			            Ph.D.
+			          </label>
+			        </div>
+			        
+
+
+			      </div>
+  		</fieldset>
+
+
+
+  		<fieldset class="form-group row" >
+			      <legend class="col-form-legend col-sm-10">What is your annual income level?</legend>
+			      <div class="col-sm-10">
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income"  value="0-15,000" required>
+			            0-15,000
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income"  value="15,000-30,000">
+			            15,000-30,000
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income"  value="30,000-50,000" >
+			            30,000-50,000
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income"  value="50,000-75,000" >
+			            50,000-75,000
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income" value="75,000-100,000" >
+			            75,000-100,000
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="income"  value="Above 100,000" >
+			            Above 100,000
+			          </label>
+			        </div>
+			      
+			      </div>
+  		</fieldset>
+
+  					<fieldset class="form-group row" >
+  					      <legend class="col-form-legend col-sm-10">How did you fill out this survey?</legend>
+  					      <div class="col-sm-10">
+  					        <div class="form-check">
+  					          <label class="form-check-label">
+  					            <input class="form-check-input" type="radio" name="device"  value="Mobile phone" required>
+  					            Mobile phone
+  					          </label>
+  					        </div>
+  					        <div class="form-check">
+  					          <label class="form-check-label">
+  					            <input class="form-check-input" type="radio" name="device"  value="Computer">
+  					            Computer
+  					          </label>
+  					        </div>
+  					        <div class="form-check">
+  					          <label class="form-check-label">
+  					            <input class="form-check-input" type="radio" name="device"  value="Tablet">
+  					            Tablet
+  					          </label>
+  					        </div>
+  					      </div>
+  		  		</fieldset>
+
 
 
 	  	  <div class="form-group" id="comm">
@@ -117,6 +262,10 @@
 
 
 	</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	
 <script src="{{ asset('js/end.js') }}"> </script>
 
 @endsection('content')
