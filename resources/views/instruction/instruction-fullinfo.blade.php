@@ -7,7 +7,7 @@
 
 
 
-<a href='{{ url("/instruction/concept") }}' style="margin-left: 440px; margin-bottom: 10px;" id="nextbutton" class="btn btn-primary disable">Basic Questions and answers</a>
+<a href='{{ url("/instruction/concept") }}' style="margin-left: 440px; margin-bottom: 10px;" id="nextbutton" class="btn btn-primary disable">You are Done! Click here</a>
 
 
 <div id="app">

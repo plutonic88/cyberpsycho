@@ -34,7 +34,7 @@
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_1"  value="1" >
-						            2
+						            8
 						          </label>
 						        </div>
 						        <div class="form-check">
