@@ -29,12 +29,12 @@
 	 {{ csrf_field()}}
 						
 		<fieldset class="form-group row">
-						    <legend class="col-form-legend col-sm-10">1. Given Node A with a value of 10 and a cost of 4, how many points would you receive for attacking and gaining control of that node?</legend>
+						    <legend class="col-form-legend col-sm-10">1. Given Node A with a value of 10 and a cost of 2, how many points would you receive for attacking and gaining control of that node?</legend>
 						    <div class="col-sm-10">
 						        <div class="form-check">
 						          <label class="form-check-label">
 						            <input class="form-check-input" type="radio" name="question_1"  value="1" >
-						            6
+						            2
 						          </label>
 						        </div>
 						        <div class="form-check">

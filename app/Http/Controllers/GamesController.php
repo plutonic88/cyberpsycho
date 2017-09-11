@@ -124,7 +124,8 @@ class GamesController extends Controller
 				 {
 				 	//dd("Nope");
 				 	$way = "random";
-				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => mt_rand(0,5), "way" => $way];
+				 	// default strategy should be node 0
+				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
 				 }
 				
 			}
@@ -208,7 +209,8 @@ class GamesController extends Controller
 				 {
 				 	//dd("Nope");
 				 	$way = "random";
-				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => mt_rand(0,5), "way" => $way];
+				 	// default action should be 0th node
+				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
 				 }
 				
 			}
@@ -598,12 +600,25 @@ class GamesController extends Controller
 		//dd(GamesController::$defstratfullinfo);
 
 
+		 $rand_strategy = [];
+
+		 for($i=0; $i<5; $i++)
+		 {
+		 	$rand_strategy[$i] = mt_rand(0,4);
+		 }
+
+
+		 
+
+		// dd($rand_strategy);
+
+
 
 		return [
 		'TIME_LIMIT'=> '15', 
 		'ROUND_LIMIT'=>'5', 
 		'timer'=> '15', 
-		'rand_defenderteststrategy'=>'1,3,4,0,3',
+		'rand_defenderteststrategy'=>$rand_strategy,
 		'max_defenderteststrategy'=>'3,4,3,2,1',
 		'possibleattackset' => '0,1,2,3,4,5',
 		'public' => '0,1,2,3,4,5'		
@@ -1940,7 +1955,7 @@ class GamesController extends Controller
 
 		if(request('question_1') !== "1")
 		{
-			$wrongques1 = $wrongques1 . 'Question 1: Wrong! Correct answer is 6, because you pay cost 4.'; 
+			$wrongques1 = $wrongques1 . 'Question 1: Wrong! Correct answer is 8, because you pay cost 2.'; 
 			$flag = false;
 		}
 		else
