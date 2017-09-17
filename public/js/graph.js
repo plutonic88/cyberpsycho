@@ -72159,6 +72159,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 data: this.values[4],
                 backgroundColor: "#E81EBA",
                 hoverBackgroundColor: "#E81EBA"
+            }, {
+                label: this.labels[5],
+                data: this.values[5],
+                backgroundColor: "#727C85",
+                hoverBackgroundColor: "#727C85"
             }]
         };
         //var context = document.querySelector('#graph').getContext('2d');

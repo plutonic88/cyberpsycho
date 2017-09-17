@@ -600,12 +600,19 @@ class GamesController extends Controller
 		//dd(GamesController::$defstratfullinfo);
 
 
-		 $rand_strategy = [];
+		 $rand_strategy = '';
 
 		 for($i=0; $i<5; $i++)
 		 {
-		 	$rand_strategy[$i] = mt_rand(0,4);
+		 	$rand_strategy .= mt_rand(0,4);
+
+		 	if($i<4)
+		 	{
+		 		$rand_strategy .= ",";
+		 	}
 		 }
+
+
 
 
 		 
@@ -867,7 +874,9 @@ class GamesController extends Controller
 		            ->select('total_point', 'pick_def_order', 'game_played')
 		            ->first();
 
-		$total_point = $gameplay->total_point;            
+		$total_point = $gameplay->total_point;   
+
+		//auth()->logout();         
 
 		return view('instruction.end', compact('user_confirmation', 'total_point'));
 
@@ -1894,7 +1903,7 @@ class GamesController extends Controller
 
 
 
-            for($nodeid = 0; $nodeid<=4; $nodeid++)
+            for($nodeid = 0; $nodeid<=5; $nodeid++)
             {
 
 
