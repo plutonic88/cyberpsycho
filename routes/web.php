@@ -162,6 +162,9 @@ Route::post('/gamehistory/saveeye', 'GamehistoryController@storeeye');
 Route::get('/chart/{id}', 'GamesController@showcharts');
 
 
+Route::get('/insduration', 'GamesController@showinsduration');
+
+
 Route::get('/mouse/{id}', 'GamesController@showmouse');
 
 Route::get('/mouseonnode/{id}', 'GamesController@showmouseonnode');
