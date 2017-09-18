@@ -72103,6 +72103,8 @@ Vue.component('graph', __webpack_require__(215));
 
 Vue.component('insduration', __webpack_require__(242));
 
+Vue.component('inscount', __webpack_require__(246));
+
 new Vue({
       el: '#container'
 
@@ -72377,6 +72379,104 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-3934251a", module.exports)
+  }
+}
+
+/***/ }),
+/* 245 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+
+    props: ['labels', 'values'],
+
+    mounted: function mounted() {
+        var data2 = {
+
+            labels: this.labels,
+            datasets: [{
+                label: "Count for slides",
+                data: this.values,
+                backgroundColor: "#FF6384",
+                hoverBackgroundColor: "#FF6384"
+            }]
+        };
+        //var context = document.querySelector('#graph').getContext('2d');
+
+
+        // Chart.defaults.global.maintainAspectRatio = false;
+
+        var chart = new Chart(this.$el.getContext('2d'), {
+            type: 'line',
+            data: data2,
+            options: {}
+
+        });
+    }
+};
+
+/***/ }),
+/* 246 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(198)(
+  /* script */
+  __webpack_require__(245),
+  /* template */
+  __webpack_require__(247),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/anjonsunny/laravel/projects/cyberpsycho/resources/assets/js/components/InsCount.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] InsCount.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75ac6c16", Component.options)
+  } else {
+    hotAPI.reload("data-v-75ac6c16", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 247 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('canvas', {
+    attrs: {
+      "id": "graph",
+      "width": "1000",
+      "height": "500"
+    }
+  })
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-75ac6c16", module.exports)
   }
 }
 

@@ -165,6 +165,9 @@ Route::get('/chart/{id}', 'GamesController@showcharts');
 Route::get('/insduration', 'GamesController@showinsduration');
 
 
+Route::get('/inscount', 'GamesController@showinscount');
+
+
 Route::get('/mouse/{id}', 'GamesController@showmouse');
 
 Route::get('/mouseonnode/{id}', 'GamesController@showmouseonnode');

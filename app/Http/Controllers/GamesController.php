@@ -1959,6 +1959,37 @@ class GamesController extends Controller
 	}
 
 
+	public function showinscount()
+	{
+		// query user data for game id = 1, user_id = session('user_id')   Attacker action,
+
+		// need to join two tables game_histories and nodes
+
+
+		
+			$histories = array();
+
+
+            for($slide = 0; $slide<=5; $slide++)
+            {
+				$history0 = \DB::table('instructiondurations')
+	            ->where('slide', '=' , $slide)
+	            ->count('duration');	           
+
+	            $histories[$slide] = $history0;
+
+        	}
+
+
+       // $his = implode(",", $histories);
+		//dd($his);
+
+
+		return view('chart.inscount', compact('histories'));
+	}
+
+
+
 
 
 
