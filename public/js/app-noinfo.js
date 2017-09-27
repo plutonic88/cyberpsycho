@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 224);
+/******/ 	return __webpack_require__(__webpack_require__.s = 230);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72470,7 +72470,7 @@ new Vue({
 		numberofround: 1,
 		attackermoved: false,
 		defendermoved: false,
-		attackerpoints: 40,
+		attackerpoints: 20,
 		attackeraction: '',
 		msgtoplayer: 'Click start',
 		currentattackset: [],
@@ -73348,7 +73348,13 @@ new Vue({
 /* 221 */,
 /* 222 */,
 /* 223 */,
-/* 224 */
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(200);

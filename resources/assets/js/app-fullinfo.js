@@ -620,7 +620,7 @@ Vue.component('node',{
 		numberofround : 1,
 		attackermoved : false,
 		defendermoved: false,
-		attackerpoints : 40,
+		attackerpoints : 20,
 		attackeraction : '',
 		msgtoplayer : 'Click start',
 		currentattackset : [], 
