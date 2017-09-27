@@ -72480,8 +72480,8 @@ new Vue({
 		loadconfig: function loadconfig() {},
 
 		gotonextgame: function gotonextgame() {
-			window.location.href = "http://127.0.0.1:8000/games/1/" + channel.defordertype;
-			//window.location.href = "http://iasrl1.cs.utep.edu/games/1/"+ channel.defordertype; 
+			//window.location.href = "http://127.0.0.1:8000/games/1/"+ channel.defordertype; 
+			window.location.href = "http://iasrl1.cs.utep.edu/games/1/" + channel.defordertype;
 			//window.location.href = "http://129.108.156.42/games/1/"+ window.defordertype;
 		},
 

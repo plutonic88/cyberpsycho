@@ -72506,9 +72506,9 @@ new Vue({
 	methods: {
 
 		gotonextgame: function gotonextgame() {
-			window.location.href = "http://127.0.0.1:8000/games/0/" + channel.defordertype;
+			//window.location.href = "http://127.0.0.1:8000/games/0/"+ channel.defordertype; 
 
-			//window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype; 
+			window.location.href = "http://iasrl1.cs.utep.edu/games/0/" + channel.defordertype;
 
 			//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
 		},
