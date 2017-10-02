@@ -258,8 +258,10 @@ class GamesController extends Controller
 	{
 		// read file 
 
-			$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+			$content = \File::get(storage_path('strategy\g5d5_FI.txt'));
 			$strategy = explode("\n", $content);
+			
+			
 			
 			//dd($strategy);
 
@@ -273,7 +275,7 @@ class GamesController extends Controller
 
 			$defender_strategy[][][][] = array();
 
-			//sizeof($strategy)
+			//dd(sizeof($strategy));
 
 
 			for($i=0; $i<(sizeof($strategy)); )
@@ -315,9 +317,10 @@ class GamesController extends Controller
 								//parse  action sequence
 								$index1 = 11; // starting index for sequence
 								
-								$subs = explode(",",substr($row, $index1, strlen($row)-$index1-1));
-
+								$subs = explode(",",substr($row, $index1, strlen($row)-$index1-2));
+								
 								$seq = implode(",", $subs);
+								//echo($seq);
 
 								//dd($index1,$subs, $seq, $row[$index1]);
 
@@ -336,7 +339,7 @@ class GamesController extends Controller
 							$i++; // move to next row
 						
 					}
-					//dd($def_seq,$att_seq);
+					//dd($i, $def_seq,$att_seq);
 
 
 					$def_seq = str_replace(' ', '', $def_seq);
@@ -345,13 +348,17 @@ class GamesController extends Controller
 					$def_seq_nodes = explode(",", $def_seq);
 					$att_seq_nodes = explode(",", $att_seq);
 
-					//dd($def_seq_nodes, $att_seq_nodes);
-
+					
+					
 
 					for($s=0; $s<sizeof($def_seq_nodes); $s++)
 					{
+						 
+						
 						$def_seq_nodes[$s] = $node_array[$def_seq_nodes[$s]];
 					}
+					
+					
 
 					for($s=0; $s<sizeof($att_seq_nodes); $s++)
 					{
@@ -359,12 +366,12 @@ class GamesController extends Controller
 					}
 					
 
-
+					
 
 					$def_seq = implode(",", $def_seq_nodes);
 					$att_seq = implode(",", $att_seq_nodes);
 
-
+					
 
 
 					$counter = 0;
@@ -412,6 +419,8 @@ class GamesController extends Controller
 					}
 
 					//dd($defender_strategy, $row);
+					
+					
 	
 			}
 
@@ -425,7 +434,7 @@ class GamesController extends Controller
 	{
 		// read file 
 
-			$content = \File::get(storage_path('strategy/g5d5_AP.txt'));
+			$content = \File::get(storage_path('strategy\g5d5_AP.txt'));
 			$strategy = explode("\n", $content);
 			
 			//dd($strategy);
@@ -482,7 +491,7 @@ class GamesController extends Controller
 								//parse  action sequence
 								$index1 = 11; // starting index for sequence
 								
-								$subs = explode(",",substr($row, $index1, strlen($row)-$index1-1));
+								$subs = explode(",",substr($row, $index1, strlen($row)-$index1-2));
 
 								$seq = implode(",", $subs);
 

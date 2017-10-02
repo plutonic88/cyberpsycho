@@ -17,8 +17,10 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bootstrap-jquery": "^3.3.2",
     "chart.js": "^2.5.0",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "tether": "^1.4.0"
   }
 }
