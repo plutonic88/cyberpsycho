@@ -709,9 +709,9 @@ Vue.component('node',{
 
 			gotonextgame: function()
 			{
-				//window.location.href = "http://127.0.0.1:8000/games/0/"+ channel.defordertype; 
+				window.location.href = "http://127.0.0.1:8000/games/0/"+ channel.defordertype;
 
-				window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype; 
+				//window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype;
 				
 				//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
 
@@ -1220,8 +1220,8 @@ Vue.component('node',{
 				    }
 				  })
 				  .then(function (response) {
-				   // console.log(response);
-				    console.log("lalalalalalala got response "+response.data["way"]);
+				    console.log(response);
+				   // console.log("lalalalalalala got response "+response.data["way"]);
 				    vm.defenderaction = response.data["def_strat"];
 				    vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf();//vm.date(Date.now());
 				     //vm.defenderaction = defaction;
