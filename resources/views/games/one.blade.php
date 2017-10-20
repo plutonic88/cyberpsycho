@@ -146,11 +146,13 @@
 
 <script src="{{ asset('js/webgazer.js') }}" type="text/javascript"> </script>
 
-
 <script src="{{ asset('js/app-fullinfo.js') }}"> </script>
 
 <script type="text/javascript">
   
+
+  alert("Please, do not reload page or use the back button while playing game. You will not be paid if you do so.");
+
   if(window.screen.availWidth<1024)
   {
     alert("Set your screen resolution to atleast 1024X640, for best experience set the screen resolution to 1280X800 ");

@@ -1167,7 +1167,7 @@ class GamesController extends Controller
 
 	public function storeend()
 	{
-		$ins_dur = new \App\Instructionduration;
+		$ins_dur = new \App\instructionduration;
 
 
 		$ins_dur->user_id = session('user_id');
