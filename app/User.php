@@ -36,7 +36,7 @@ class User extends Authenticatable
 
      public function setUseridAttribute($user_id)
     {   
-        $this->attributes['user_id'] = bcrypt($user_id);
+        $this->attributes['user_id'] = hash('md5', $user_id); //bcrypt($user_id);
     }
 
 

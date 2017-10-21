@@ -809,7 +809,7 @@ class GamesController extends Controller
 
 		
 
-		$user_confirmation = 'A' . substr(session('user_id') , 0, 30). '7';
+		$user_confirmation = 'A' . substr(session('user_id') , 0, 20). '7';
 
 		//update user_confirmation in assignedgame
 
@@ -859,7 +859,7 @@ class GamesController extends Controller
 
 			session()->flash('message' , 'Thanks! for participating in our study');
 
-			$user_confirmation = 'A' . substr(session('user_id') , 0, 30). '7';
+			$user_confirmation = 'A' . substr(session('user_id') , 0, 20). '7';
 
 		//update user_confirmation in assignedgame
 

@@ -55,31 +55,58 @@ class SessionsController extends Controller
 
         $matched = false;
 
+
+        $hash_user = hash('md5', request('user_id'));
+
+
         foreach ($users as $user) 
         {
             
             //echo $user->user_id;
 
-            if(Hash::check(request('user_id'), $user->user_id))
+
+            if(strcmp($user->user_id, $hash_user)===0)
             {
-               // echo "Matched with one";
-                $matched = true;
-                auth()->login($user);
+                // echo "Matched with one";
+                 $matched = true;
+                 auth()->login($user);
 
-                //session variable 
+                 //session variable 
 
-                session('user_id', '');
-                session(['user_id' => $user->user_id]);
-                session(['n_game_type' => 2]);
-                session(['n_defender_type' => 2]);
-                session(['n_defender_order_type' => 2]);
-                session(['n_each_type_play_limit' => 3]);
-                session()->flash('message' , 'Welcome! You are now logged in');
-                //dd(session('user_id', ''));
+                 session('user_id', '');
+                 session(['user_id' => $user->user_id]);
+                 session(['n_game_type' => 2]);
+                 session(['n_defender_type' => 2]);
+                 session(['n_defender_order_type' => 2]);
+                 session(['n_each_type_play_limit' => 3]);
+                 session()->flash('message' , 'Welcome! You are now logged in');
+                 //dd(session('user_id', ''));
 
-                break;
+                 break;
 
             }
+
+
+            // if(Hash::check(request('user_id'), $user->user_id))
+            // {
+            //    // echo "Matched with one";
+            //     $matched = true;
+            //     auth()->login($user);
+
+            //     //session variable 
+
+            //     session('user_id', '');
+            //     session(['user_id' => $user->user_id]);
+            //     session(['n_game_type' => 2]);
+            //     session(['n_defender_type' => 2]);
+            //     session(['n_defender_order_type' => 2]);
+            //     session(['n_each_type_play_limit' => 3]);
+            //     session()->flash('message' , 'Welcome! You are now logged in');
+            //     //dd(session('user_id', ''));
+
+            //     break;
+
+            // }
 
 
         }

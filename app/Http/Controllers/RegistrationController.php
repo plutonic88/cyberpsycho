@@ -55,21 +55,43 @@ class RegistrationController extends Controller
 
         $matched = false;
 
+        $start = microtime(true);
+
+        $hash_user = hash('md5', request('user_id'));
+
         foreach ($users as $user) 
         {
             
             //echo $user->user_id;
 
-            if(Hash::check(request('user_id'), $user->user_id))
+            //if(password_verify(request('user_id'), $user->user_id))
+            if(strcmp($user->user_id, $hash_user)===0)
             {
-                echo "Matched with one";
+             //   echo "matched";
+                //dd($user->user_id);
                 $matched = true;
                 break;
 
             }
 
+          //  if(Hash::check(request('user_id'), $user->user_id))
+            //{
+            //    echo "Matched with one";
+             //   $matched = true;
+              //  break;
+
+            //}
+
 
         }
+
+       // echo hash('md5', request('user_id'));
+
+
+        $time_elapsed_secs = microtime(true) - $start;
+
+        //dd($time_elapsed_secs);
+
 
         if($matched==false)
         {
