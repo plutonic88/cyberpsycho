@@ -3,7 +3,7 @@
 
 
 
-
+// Will start working on n
 
 Auth::routes();
 
@@ -32,9 +32,10 @@ Route::get('/defstrategynoinfo', 'GamesController@getDefStrategyNoinfo');
 
 
 
-Route::get('/register', 'RegistrationController@create');
+
 
 Route::post('/register', 'RegistrationController@store');
+Route::get('/register', 'RegistrationController@create');
 
 
 
