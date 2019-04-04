@@ -127,10 +127,10 @@ Route::get('/games/pracnoinfo', 'GamesController@practicegamenoinfo');
 
 
 
-Route::get('/games/play', 'GamesController@selectgame1');
+//Route::get('/games/play', 'GamesController@selectgame1');
 
 
-Route::get('/games/{gametype}/{done}', 'GamesController@playgame1');
+//Route::get('/games/{gametype}/{done}', 'GamesController@playgame1');
 
 
 
@@ -152,6 +152,11 @@ Route::get('/games/{gametype}/{done}', 'GamesController@playgamev2');
 //Route::get('/practicegame', 'GamesController@startpracticegame');
 
 
+
+
+
+
+Route::post('/gamehistory/incrementgameplayed', 'GamehistoryController@updateGamePlayed');
 
 Route::post('/gamehistory/save', 'GamehistoryController@store');
 

@@ -31,8 +31,8 @@ Vue.component('node',{
 
 	props : ['id', 'neighbors', 'cla', 'nodevalues'],
 
-	template: `<div class="node"  v-bind:id="id" @mousemove="mouseMove" >
-	<button @click="tentativeattack"  class="btn node" v-bind:class="classobject" >
+	template: `<div class="node">
+	<button @click="tentativeattack" class="btn node" v-bind:class="classobject">
 		<p v-if="this.nodevalue > 0" class="progress progress-bar" style="background-color: white; color:black; text-align: center; width='50%';">Node Id: {{this.nodenames[this.id]}}</p>
 		<div v-if="this.nodevalue > 0"  class="progress">
 			
@@ -82,7 +82,7 @@ Vue.component('node',{
 			},
 
 			nodenames: ["A", "B", "C", "D", "E", "PASS"],
-		
+
 			styleObjectValue : {
 
 				 width : (8*this.nodevalues[0]) + '%',
@@ -147,15 +147,11 @@ Vue.component('node',{
 
 	methods: {
 
-		mouseMove(e)
-		{
-			//console.log(' mouse move on node '+ this.id + ' ....'+ e.pageX);
-			//save to DB
-			var vm = this;
 
-			EventListeners.$emit('mouseon',vm.id, e.pageX, e.pageY);
 
-		}, 
+		mouseLeave: function() {
+                alert('Mouse Leave')
+            },
 
 		tentativeattack() {
 
@@ -318,6 +314,33 @@ Vue.component('node',{
 						vm.classObject.normal = true;
 
 					}
+
+
+					var timer = null
+					var t = 1
+
+					timer = setInterval(function()
+
+					{
+							t = t - 1;
+							if(t==0)
+							{
+								// change the class to public
+								vm.classObject.normal = false;
+								vm.classObject.attacked = false;
+								vm.classObject.possible = false;
+								vm.classObject.public = true;
+								vm.classObject.tentative_attacked = false;
+								return clearInterval(timer);
+							}
+							
+							console.log('tttttttttttt '+ t);
+
+					}, 1000)
+
+
+
+
 				}
 
 				//vm.prevclass = '';
@@ -488,26 +511,21 @@ Vue.component('node',{
 
 			// if this event id mean to be for the id
 			//console.log('here i am .....fcuk u ######### this-id '  +vm.id + ' idd '+ idd);
-			if(vm.nodevalue == 0 )
-			{
-				vm.classObject.normal = false;
-				vm.classObject.attacked = false;
-				vm.classObject.possible = false;
-				vm.classObject.public = true;
-				vm.classObject.tentative_attacked = false;
-			}
-			else if(vm.id == idd )
+			if(vm.id == idd)
 			{
 				vm.previous_class = 'attacked';
 				console.log('change-to-attacked event....node '+ idd);
 				// change color if not public 
 				//if(vm.classObject.public != true)
 				//{
-					vm.classObject.normal = false;
-					vm.classObject.attacked = true;
-					vm.classObject.possible = false;
-					vm.classObject.public = false;
-					vm.classObject.tentative_attacked = false;
+					if(vm.owner===0) // of only wants to reveal previous controller
+					{
+						vm.classObject.normal = false;
+						vm.classObject.attacked = true;
+						vm.classObject.possible = false;
+						vm.classObject.public = false;
+						vm.classObject.tentative_attacked = false;
+					}
 				//}
 
 
@@ -519,6 +537,32 @@ Vue.component('node',{
 				// reset the possessioncounter
 				//vm.possessioncounter = 0;
 
+
+				//var vm = this
+				var timer = null
+				var t = 1
+
+				timer = setInterval(function()
+
+				{
+						t = t - 1;
+						if(t==0)
+						{
+							// change the class to public
+							vm.classObject.normal = false;
+							vm.classObject.attacked = false;
+							vm.classObject.possible = false;
+							vm.classObject.public = true;
+							vm.classObject.tentative_attacked = false;
+							return clearInterval(timer);
+						}
+						
+						console.log('tttttttttttt '+ t);
+
+				}, 1000) 
+
+				
+
 			}
 
 		});
@@ -529,7 +573,6 @@ Vue.component('node',{
 
 		EventListeners.$on('collectpoints', function(attackeraction){
 
-			
 
 			console.log('ON...... event   collectpoints');
 			console.log( 'id: '+vm.nid+' vm.possessioncounter '+ vm.possessioncounter + ' owner '+ vm.owner);
@@ -542,16 +585,18 @@ Vue.component('node',{
 			}
 
 
+
+			// was removed && vm.classObject.attacked==true
 			if(vm.possessioncounter < vm.timerequired 
-			&& vm.owner==1 && vm.classObject.attacked==true) // else if possessioncounter >= 0, and owner is attckr then just increment the possessioncounter
+			&& vm.owner==1 ) // else if possessioncounter >= 0, and owner is attckr then just increment the possessioncounter
 			{
 				vm.possessioncounter += 1;
 				console.log('Incrmenting possessioncounter to ' + vm.possessioncounter  + ', node  '+ vm.id);
 			}
 
-
+			// removed && vm.classObject.attacked==true
 			if((vm.possessioncounter==vm.timerequired) 
-			&& vm.owner==1 && vm.classObject.attacked==true) // owner is attckr
+			&& vm.owner==1 ) // owner is attckr
 			{
 				// reset the counter
 				vm.possessioncounter = 0;
@@ -567,15 +612,6 @@ Vue.component('node',{
 
 
 		});
-
-
-		
-
-		
-		
-
-
-
 
 
 	}
@@ -601,12 +637,11 @@ Vue.component('node',{
 	data : {
 		//props : ['user_id'],
 		//user_id : '',
-		nodenames: ["A", "B", "C", "D", "E","PASS"],
+		nodenames: ["A", "B", "C", "D", "E", "PASS"],
 		attacker_perround_cost : 0,
 		attacker_perround_gain : 0,
 		defender_sequence : '',
 		attacker_sequence : '',
-		pointscollected : false,
 		starttime : '',
 		currentroundstarttime : '',
 		attacker_tentative_move : '', // reset the variable when you start a round
@@ -614,9 +649,9 @@ Vue.component('node',{
 		attackerconfirmedmoved : false,
 		returndata : '',
 		datetime : '',
-		TIME_LIMIT : 15,
-		ROUND_LIMIT : 5,
-		timer : 15,
+		TIME_LIMIT : 5,
+		ROUND_LIMIT : 3,
+		timer : 5,
 		numberofround : 1,
 		attackermoved : false,
 		defendermoved: false,
@@ -636,7 +671,7 @@ Vue.component('node',{
 		],
 
 		defenderteststrategy : [0,2,0],
-		round_start_time : [0, 15000, 30000, 45000, 60000, 75000],
+		round_start_time : [0, 5000, 10000, 15000],
 		defenderaction : '',
 		defstrategycounter : 0, 
 
@@ -645,7 +680,7 @@ Vue.component('node',{
 		gamehistory : {
 
 
-			gameid : channel.game_id,
+			gameid : 1,
 			userid : channel.user_id,
 			defender_action : '',
 			attacker_action : '',
@@ -657,13 +692,6 @@ Vue.component('node',{
 
 
 		},
-
-		eyeCord : {
-			left: 20 + 'px',
-			top: 20 + 'px',
-			'z-index' : 1
-		},
-
 		timenow : '',
 		timenow2 : '',
 
@@ -679,18 +707,13 @@ Vue.component('node',{
 	methods : {
 
 
-
-
-			loadconfig: function()
-			{
-
-			},
-
 			gotonextgame: function()
 			{
-				window.location.href = "http://127.0.0.1:8000/games/1/"+ channel.defordertype; 
-				//window.location.href = "http://iasrl1.cs.utep.edu/games/1/"+ channel.defordertype; 
-				//window.location.href = "http://129.108.156.42/games/1/"+ window.defordertype;
+				window.location.href = "http://127.0.0.1:8000/games/0/"+ channel.defordertype; 
+
+				//window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype; 
+				
+				//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
 
 			},
 
@@ -714,8 +737,8 @@ Vue.component('node',{
 	   			axios.post('/gamehistory/saveinit', {
 	   				user_id : channel.user_id,
 	   				game_id : vm.gamehistory.gameid,
-	   				game_id_instance: channel.game_id_instance, 
-	   				start_time : vm.starttime
+	   				start_time : vm.starttime,
+	   				game_id_instance: channel.game_id_instance
 
 	   			}).then(response => this.returndata = response.data);
 
@@ -727,24 +750,25 @@ Vue.component('node',{
 	   		{
 	   			var vm = this;
 
-	   			if(vm.defenderaction === '' && vm.defendermoved==false)
+	   			if(vm.defenderaction === '')
 	   			{
 	   				vm.makeDefenderMove();
 	   			}
-	   			console.log('*********** DB   vm.defendermoved  '+ vm.defendermoved);
-	   			var def_tmp =  (vm.gamehistory.time_defender_moved - vm.starttime); 
+
 	   			console.log('*********** saving in history database vm.gamehistory.defender_action '+ vm.defenderaction);
 	   			var def_tmp =  (vm.gamehistory.time_defender_moved - vm.starttime); 
 	   			var def_move_time = vm.giveAdjustedTime(def_tmp);
 
 	   			var attckr_tmp = (vm.gamehistory.time_attacker_moved - vm.starttime);
 	   			var attckr_move_time = vm.giveAdjustedTime(attckr_tmp);
+	   			
 	   			vm.gamehistory.attacker_action = vm.attackeraction;
 
 	   			if(vm.gamehistory.attacker_action==='')
 	   			{
 	   				attckr_move_time = '';
 	   			}
+
 
 
 
@@ -770,31 +794,35 @@ Vue.component('node',{
 
 	   			var d_act = "";
 
-	   			if(vm.defenderaction == 5)
-	   			{
-	   				d_act += "defender PASSED"
-	   			}
-	   			else
-	   			{
-	   				d_act += "defender defended node "+ vm.nodenames[vm.defenderaction];
-	   			}
+	   			//if(vm.defenderaction == 5)
+	   			//{
+	   			//	d_act += "defender PASSED"
+	   			//}
+	   			//else
+	   			//{
+	   			//	d_act += "defender defended node "+ vm.defenderaction;
+	   			//}
 
 	   			if(vm.gamehistory.attacker_action < 5 && vm.gamehistory.attacker_action!== '')
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red"> You attacked node '+vm.nodenames[vm.gamehistory.attacker_action]+gain+cost+'</span> <span style="color: blue;">'+d_act+'</span></p>').prependTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red"> You attacked node '+vm.nodenames[vm.gamehistory.attacker_action]+gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 	   			else if(vm.gamehistory.attacker_action == 5)
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You PASSED ' +gain+cost+'</span> <span style="color: blue;">'+d_act+'</span></p>').prependTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You PASSED ' +gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 	   			else
 	   			{
-	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You attacked NONE '+gain+cost+'</span> <span style="color: blue;">'+d_act+'</span></p>').prependTo('#log');
+	   				$('<p style="font-size: 70%;">Round '+vm.numberofround +': <span style="color: red">You played NONE '+gain+cost+'</span> <span style="color: blue">'+d_act+'</span></p>').prependTo('#log');
 	   			}
 
 
 	   			vm.attacker_perround_cost = 0;
 	   			vm.attacker_perround_gain = 0;
+
+
+
+
 
 
 
@@ -819,10 +847,6 @@ Vue.component('node',{
 	   			{
 	   				vm.attacker_sequence = vm.attacker_sequence+",5";
 	   			}
-	   			
-
-
-
 
 
 
@@ -840,28 +864,23 @@ Vue.component('node',{
 
 	   			}).then(response => this.returndata = response.data);
 
-
-
-
 	   			if(vm.numberofround==vm.ROUND_LIMIT)
 	   			{
 	   				vm.updateGamePlayed();
 	   			}
-	   			// save the total points in assigned games
 
-
-
+	   			
 	   		},
 
 	   		giveAdjustedTime: function(time)
 	   		{
 	   			var vm = this;
 
-	   			//console.log('tttttttttttt round '+ vm.numberofround + ' time >>>>> '+ time);
+	   			console.log('tttttttttttt round '+ vm.numberofround + ' time >>>>> '+ time);
 
 	   			var time2 = vm.round_start_time[(vm.numberofround-1)] + time ;
 
-	   			//console.log('tttttttttttt round '+ vm.numberofround + ' time2 >>>>> '+ time2); 
+	   			console.log('tttttttttttt round '+ vm.numberofround + ' time2 >>>>> '+ time2); 
 
 	   			if(vm.numberofround< vm.ROUND_LIMIT)
 	   			{
@@ -878,7 +897,7 @@ Vue.component('node',{
 	   				time2 = '';
 	   			}
 
-	   			//console.log('tttttttttttt round '+ vm.numberofround + ' time2 >>>>> '+ time2); 
+	   			console.log('tttttttttttt round '+ vm.numberofround + ' time2 >>>>> '+ time2); 
 
 	   			return time2;
 
@@ -916,92 +935,11 @@ Vue.component('node',{
 	   				time_attacker_moved : attckr_move_time,
 	   				defender_points : vm.gamehistory.defender_points,
 	   				attacker_points : vm.attackerpoints,
-	   				game_id_instance : channel.game_id_instance
+	   				game_id_instance: channel.game_id_instance
 
 	   			}).then(response => this.returndata = response.data);
 
 	   		},
-
-	   		saveEyeCordToDB(pageX, pageY)
-	   		{
-	   			var pageCoords = "( " + pageX + ", " + pageY + " )";
-	   			
-	   			var vm = this;
-
-
-	   			var def_tmp =  moment(Date.now()).valueOf() - vm.starttime; 
-	   			var mousetime = vm.giveAdjustedTime(def_tmp);
-
-	   			//console.log(pageCoords + ' '+ mousetime);
-
-	   			axios.post('/gamehistory/saveeye', {
-	   				user_id : channel.user_id,
-	   				game_id : vm.gamehistory.gameid,
-	   				round : vm.numberofround,
-	   				timer : mousetime,
-	   				eye_x : pageX,
-	   				eye_y : pageY
-
-
-	   			}).then(response => this.returndata = response.data);
-
-	   		},
-
-
-
-
-
-	   		saveMouseCordToDB(pageX, pageY)
-	   		{
-	   			var pageCoords = "( " + pageX + ", " + pageY + " )";
-	   			
-	   			var vm = this;
-
-
-	   			var def_tmp =  moment(Date.now()).valueOf() - vm.starttime; 
-	   			var mousetime = vm.giveAdjustedTime(def_tmp);
-
-	   			//console.log(pageCoords + ' '+ mousetime);
-
-	   			axios.post('/gamehistory/savemouse', {
-	   				user_id : channel.user_id,
-	   				game_id : vm.gamehistory.gameid,
-	   				round : vm.numberofround,
-	   				timer : mousetime,
-	   				mouse_x : pageX,
-	   				mouse_y : pageY
-
-
-	   			}).then(response => this.returndata = response.data);
-
-	   		},
-
-	   		saveMouseOnNodeToDB(nodeid, pageX, pageY)
-	   		{
-	   			var pageCoords = "( " + pageX + ", " + pageY + " )";
-	   			
-	   			var vm = this;
-
-
-	   			var def_tmp =  moment(Date.now()).valueOf() - vm.starttime; 
-	   			var mousetime = vm.giveAdjustedTime(def_tmp);
-
-	   			//console.log(pageCoords + ' '+ mousetime);
-
-	   			axios.post('/gamehistory/savemouseonnode', {
-	   				user_id : channel.user_id,
-	   				game_id : vm.gamehistory.gameid,
-	   				node_id : nodeid,
-	   				round : vm.numberofround,
-	   				timer : mousetime,
-	   				mouse_x : pageX,
-	   				mouse_y : pageY
-
-
-	   			}).then(response => this.returndata = response.data);
-
-	   		},
-
 
 	   		updateGamePlayed: function()
 	   		{
@@ -1016,9 +954,6 @@ Vue.component('node',{
 
 
 	   		},
-
-
-	 
 
 
 	   		confirmAttack : function()
@@ -1068,11 +1003,6 @@ Vue.component('node',{
 	      		$("#startbutton").addClass("visible");
 	      		$("#confirmbutton").removeClass("visible");
 
-	      		$('#app2').mousemove(function(e){
-	      		  
-	      		 // vm.saveMouseCordToDB(e.pageX, e.pageY);
-	      		});
-
 
 	      		console.log('userid ************ '+ vm.gamehistory.userid);
 
@@ -1096,8 +1026,6 @@ Vue.component('node',{
 
 	      			console.log('Round ****************** '+ vm.numberofround);
 
-	      			//vm.pointscollected = false;
-
 	      			
 
 	      			if(vm.timer==vm.TIME_LIMIT)
@@ -1111,14 +1039,10 @@ Vue.component('node',{
 			      	if(vm.timer==0 && vm.numberofround==vm.ROUND_LIMIT)
 			        {
 
-
-			        	
-
 			        	//vm.timer = 'Done...!'
 			        	//EventListeners.$emit('last-round-update');
-			        	if(vm.pointscollected==false)
+			        	if(vm.pointscollected == false)
 			        	{
-			        		console.log('calling collectpoints from last round 66666666666 ');
 			        		//EventListeners.$emit('collectpoints');
 			        	}
 			        	vm.msgtoplayer = 'Game End';
@@ -1128,6 +1052,8 @@ Vue.component('node',{
 
 			        	$("#nodebuttons").addClass("disable");
 
+
+			        	
 
 			        	if(channel.done === 'yes')
 			        	{
@@ -1139,24 +1065,27 @@ Vue.component('node',{
 			        	{
 			        		$('#nextgamebutton').removeClass("visible");
 			        		$('#nextgamebutton').removeClass("disable");
-			        	}
+			        	}	
+
 
 
 			        	$("#confirmbutton").addClass("visible");
-
 
 			        	console.log("Def seq : "+ vm.defender_sequence);
 			        	console.log("Attckr seq : "+ vm.attacker_sequence);
 
 
 
+			        	
+
+
+
 			          	return clearInterval(timer)
 
 			        }
+			        
 
 			        vm.pointscollected = false;
-			        
-			        
 
 			      	if(vm.timer>0)
 			        {
@@ -1293,7 +1222,6 @@ Vue.component('node',{
 
 			},
 
-
 			defenderBHVRLStrategy : function()
 			{
 				var vm = this;
@@ -1305,12 +1233,11 @@ Vue.component('node',{
 				console.log('9999999999999   defender defenderBHVRLStrategy... ' + vm.timer);
 
 
-				axios.get('/defstrategyfullinfo', {
+				axios.get('/defstrategynoinfo', {
 				    params: {
 				      numberofround: vm.numberofround,
 				      defender_sequence: vm.defender_sequence,
-				      attacker_sequence: vm.attacker_sequence,
-				      defender_type: channel.defendertype
+				      attacker_sequence: vm.attacker_sequence
 				    }
 				  })
 				  .then(function (response) {
@@ -1328,53 +1255,41 @@ Vue.component('node',{
 				    console.log(error);
 				  });
 
-				  //return def_ac;
 
-
-				 
-				
 
 
 
 			},
 
 
-
 			// function to make a move for defender
 			makeDefenderMove : function()
 			{
-
 				var vm = this;
-				var defaction = 0;
+				var defaction = 5;
 				//console.log('1111111111   defender moved.... timer ' + vm.timer);
 
-				if(channel.defendertype === 0) // prev study
+				if(channel.defendertype === 0) //random
 				{
-					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
-					vm.defenderBHVRLStrategy();	
-
 					//console.log('1111111111   defender random move.... timer ' + vm.timer);
-					// defaction = vm.defenderteststrategy[vm.defstrategycounter];
-					// if(vm.defenderteststrategy.length>vm.defstrategycounter)
-					// {
-					// 	vm.defstrategycounter += 1;
-					// }
-					// vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf();//vm.date(Date.now());
-					//  vm.defenderaction = defaction;
-					//  console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
-					// // console.log('defendermoved is ' + vm.defendermoved );
-					// vm.defendermoved = true;
+					defaction = vm.defenderteststrategy[vm.defstrategycounter];
+					if(vm.defenderteststrategy.length>vm.defstrategycounter)
+					{
+						vm.defstrategycounter += 1;
+					}
+					vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf();//vm.date(Date.now());
+					 vm.defenderaction = defaction;
+					 console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
+					// console.log('defendermoved is ' + vm.defendermoved );
+					vm.defendermoved = true;
 				}
-				else if(channel.defendertype === 1) // new study 
+				else if(channel.defendertype === 1) // maximizing expected utility
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();	
 
 				}
 
-
-				 
-				//console.log('defendermoved is set to ' + vm.defendermoved );
 
 
 			},
@@ -1408,6 +1323,8 @@ Vue.component('node',{
 
 				
 				// b) update possible attack set 
+
+
 				var index = vm.isInPossibleAttackSet(vm.possibleattackset, vm.defenderaction);
 
 				if(index == -1)
@@ -1567,30 +1484,15 @@ Vue.component('node',{
 	},
 
 
-	computed : {
-
-		eyecord()
-		{
-			return this.eyeCord;
-		} 
-
-	},
-
-
-
 	created () {
 
 
 
-				if(channel.def_alert !== "")
-				{
-					alert(channel.def_alert);
-				}
 
-
-
-				//webgazer.begin();
-
+			if(channel.def_alert !== "")
+			{
+				alert(channel.def_alert);
+			}
 
 
 			$("#nodebuttons").addClass("disable");
@@ -1599,29 +1501,6 @@ Vue.component('node',{
 
 
 			var vm = this;
-
-
-		//	webgazer.setGazeListener(function(data, elapsedTime) {
-		//	    if (data == null) {
-		//	        return;
-		//	    }
-			//    var xprediction = data.x; //these x coordinates are relative to the viewport 
-		//	    var yprediction = data.y; //these y coordinates are relative to the viewport
-
-		//console.log(' eye coords ************* '+ xprediction + ' '+ yprediction ); 
-			    //elapsed time is based on time since begin was called
-			    //vm.saveEyeCordToDB(xprediction, yprediction);
-			    //vm.eyeCord.left = xprediction + 'px';
-			   // vm.eyeCord.top = yprediction + 'px';
-
-
-
-		//	}).begin();
-
-
-			
-
-
 
 			//load the configurations
 			axios.get('/config').then(function(response){
@@ -1681,24 +1560,9 @@ Vue.component('node',{
 			});
 
 
-			// update node values
-
-
-
-
-
 
 
 			vm.datetime = vm.date(Date.now());
-
-
-			EventListeners.$on('mouseon', function(nodeid, x, y)
-			{
-				//console.log('node '+ nodeid + ' x:'+x+ ', y:'+y);
-				//vm.saveMouseOnNodeToDB(nodeid, x, y);
-
-			});
-
 
 			EventListeners.$on('checkExitCondition', function()
 			{
@@ -1715,11 +1579,9 @@ Vue.component('node',{
 
 				$("#nodebuttons").addClass("disable");
 
-
-
-				console.log('calling collectpoints from checkExitCondition 66666666666666');
-				if(vm.pointscollected==false)
+				if(vm.pointscollected == false)
 				{
+
 					EventListeners.$emit('collectpoints', vm.attackeraction);
 				}
 
@@ -1782,6 +1644,7 @@ Vue.component('node',{
 				{
 					vm.attacker_perround_gain += nodevalue;
 				}
+
 
 				vm.attackerpoints += nodevalue;
 
@@ -1931,7 +1794,6 @@ Vue.component('node',{
 
 			// we need to dispatch event to collect points
 
-			console.log('calling collectpoints from bothmoved 66666666666');
 			EventListeners.$emit('collectpoints', vm.attackeraction);
 			vm.pointscollected = true;
 

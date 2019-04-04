@@ -8,6 +8,40 @@ class GamehistoryController extends Controller
 {
     //
 
+
+    public function updateGamePlayed()
+    {
+
+
+    	$user_id = request('user_id');
+		$def_type = request('def_type');
+
+    	// increment gameplayed
+		\DB::table('assignedgames')
+		->where('user_id', session('user_id'))
+		->increment('game_played');
+
+
+		if($def_type==0)
+		{
+			\DB::table('assignedgames')
+		 	            ->where('user_id', session('user_id'))
+		 	            ->increment('random_defender_type');
+		}
+		else if($def_type==1)
+		{
+			\DB::table('assignedgames')
+		 	            ->where('user_id', session('user_id'))
+		 	            ->increment('max_defender_type');
+		}
+
+		
+
+
+
+
+    }
+
     public function store()
     {
 

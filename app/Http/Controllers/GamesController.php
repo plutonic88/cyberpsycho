@@ -1125,9 +1125,9 @@ class GamesController extends Controller
 		        		$selectedgametype = $gameass->game_type;
 		        		$selecteddefenderordertype = $gameass->pick_def_order;
 		        		// also reset every entry 
-		        		\DB::table('assignedgames')
-		        		            ->where('user_id', session('user_id'))
-		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0]);
+		        		// \DB::table('assignedgames')
+		        		//             ->where('user_id', session('user_id'))
+		        		//             ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0]);
 
 		        	}
 
@@ -1295,9 +1295,9 @@ class GamesController extends Controller
 		        		$selectedgametype = $gameass->game_type;
 		        		$selecteddefenderordertype = $gameass->pick_def_order;
 		        		// also reset every entry 
-		        		\DB::table('assignedgames')
-		        		            ->where('user_id', session('user_id'))
-		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
+		        		// \DB::table('assignedgames')
+		        		//             ->where('user_id', session('user_id'))
+		        		//             ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
 
 		        	}
 
@@ -1727,9 +1727,9 @@ class GamesController extends Controller
 		        		$selectedgametype = $gameass->game_type;
 		        		$selecteddefenderordertype = $gameass->pick_def_order;
 		        		// also reset every entry 
-		        		\DB::table('assignedgames')
-		        		            ->where('user_id', session('user_id'))
-		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
+		        		// \DB::table('assignedgames')
+		        		//             ->where('user_id', session('user_id'))
+		        		//             ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
 
 		        	}
 
@@ -1766,10 +1766,15 @@ class GamesController extends Controller
 		{
 			return redirect()->home();
 		}
-		// increment gameplayed
-		\DB::table('assignedgames')
-		->where('user_id', session('user_id'))
-		->increment('game_played');
+		
+
+
+		// // increment gameplayed
+		// \DB::table('assignedgames')
+		// ->where('user_id', session('user_id'))
+		// ->increment('game_played');
+
+
 
 
 		// keep the instance of the game_id
@@ -1778,7 +1783,10 @@ class GamesController extends Controller
 		            ->select('game_type', 'pick_def_order', 'game_played')
 		            ->first();
 
-		 
+		 if($game_id_instance->game_played>=session('total_play_limit'))
+		 {
+		 	return $this->showending();
+		 }
 
 
 		
@@ -1850,16 +1858,16 @@ class GamesController extends Controller
 
  
 		$current_play_freq = $current_play_freq + 1; // increment for played games defender type 
-		\DB::table('assignedgames')
-			            ->where('user_id', session('user_id'))
-			            ->update([ GamesController::$deftypes[$selecteddefender] => ($current_play_freq) ]);
+		// \DB::table('assignedgames')
+		// 	            ->where('user_id', session('user_id'))
+		// 	            ->update([ GamesController::$deftypes[$selecteddefender] => ($current_play_freq) ]);
 
 
 		if($done === 'yes') // if done , reset everything
 		{
-			\DB::table('assignedgames')
-			            ->where('user_id', session('user_id'))
-			            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0 ]);
+			// \DB::table('assignedgames')
+			//             ->where('user_id', session('user_id'))
+			//             ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0 ]);
 
 		}
 
@@ -1952,7 +1960,7 @@ class GamesController extends Controller
 			        'game_id_instance' => $game_instance
 			    	]);
 
-			    	return view('games.two', compact('game_instance', 'nodevalues', 'node_pos'));
+			    	return view('games.two', compact('game_instance', 'nodevalues','node_pos', 'node_ids'));
 
 		}
 		else if($gametype == 1)

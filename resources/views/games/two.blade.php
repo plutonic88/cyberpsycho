@@ -80,12 +80,13 @@
 
                     
                   
-                      <node :id="0"  class=" buton node0-pos " v-bind:neighbors="[]"  v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]"  v-bind:nodevalues= "[10, 8, 1]"></node>
-                      <node :id="1" class="  buton node1-pos " v-bind:neighbors="[]" v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]" v-bind:nodevalues= "[10, 2, 1]"></node> 
-                      <node :id="2"  class="buton node2-pos" v-bind:neighbors="[]"  v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]" v-bind:nodevalues= "[4, 2, 1]"></node>
-                      <node :id="3" class="buton node3-pos " v-bind:neighbors="[]" v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]" v-bind:nodevalues= "[4, 8, 1]" ></node>
-                      <node :id="4" class="buton node4-pos " v-bind:neighbors="[]" v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]" v-bind:nodevalues= "[10, 5, 1]" ></node>
-                      <node :id="5" class="buton node5-pos " v-bind:neighbors="[]" v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]" v-bind:nodevalues= "[0, 0, 0]" ></node>
+                      @foreach ($node_ids as $id)
+                  
+
+                         <node  :id="{{$id}}"  class=" {{$node_pos[$id]}}" v-bind:neighbors="[]"  v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]"  v-bind:nodevalues= "{{  json_encode($nodevalues[$id]) }}"></node>
+                      
+                      
+                      @endforeach
                       
 
                     
@@ -138,7 +139,7 @@
 
 
 
-<script src="{{ asset('js/app-noinfo.js') }}" ></script>
+<script src="{{ asset('js/app-noinfov2.js') }}" ></script>
 
 
 
