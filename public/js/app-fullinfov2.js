@@ -92120,7 +92120,7 @@ new Vue({
 
 		gamehistory: {
 
-			gameid: 1,
+			gameid: channel.game_id,
 			userid: channel.user_id,
 			defender_action: '',
 			attacker_action: '',
@@ -92601,7 +92601,8 @@ new Vue({
 				params: {
 					numberofround: vm.numberofround,
 					defender_sequence: vm.defender_sequence,
-					attacker_sequence: vm.attacker_sequence
+					attacker_sequence: vm.attacker_sequence,
+					defender_type: channel.defendertype
 				}
 			}).then(function (response) {
 				// console.log(response);
@@ -92627,19 +92628,23 @@ new Vue({
 			var defaction = 0;
 			//console.log('1111111111   defender moved.... timer ' + vm.timer);
 
-			if (channel.defendertype === 0) //random
+			if (channel.defendertype === 0) // prev study
 				{
+					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
+					vm.defenderBHVRLStrategy();
+
 					//console.log('1111111111   defender random move.... timer ' + vm.timer);
-					defaction = vm.defenderteststrategy[vm.defstrategycounter];
-					if (vm.defenderteststrategy.length > vm.defstrategycounter) {
-						vm.defstrategycounter += 1;
-					}
-					vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf(); //vm.date(Date.now());
-					vm.defenderaction = defaction;
-					console.log('Defender action random %%%%%%% ' + vm.defenderaction + ' counter  ' + vm.defstrategycounter);
-					// console.log('defendermoved is ' + vm.defendermoved );
-					vm.defendermoved = true;
-				} else if (channel.defendertype === 1) // maximizing expected utility
+					// defaction = vm.defenderteststrategy[vm.defstrategycounter];
+					// if(vm.defenderteststrategy.length>vm.defstrategycounter)
+					// {
+					// 	vm.defstrategycounter += 1;
+					// }
+					// vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf();//vm.date(Date.now());
+					//  vm.defenderaction = defaction;
+					//  console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
+					// // console.log('defendermoved is ' + vm.defendermoved );
+					// vm.defendermoved = true;
+				} else if (channel.defendertype === 1) // new study 
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();
@@ -92864,6 +92869,9 @@ new Vue({
 
 			console.log('vm.defenderteststrategy: ' + vm.defenderteststrategy);
 		});
+
+		// update node values
+
 
 		vm.datetime = vm.date(Date.now());
 

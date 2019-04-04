@@ -132,6 +132,14 @@ Route::get('/games/play', 'GamesController@selectgame1');
 
 Route::get('/games/{gametype}/{done}', 'GamesController@playgame1');
 
+
+
+
+Route::get('/games/play', 'GamesController@selectgamev2');
+
+
+Route::get('/games/{gametype}/{done}', 'GamesController@playgamev2');
+
 //Route::get('/games/{gametype}', 'GamesController@playgame');
 
 

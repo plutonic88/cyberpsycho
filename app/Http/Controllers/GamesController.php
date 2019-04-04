@@ -25,11 +25,20 @@ class GamesController extends Controller
 	public  static $defstratfullinfo;
 	public  static $defstratnoinfo;
 
+	public  static $defstratfullinfov2;
+	public  static $defstratnoinfov2;
+
 
 
 	public function  __construct()
 	{
-		 GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
+		 $stratfile1 = 'strategy/g5d5_FI.txt';
+		 $stratfile2 = 'strategy/g5d5_FI.txt';
+
+		 GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo($stratfile1);
+         GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfo($stratfile2);
+
+
 		 //dd(GamesController::$defstratfullinfo);
 
 		 //if(array_key_exists("5,5,3",(GamesController::$defstratfullinfo["4,1,1"])))
@@ -51,11 +60,6 @@ class GamesController extends Controller
 
 	public function index()
 	{
-
-
-
-			
-
 
 
 			return view('instruction.index');
@@ -89,12 +93,23 @@ class GamesController extends Controller
 
 
 			
-
+			 $cur_def_strat=[]; 	
 			 $def_action_probs = [];
 			 $numberofround = request('numberofround');
 			 $defender_sequence = request('defender_sequence');
 			 $attacker_sequence = request('attacker_sequence');
+			 $defender_type = request('defender_type');
 			 $way = -1;
+
+			 if($defender_type ==0) // prev study
+			 {
+			 	$cur_def_strat = GamesController::$defstratfullinfo;
+			 }
+			 else if($defender_type ==1)
+			 {
+			 	$cur_def_strat = GamesController::$defstratfullinfov2;
+			 }
+
 
 
 			//var def_actions = [];
@@ -103,7 +118,7 @@ class GamesController extends Controller
 			{
 				//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
 				//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
-				$def_action_probs = GamesController::$defstratfullinfo["EMPTY"]["EMPTY"];
+				$def_action_probs = $cur_def_strat["EMPTY"]["EMPTY"];
 				$way = "init";
 				
 			}
@@ -112,10 +127,10 @@ class GamesController extends Controller
 				// if undefined act randomly
 				//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
 				//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
-				 if ( (isset(GamesController::$defstratfullinfo[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, GamesController::$defstratfullinfo ) &&  array_key_exists($attacker_sequence, GamesController::$defstratfullinfo[$defender_sequence] )  ) )
+				 if ( (isset($cur_def_strat[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, $cur_def_strat) &&  array_key_exists($attacker_sequence, $cur_def_strat[$defender_sequence] )  ) )
 				 {
 				 	
-				 	$def_action_probs = (GamesController::$defstratfullinfo[$defender_sequence][$attacker_sequence]);
+				 	$def_action_probs = ($cur_def_strat[$defender_sequence][$attacker_sequence]);
 				 	$way = "defined";
 
 				 	//dd($def_action_probs);
@@ -123,7 +138,7 @@ class GamesController extends Controller
 				 else
 				 {
 				 	//dd("Nope");
-				 	$way = "random";
+				 	$way = "default";
 				 	// default strategy should be node 0
 				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
 				 }
@@ -254,11 +269,12 @@ class GamesController extends Controller
 	}
 
 
-	public function readFileDefStrategyFullInfo()
+	public function readFileDefStrategyFullInfo($filename)
 	{
 		// read file 
 
-			$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+			//$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+			$content = \File::get(storage_path($filename));
 			$strategy = explode("\n", $content);
 			
 			//dd($strategy);
@@ -1493,6 +1509,11 @@ class GamesController extends Controller
 	}
 
 
+
+
+	
+
+
 	public function playgame($gametype, $done)
 	{
 		//dd($defendertype);
@@ -1603,6 +1624,369 @@ class GamesController extends Controller
 			    	return view('games.one', compact('id'));
 
 		}
+	}
+
+
+
+// flipit v2
+
+
+	public function selectgamev2()
+	{
+		// check if there is any assignment for the user for game assignment and picking way of defender 
+
+				//dd([GamesController::$gametypes]);
+
+				$selectedgametype  = -1;
+				$selecteddefenderordertype = -1;
+
+				
+
+
+				$gameass = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('game_type', 'pick_def_order', 'game_played')
+		            ->first();
+
+		            //dd($gameass);
+
+		            
+
+		            if($gameass === NULL)
+		            {
+
+		            		            		//assign both gametype and defender order type
+		            		            	
+		            				            for($gt = 0; $gt<session('n_game_type'); $gt= $gt+1)
+		            				            {
+		            				            	$countgt[$gt]  = \DB::table('assignedgames')
+		            		            	            ->where('game_type', $gt)
+		            		            	            ->count();
+		            		   
+		            				            }
+		            				            //print_r($countgt);
+
+		            				            uasort($countgt, function($a, $b) {
+		            							    if ($a == $b) {
+		            							        return 0;
+		            							    }
+		            							    return ($a < $b) ? -1 : 1;
+		            							});
+
+		            				           // dd($countgt);
+
+		            				            // assign to the gametype with less number of users
+		            				            $newArray = array_keys($countgt);
+
+		            				            $selectedgametype = $newArray[0];
+
+		            				            
+		            				            //dd($newArray[0]);
+
+
+
+		            				            // count defender type for the selected gametype
+				            		            for($dt = 0; $dt<session('n_defender_order_type'); $dt= $dt+1)
+				            		            {
+				            		            	$countdt[$dt]  = \DB::table('assignedgames')
+				                        	            ->where('game_type', $selectedgametype)
+				            		            	    ->where('pick_def_order', $dt)
+				                        	            ->count();
+				               
+				            		            }
+				            		            //dd($countdt);
+
+				            		            uasort($countdt, function($a, $b) {
+				            		            			    if ($a == $b) {
+				            		            			        return 0;
+				            		            			    }
+				            		            			    return ($a < $b) ? -1 : 1;
+				            		            			});
+				            		            //print_r($countdt);
+				            		            $newArray = array_keys($countdt);
+
+				            		            $selecteddefenderordertype = $newArray[0];
+				            		           // dd($countdt);
+
+				            		            
+
+				            		           // dd($selecteddefenderordertype);
+
+				            		            //create a new record with initial values
+
+				            		            \DB::table('assignedgames')->insert(
+					            	         	    ['user_id' => session('user_id'), 'game_played' => 0 ,'game_type' => $selectedgametype, 'pick_def_order' => $selecteddefenderordertype, 'random_defender_type' => 0,
+					            	         	    'max_defender_type' => 0]
+					            	         	);
+
+
+
+		        	}
+		        	else
+		        	{
+		        		$selectedgametype = $gameass->game_type;
+		        		$selecteddefenderordertype = $gameass->pick_def_order;
+		        		// also reset every entry 
+		        		\DB::table('assignedgames')
+		        		            ->where('user_id', session('user_id'))
+		        		            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0 ]);
+
+		        	}
+
+		        	return redirect('/games/'.$selectedgametype.'/'.$selecteddefenderordertype);
+	}
+
+
+
+//flipit v1.2
+
+	public function playgamev2($gametype, $defordertype)
+	{
+		
+
+		// check if there is any record
+		// if none, redirect to home page or to games/play
+				$gameass = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('game_type', 'game_played', 'pick_def_order', 'game_played')
+		            ->first();
+
+		            //dd($gameass);
+
+		            
+
+		            if($gameass === NULL)
+		            {
+		            	return redirect('/games/play');
+		            }
+
+
+		// check if gametype and defordertype is within limit
+		if($gametype <0 || $gametype > session('n_game_type')  || $defordertype <0 || $defordertype > session('n_defender_order_type'))
+		{
+			return redirect()->home();
+		}
+		// increment gameplayed
+		\DB::table('assignedgames')
+		->where('user_id', session('user_id'))
+		->increment('game_played');
+
+
+		// keep the instance of the game_id
+		$game_id_instance = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('game_type', 'pick_def_order', 'game_played')
+		            ->first();
+
+		 
+
+
+		
+
+		// depending on the order(asc, dsc, rand) of picking def, pick a defender 
+
+		$dtypes = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('random_defender_type','max_defender_type')
+		            ->first();
+
+		//dd($dtypes);
+
+		 $dtypes_arr = array();
+		 $index = 0;
+		foreach ($dtypes as $k=>$v)
+		{
+			$dtypes_arr[$index++] = $v;
+
+		}
+
+		//dd($arr);	
+
+		$selecteddefender = -1;	
+		$done = 'no';	
+		$current_play_freq = -1; 
+
+		if($defordertype == 0)  // asc
+		{
+			// start traversing from index 0
+			for($d = 0; $d<session('n_defender_type'); $d++)
+			{
+				if($dtypes_arr[$d] < session('n_each_type_play_limit'))
+				{
+					$selecteddefender = $d;
+					$current_play_freq = $dtypes_arr[$d];
+					if( ($d == (session('n_defender_type')-1)) && ($dtypes_arr[$d] == (session('n_each_type_play_limit')-1) ) )  // add another condition
+					{
+						$done = 'yes';
+					}
+					break; 
+				}
+			}
+			
+
+		}
+		else if($defordertype == 1) // dsc
+		{
+			// traverse from index = number of defender types - 1
+			for($d = (session('n_defender_type')-1); $d>=0; $d--)
+			{
+				if($dtypes_arr[$d] < session('n_each_type_play_limit'))
+				{
+					$selecteddefender = $d;
+					$current_play_freq = $dtypes_arr[$d];
+					if( ($d == 0) && ($dtypes_arr[$d] == (session('n_each_type_play_limit')-1) ) ) // add another condition 
+					{
+						$done = 'yes';
+					}
+					break;
+				}
+			}
+
+		}
+		else if($defordertype == 2) // random
+		{
+			//choose anything which is not played yet
+		}
+
+ 
+		$current_play_freq = $current_play_freq + 1; // increment for played games defender type 
+		\DB::table('assignedgames')
+			            ->where('user_id', session('user_id'))
+			            ->update([ GamesController::$deftypes[$selecteddefender] => ($current_play_freq) ]);
+
+
+		if($done === 'yes') // if done , reset everything
+		{
+			\DB::table('assignedgames')
+			            ->where('user_id', session('user_id'))
+			            ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0 ]);
+
+		}
+
+		$id = $selecteddefender;
+
+
+
+		$def_alert = "";
+
+		if($current_play_freq == 1)
+		{
+			if($selecteddefender == 0)  // prev study
+			{
+				$def_alert = "You are now playing against a purely strategic DEFENDER Version 1. This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
+			}
+			if($selecteddefender == 1)  // new study
+			{
+				$def_alert = "You are playing against a STRATEGIC DEFENDER Version 2.  This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
+			}
+
+		}
+
+
+		//dd($game_id_instance->game_played);
+
+
+		$game_instance = $game_id_instance->game_played;
+
+		$game_id = 1;
+
+		if($selecteddefender==1)
+		{
+			$game_id = 2;
+		}
+
+
+		$result = \DB::table('nodes')
+		            ->where('game_id', $game_id)
+		            ->select('node_id','node_value', 'node_cost', 'node_time_required')
+		            ->get();
+
+
+		
+
+		$node_ids[0] =  0;
+		$node_ids[1] =  1;
+		$node_ids[2] =  2;                       
+		$node_ids[3] =  3;
+		$node_ids[4] =  4;
+		$node_ids[5] =  5;
+
+
+		$nodevalues[0] = array($result[0]->node_value, $result[0]->node_cost, $result[0]->node_time_required);
+		$nodevalues[1] = array($result[1]->node_value, $result[1]->node_cost, $result[1]->node_time_required);
+		$nodevalues[2] = array($result[2]->node_value, $result[2]->node_cost, $result[2]->node_time_required);            
+		$nodevalues[3] = array($result[3]->node_value, $result[3]->node_cost, $result[3]->node_time_required);
+		$nodevalues[4] = array($result[4]->node_value, $result[4]->node_cost, $result[4]->node_time_required);
+		$nodevalues[5] = array($result[5]->node_value, $result[5]->node_cost, $result[5]->node_time_required);
+		//echo "hello";   
+		//dd($nodevalues);  
+
+
+		$node_pos[0] = "buton node0-pos";
+		$node_pos[1] = "buton node1-pos"; 
+		$node_pos[2] = "buton node2-pos";
+		$node_pos[3] = "buton node3-pos";
+		$node_pos[4] = "buton node4-pos";
+		$node_pos[5] = "buton node5-pos";
+		    
+
+
+		if($gametype == 0)
+		{
+			// no info
+
+					//$def_strat = $this->readFileDefStrategyAllPoint();
+
+					//GamesController::$defstratnoinfo = $def_strat;
+
+					
+
+			
+					JavaScript::put([
+					'game_id'	=> $game_id,
+			        'defendertype' => $selecteddefender,
+			        'defordertype' => $defordertype,
+			        'user_id' => session('user_id'),
+			        'done' => $done,
+			        'def_alert' => $def_alert,
+			        'game_id_instance' => $game_instance
+			    	]);
+
+			    	return view('games.two', compact('game_instance', 'nodevalues', 'node_pos'));
+
+		}
+		else if($gametype == 1)
+		{
+			//full info
+
+
+					//$def_strat = $this->readFileDefStrategyFullInfo();
+
+					//GamesController::$defstratfullinfo = $def_strat;
+
+					//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
+
+			
+					JavaScript::put([
+					'game_id'	=> $game_id,
+			        'defendertype' => $selecteddefender,
+			        'defordertype' => $defordertype,
+			        'user_id' => session('user_id'),
+			        'done' => $done,
+			        'def_alert' => $def_alert,
+			        'game_id_instance' => $game_instance
+			    	]);
+
+
+			    	
+					//dd($nodevalues);
+			    	return view('games.one', compact('game_instance', 'nodevalues','node_pos', 'node_ids'));
+
+		}
+
+
+		dd([$gametype, $defordertype, $selecteddefender, $done]);
+
 	}
 
 	

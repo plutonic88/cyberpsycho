@@ -11,7 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js(['resources/assets/js/app-fullinfo.js'], 'public/js')
+mix.js(['resources/assets/js/app-fullinfov2.js'], 'public/js')
 	.js(['resources/assets/js/app-noinfo.js'], 'public/js')
 	.js(['resources/assets/js/prac.js'], 'public/js')
 	.js(['resources/assets/js/graph.js'], 'public/js')
