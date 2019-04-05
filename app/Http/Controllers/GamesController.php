@@ -637,14 +637,26 @@ class GamesController extends Controller
 
 
 
-		return [
-		'TIME_LIMIT'=> '15', 
-		'ROUND_LIMIT'=>'5', 
-		'timer'=> '15', 
+		// return [
+		// 'TIME_LIMIT'=> '15', 
+		// 'ROUND_LIMIT'=>'5', 
+		// 'timer'=> '15', 
+		// 'rand_defenderteststrategy'=>$rand_strategy,
+		// 'max_defenderteststrategy'=>'3,4,3,2,1',
+		// 'possibleattackset' => '0,1,2,3,4,5',
+		// 'public' => '0,1,2,3,4,5'		
+
+		//  ];
+
+
+		 return [
+		'TIME_LIMIT'=> '5', 
+		'ROUND_LIMIT'=>'3', 
+		'timer'=> '5', 
 		'rand_defenderteststrategy'=>$rand_strategy,
 		'max_defenderteststrategy'=>'3,4,3,2,1',
-		'possibleattackset' => '0,1,2,3,4,5',
-		'public' => '0,1,2,3,4,5'		
+		'possibleattackset' => '0',
+		'public' => '0'		
 
 		 ];
 	}
@@ -1920,6 +1932,22 @@ class GamesController extends Controller
 		$node_ids[5] =  5;
 
 
+
+		$nodenei = [
+		            [0, 1, 0, 1, 0, 0],
+					[1, 0, 1, 0, 0, 0],
+					[0, 1, 0, 0, 0, 0],
+					[1, 0, 0, 0, 1, 0],
+					[0, 0, 0, 1, 0, 1],
+					[0, 0, 0, 0, 1, 0]
+				];
+
+				//dd($nodenei);
+
+
+		
+
+
 		$nodevalues[0] = array($result[0]->node_value, $result[0]->node_cost, $result[0]->node_time_required);
 		$nodevalues[1] = array($result[1]->node_value, $result[1]->node_cost, $result[1]->node_time_required);
 		$nodevalues[2] = array($result[2]->node_value, $result[2]->node_cost, $result[2]->node_time_required);            
@@ -1960,7 +1988,7 @@ class GamesController extends Controller
 			        'game_id_instance' => $game_instance
 			    	]);
 
-			    	return view('games.two', compact('game_instance', 'nodevalues','node_pos', 'node_ids'));
+			    	return view('games.two', compact('game_instance', 'nodevalues','node_pos', 'node_ids', 'nodenei'));
 
 		}
 		else if($gametype == 1)
@@ -1987,8 +2015,8 @@ class GamesController extends Controller
 
 
 			    	
-					//dd($nodevalues);
-			    	return view('games.one', compact('game_instance', 'nodevalues','node_pos', 'node_ids'));
+					//dd($selecteddefender);
+			    	return view('games.one', compact('game_instance', 'nodevalues','node_pos', 'node_ids', 'nodenei'));
 
 		}
 

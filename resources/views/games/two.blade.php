@@ -15,7 +15,7 @@
   <!-- Button trigger modal -->
 
   <button type="button"  class="btn btn-primary" style="margin-left: 358px;" data-toggle="modal" data-target="#exampleModalLong">
-    Quick Tips
+    Quick Tip
   </button>
               
 

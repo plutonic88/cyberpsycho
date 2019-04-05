@@ -83,7 +83,7 @@
                     @foreach ($node_ids as $id)
                   
 
-                         <node  :id="{{$id}}"  class=" {{$node_pos[$id]}}" v-bind:neighbors="[]"  v-on:applied="onCouponApplied(id)" v-bind:cla="[true, false, false, false]"  v-bind:nodevalues= "{{  json_encode($nodevalues[$id]) }}"></node>
+                         <node  :id="{{$id}}"  class=" {{$node_pos[$id]}}" v-bind:neighbors="{{  json_encode($nodenei[$id]) }}"  v-on:applied="onCouponApplied(id)" v-bind:cla="[false, true, false, false]"  v-bind:nodevalues= "{{  json_encode($nodevalues[$id]) }}"></node>
                       
                       
                     @endforeach
@@ -145,7 +145,7 @@
 
 <script src="{{ asset('js/webgazer.js') }}" type="text/javascript"> </script>
 
-<script src="{{ asset('js/app-fullinfov2.js') }}"> </script>
+<script src="{{ asset('js/app-fullinfov3.js') }}"> </script>
 
 <script type="text/javascript">
   

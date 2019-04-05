@@ -31,7 +31,7 @@ input[type=radio] {
 
 
 .normal {
-	background-color: white;
+	background-color: gray;
 }
 
 
