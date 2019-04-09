@@ -40,7 +40,7 @@ input[type=radio] {
 }
 
 .possible {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .public {

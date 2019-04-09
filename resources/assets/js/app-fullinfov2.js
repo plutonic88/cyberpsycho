@@ -601,6 +601,7 @@ Vue.component('node',{
 	data : {
 		//props : ['user_id'],
 		//user_id : '',
+		game_type: channel.game_type,
 		nodenames: ["A", "B", "C", "D", "E","PASS"],
 		attacker_perround_cost : 0,
 		attacker_perround_gain : 0,
@@ -618,9 +619,9 @@ Vue.component('node',{
 		ROUND_LIMIT : 5,
 		timer : 15,
 		numberofround : 1,
+		attackerpoints : 20,
 		attackermoved : false,
 		defendermoved: false,
-		attackerpoints : 20,
 		attackeraction : '',
 		msgtoplayer : 'Click start',
 		currentattackset : [], 
@@ -842,6 +843,50 @@ Vue.component('node',{
 
 
 
+	   			if(vm.numberofround==1)
+	   			{
+
+
+	   			axios.post('/gamehistory/savecompactinfo', {
+	   				user_id : channel.user_id,
+	   				gameid : vm.gamehistory.gameid,
+	   				game_type: channel.game_type,
+	   				round : vm.numberofround,
+	   				defender_action : vm.defenderaction,
+	   				attacker_action : vm.gamehistory.attacker_action,
+	   				time_defender_moved : def_move_time,
+	   				time_attacker_moved : attckr_move_time,
+	   				defender_points : vm.gamehistory.defender_points,
+	   				attacker_points : vm.attackerpoints,
+	   				game_id_instance: channel.game_id_instance,
+	   				def_type: channel.defendertype,
+	   				def_order: channel.defordertype
+
+	   			}).then(response => this.returndata = response.data);
+	   		}
+	   		else
+	   		{
+	   			axios.post('/gamehistory/savecompactinfo', {
+	   				user_id : channel.user_id,
+	   				gameid : vm.gamehistory.gameid,
+	   				game_id_instance: channel.game_id_instance,
+	   				round : vm.numberofround,
+	   				defender_action : vm.defenderaction,
+	   				attacker_action : vm.gamehistory.attacker_action,
+	   				
+	   				defender_points : vm.gamehistory.defender_points,
+	   				attacker_points : vm.attackerpoints
+	   				
+	   				
+
+	   			}).then(response => this.returndata = response.data);
+	   		}
+
+
+
+
+
+
 
 	   			if(vm.numberofround==vm.ROUND_LIMIT)
 	   			{
@@ -1028,6 +1073,9 @@ Vue.component('node',{
 	   			// work with all necessary avriables
 	   			// set the attcker move
 	   			// set defender move
+
+	   			console.log('%%%%%%%%confirm attack%%%%%%%%%%% ');
+
 	   			if(vm.attacker_tentative_move !== '')
 			     {
 			      	
@@ -1305,8 +1353,19 @@ Vue.component('node',{
 				console.log('9999999999999   defender defenderBHVRLStrategy... ' + vm.timer);
 
 
-				axios.get('/defstrategyfullinfo', {
+				console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$calling /defstrategy');
+
+				console.log('channel.game_type ', channel.game_type);
+				console.log('vm.numberofround ', vm.numberofround);
+				console.log('vm.defender_sequence ', vm.defender_sequence);
+				console.log('vm.attacker_sequence ', vm.attacker_sequence);
+				console.log('channel.defendertype ', channel.defendertype);
+
+
+
+				axios.get('/defstrategy', {
 				    params: {
+				      game_type:channel.game_type, 	
 				      numberofround: vm.numberofround,
 				      defender_sequence: vm.defender_sequence,
 				      attacker_sequence: vm.attacker_sequence,
@@ -1371,6 +1430,8 @@ Vue.component('node',{
 					vm.defenderBHVRLStrategy();	
 
 				}
+
+
 
 
 				 

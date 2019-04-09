@@ -15,3 +15,13 @@
 <script src="{{ asset('js/flash.js') }}" ></script>
 
 
+<script>
+$(document).ready(function() {
+function disableBack() { window.history.forward() }
+
+window.onload = disableBack();
+window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+});
+</script>
+
+

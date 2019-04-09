@@ -38,6 +38,8 @@ class GamesController extends Controller
 		 GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo($stratfile1);
          GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfo($stratfile2);
 
+        // dd(GamesController::$defstratfullinfov2);
+
 
 		 //dd(GamesController::$defstratfullinfo);
 
@@ -60,6 +62,21 @@ class GamesController extends Controller
 
 	public function index()
 	{
+
+		$playedall = GamesController::checkIfPlayedAllGames();
+
+                 if($playedall)
+                 {
+                    //dd('stop');
+                    session()->flash('message' , 'Thanks! you already participated');
+                    auth()->logout();
+
+        			//session()->flash('message' , 'You are successfully logged out');
+
+    				//return redirect('/');
+                   return $this->showending();
+                 }
+
 
 
 			return view('instruction.index');
@@ -86,6 +103,132 @@ class GamesController extends Controller
     return false;
 }
 
+
+
+public function getDefStrategy()
+	{
+
+
+			
+			 $cur_def_strat=[]; 	
+			 $def_action_probs = [];
+			 $numberofround = 1;request('numberofround');
+			 $defender_sequence = request('defender_sequence');
+			 $attacker_sequence = request('attacker_sequence');
+			 $defender_type = request('defender_type');
+			 $game_type = request('game_type');
+			 $way = -1;
+
+
+
+		 // $cur_def_strat=[]; 	
+			//  $def_action_probs = [];
+			//  $numberofround = 1;
+			//  $defender_sequence = null;
+			//  $attacker_sequence = null;
+			//  $defender_type = 1;
+			//  $game_type = 1;
+			//  $way = -1;
+
+			 //dd("here");
+
+
+
+			 
+			 if($defender_type ==0 && $game_type==1) // prev study + full infor
+			 {
+			 	$cur_def_strat = GamesController::$defstratfullinfo;
+			 }
+			 else if($defender_type ==1 && $game_type==1) // prev study + full infor
+			 {
+			 	$cur_def_strat = GamesController::$defstratfullinfov2;
+			 }
+			 else if($defender_type ==0 && $game_type==0) // prev study + no infor
+			 {			
+			 	$cur_def_strat = GamesController::$defstratnoinfo;
+			 }
+			 else if($defender_type ==1 && $game_type==0) // prev study + no infor
+			 {
+			 	$cur_def_strat = GamesController::$defstratnoinfov2;
+			 }
+			 
+
+			 //return $cur_def_strat;
+
+
+			// dd($cur_def_strat);
+
+
+			//var def_actions = [];
+
+			if($numberofround==1)
+			{
+				//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
+				//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
+				$def_action_probs = $cur_def_strat["EMPTY"]["EMPTY"];
+				$way = "init";
+				
+			}
+			else
+			{
+				// if undefined act randomly
+				//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
+				//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
+				 if ( (isset($cur_def_strat[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, $cur_def_strat) &&  array_key_exists($attacker_sequence, $cur_def_strat[$defender_sequence] )  ) )
+				 {
+				 	
+				 	$def_action_probs = ($cur_def_strat[$defender_sequence][$attacker_sequence]);
+				 	$way = "defined";
+
+				 	//dd($def_action_probs);
+				 }
+				 else
+				 {
+				 	//dd("Nope");
+				 	$way = "default";
+				 	// default strategy should be node 0
+				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
+				 }
+				
+			}
+
+
+			
+
+
+			
+
+			
+			$r = 0 + mt_rand() / mt_getrandmax() * (1 - 0);
+			//console.log("r : " + r);
+		    $a = 0;
+			$cumulativeProbability =  0;
+
+			//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+			while ($a < (sizeof($def_action_probs)) ) 
+			{
+
+				$cumulativeProbability += floatval($def_action_probs[$a][1]);
+				//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+				if ($r < $cumulativeProbability)
+				{
+					//console.log( "breaking ****** r : "+r+", cumulativeProbability : " + cumulativeProbability);
+					break;
+				}
+				$a++;
+			}
+
+			if($a >= sizeof($def_action_probs))
+			{
+				$a = sizeof($def_action_probs) - 1;
+			}
+
+			//console.log("a : " + a);
+			//console.log("BHVRLSTRAT : returning action : " + def_action_probs[a][0]);
+					
+			//dd($def_action_probs[$a][0]);
+			return ["def"=>$defender_sequence, "att" => $attacker_sequence, "probs" => $def_action_probs,"def_strat" => $def_action_probs[$a][0], "r" => $r, "cumuprob" => $cumulativeProbability];
+	}
 
 
 	public function getDefStrategyFullinfo()
@@ -637,28 +780,28 @@ class GamesController extends Controller
 
 
 
-		// return [
-		// 'TIME_LIMIT'=> '15', 
-		// 'ROUND_LIMIT'=>'5', 
-		// 'timer'=> '15', 
-		// 'rand_defenderteststrategy'=>$rand_strategy,
-		// 'max_defenderteststrategy'=>'3,4,3,2,1',
-		// 'possibleattackset' => '0,1,2,3,4,5',
-		// 'public' => '0,1,2,3,4,5'		
-
-		//  ];
-
-
-		 return [
-		'TIME_LIMIT'=> '5', 
-		'ROUND_LIMIT'=>'3', 
-		'timer'=> '5', 
+		return [
+		'TIME_LIMIT'=> '15', 
+		'ROUND_LIMIT'=>'5', 
+		'timer'=> '15', 
 		'rand_defenderteststrategy'=>$rand_strategy,
 		'max_defenderteststrategy'=>'3,4,3,2,1',
-		'possibleattackset' => '0',
-		'public' => '0'		
+		'possibleattackset' => '0,1,2,3,4,5',
+		'public' => '0,1,2,3,4,5'		
 
 		 ];
+
+
+		//  return [
+		// 'TIME_LIMIT'=> '5', 
+		// 'ROUND_LIMIT'=>'1', 
+		// 'timer'=> '1', 
+		// 'rand_defenderteststrategy'=>$rand_strategy,
+		// 'max_defenderteststrategy'=>'3,4,3,2,1',
+		// 'possibleattackset' => '0',
+		// 'public' => '0'		
+
+		//  ];
 	}
 
 
@@ -835,6 +978,27 @@ class GamesController extends Controller
 		// show it in the interface
 		// total point
 
+
+
+		$gameplay = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('total_point', 'pick_def_order', 'game_played', 'user_confirmation')
+		            ->first();
+
+
+        if($gameplay !== NULL)
+        {
+        	$total_point = $gameplay->total_point;  
+        	$user_confirmation = $gameplay->user_confirmation; 
+
+			auth()->logout();         
+
+			return view('instruction.end', compact('user_confirmation', 'total_point'));
+        } 
+
+		
+
+
 		
 
 		$user_confirmation = 'A' . substr(session('user_id') , 0, 20). '7';
@@ -904,7 +1068,7 @@ class GamesController extends Controller
 
 		$total_point = $gameplay->total_point;   
 
-		//auth()->logout();         
+		auth()->logout();         
 
 		return view('instruction.end', compact('user_confirmation', 'total_point'));
 
@@ -1045,6 +1209,51 @@ class GamesController extends Controller
 	}
 
 
+	public static function checkIfPlayedAllGames()
+	{
+		        $selectedgametype  = -1;
+				$selecteddefenderordertype = -1;
+
+				
+
+
+				$gameass = \DB::table('assignedgames')
+		            ->where('user_id', session('user_id'))
+		            ->select('game_type', 'pick_def_order', 'game_played')
+		            ->first();
+
+		            //dd($gameass);
+
+		            
+
+		            if($gameass === NULL)
+		            {
+
+		            		            		
+		            	return false;
+
+
+		        	}
+		        	else
+		        	{
+		        		if($gameass->game_played>=6)
+		        		{
+		        			//return redirect()->home();
+		        			return true;
+
+		        		}
+		        		else
+		        		{
+		        			return false;
+		        		}
+		        		
+
+		        	}
+
+		        	
+	}
+
+
 	public function assigngametype()
 	{
 				$selectedgametype  = -1;
@@ -1134,6 +1343,12 @@ class GamesController extends Controller
 		        	}
 		        	else
 		        	{
+		        		if($gameass->game_played>=6)
+		        		{
+		        			//return redirect()->home();
+		        			return $this->showending();
+
+		        		}
 		        		$selectedgametype = $gameass->game_type;
 		        		$selecteddefenderordertype = $gameass->pick_def_order;
 		        		// also reset every entry 
@@ -1342,6 +1557,7 @@ class GamesController extends Controller
 		if($gametype <0 || $gametype > session('n_game_type')  || $defordertype <0 || $defordertype > session('n_defender_order_type'))
 		{
 			return redirect()->home();
+
 		}
 		// increment gameplayed
 		\DB::table('assignedgames')
@@ -1822,7 +2038,7 @@ class GamesController extends Controller
 
 		//dd($arr);	
 
-		$selecteddefender = -1;	
+		$selecteddefender = 0;	
 		$done = 'no';	
 		$current_play_freq = -1; 
 
@@ -1967,6 +2183,17 @@ class GamesController extends Controller
 		    
 
 
+		/**
+
+			load user's max id instance
+			check current round, point, 
+			and build action sequence for both players
+
+		*/  
+
+		//dd($selecteddefender);  
+
+
 		if($gametype == 0)
 		{
 			// no info
@@ -1980,6 +2207,7 @@ class GamesController extends Controller
 			
 					JavaScript::put([
 					'game_id'	=> $game_id,
+					'game_type' => $gametype,
 			        'defendertype' => $selecteddefender,
 			        'defordertype' => $defordertype,
 			        'user_id' => session('user_id'),
@@ -2005,6 +2233,7 @@ class GamesController extends Controller
 			
 					JavaScript::put([
 					'game_id'	=> $game_id,
+					'game_type' => $gametype,
 			        'defendertype' => $selecteddefender,
 			        'defordertype' => $defordertype,
 			        'user_id' => session('user_id'),

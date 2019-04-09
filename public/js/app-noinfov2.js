@@ -92119,6 +92119,7 @@ new Vue({
 	data: {
 		//props : ['user_id'],
 		//user_id : '',
+		game_type: channel.game_type,
 		nodenames: ["A", "B", "C", "D", "E", "PASS"],
 		attacker_perround_cost: 0,
 		attacker_perround_gain: 0,
@@ -92155,7 +92156,7 @@ new Vue({
 
 		gamehistory: {
 
-			gameid: 1,
+			gameid: channel.game_id,
 			userid: channel.user_id,
 			defender_action: '',
 			attacker_action: '',
@@ -92171,6 +92172,18 @@ new Vue({
 	},
 
 	methods: {
+
+		endpage: function endpage() {
+			//window.location.href = "http://127.0.0.1:8000/instruction/gameend"; 
+
+			console.log('%%%%%%%%%%%%%%%%%%calling page reload');
+
+			window.location.reload();
+
+			//window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype; 
+
+			//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
+		},
 
 		gotonextgame: function gotonextgame() {
 			window.location.href = "http://127.0.0.1:8000/games/0/" + channel.defordertype;
@@ -92289,12 +92302,78 @@ new Vue({
 				game_id_instance: channel.game_id_instance
 
 			}).then(function (response) {
-				return _this2.returndata = response.data;
+
+				console.log("!!!!!!!!here is the checkforend response  " + response.data);
+				console.log("lalalalalalala got response " + response.data["END"]);
+
+				if (response.data["END"] == "1") {
+					vm.endpage();
+				}
+			}).catch(function (error) {
+				console.log(error);
 			});
+
+			if (vm.numberofround == 1) {
+
+				axios.post('/gamehistory/savecompactinfo', {
+					user_id: channel.user_id,
+					gameid: vm.gamehistory.gameid,
+					game_type: channel.game_type,
+					round: vm.numberofround,
+					defender_action: vm.defenderaction,
+					attacker_action: vm.gamehistory.attacker_action,
+					time_defender_moved: def_move_time,
+					time_attacker_moved: attckr_move_time,
+					defender_points: vm.gamehistory.defender_points,
+					attacker_points: vm.attackerpoints,
+					game_id_instance: channel.game_id_instance,
+					def_type: channel.defendertype,
+					def_order: channel.defordertype
+
+				}).then(function (response) {
+					return _this2.returndata = response.data;
+				});
+			} else {
+				axios.post('/gamehistory/savecompactinfo', {
+					user_id: channel.user_id,
+					gameid: vm.gamehistory.gameid,
+					game_id_instance: channel.game_id_instance,
+					round: vm.numberofround,
+					defender_action: vm.defenderaction,
+					attacker_action: vm.gamehistory.attacker_action,
+
+					defender_points: vm.gamehistory.defender_points,
+					attacker_points: vm.attackerpoints
+
+				});
+			}
 
 			if (vm.numberofround == vm.ROUND_LIMIT) {
 				vm.updateGamePlayed();
 			}
+
+			// 	axios.get('/gamehistory/checkforend', {
+			//   params: {
+			//     user_id : channel.user_id,
+			// 		  gameid : vm.gamehistory.gameid,
+			// 		  game_type: channel.game_type,
+			//   }
+			// })
+			// .then(function (response) {
+			//  // console.log(response);
+			//   console.log("lalalalalalala got response "+response.data["END"]);
+
+			//   if(response.data["END"]=="1")
+			//   {
+			//   	vm.endpage();
+			//   }
+
+
+			// })
+			// .catch(function (error) {
+			//   console.log(error);
+			// });	
+
 		},
 
 		giveAdjustedTime: function giveAdjustedTime(time) {
@@ -92559,8 +92638,9 @@ new Vue({
 
 			console.log('9999999999999   defender defenderBHVRLStrategy... ' + vm.timer);
 
-			axios.get('/defstrategynoinfo', {
+			axios.get('/defstrategy', {
 				params: {
+					gametype: channel.game_type,
 					numberofround: vm.numberofround,
 					defender_sequence: vm.defender_sequence,
 					attacker_sequence: vm.attacker_sequence
@@ -92587,16 +92667,19 @@ new Vue({
 
 			if (channel.defendertype === 0) //random
 				{
+					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
+					vm.defenderBHVRLStrategy();
 					//console.log('1111111111   defender random move.... timer ' + vm.timer);
-					defaction = vm.defenderteststrategy[vm.defstrategycounter];
-					if (vm.defenderteststrategy.length > vm.defstrategycounter) {
-						vm.defstrategycounter += 1;
-					}
-					vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf(); //vm.date(Date.now());
-					vm.defenderaction = defaction;
-					console.log('Defender action random %%%%%%% ' + vm.defenderaction + ' counter  ' + vm.defstrategycounter);
-					// console.log('defendermoved is ' + vm.defendermoved );
-					vm.defendermoved = true;
+					// defaction = vm.defenderteststrategy[vm.defstrategycounter];
+					// if(vm.defenderteststrategy.length>vm.defstrategycounter)
+					// {
+					// 	vm.defstrategycounter += 1;
+					// }
+					// vm.gamehistory.time_defender_moved = moment(Date.now()).valueOf();//vm.date(Date.now());
+					//  vm.defenderaction = defaction;
+					//  console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
+					// // console.log('defendermoved is ' + vm.defendermoved );
+					// vm.defendermoved = true;
 				} else if (channel.defendertype === 1) // maximizing expected utility
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);

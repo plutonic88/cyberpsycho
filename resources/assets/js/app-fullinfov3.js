@@ -1220,6 +1220,9 @@ Vue.component('node',{
 
 			      	if(vm.attacker_tentative_move !== '' && vm.timer<=7)
 			      	{
+
+			      		console.log(' %%%%%%%%%%%%%%%Activating the confirm buttong%%%%%%%%%%%%%');
+
 			      		$("#confirmbutton").removeClass("disable");
 			      	}
 

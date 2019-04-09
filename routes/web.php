@@ -20,6 +20,10 @@ Route::get('/config', 'GamesController@config');
 
 Route::get('/configprac', 'GamesController@configprac');
 
+
+Route::get('/defstrategy', 'GamesController@getDefStrategy');
+
+
 Route::get('/defstrategyfullinfo', 'GamesController@getDefStrategyFullinfo');
 
 
@@ -159,6 +163,18 @@ Route::get('/games/{gametype}/{done}', 'GamesController@playgamev2');
 Route::post('/gamehistory/incrementgameplayed', 'GamehistoryController@updateGamePlayed');
 
 Route::post('/gamehistory/save', 'GamehistoryController@store');
+
+
+Route::get('/gamehistory/checkforend', 'GamehistoryController@checkForEnd');
+
+
+
+
+
+Route::post('/gamehistory/savecompactinfo', 'GamehistoryController@storeCompact');
+
+
+
 
 Route::post('/gamehistory/savetentative', 'GamehistoryController@storetentative');
 
