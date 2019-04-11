@@ -4,7 +4,7 @@
 
 
 
-          <a class="nav-link active" href="#">Home</a>
+          <a class="nav-link active" href='{{ url("/") }}'>Home</a>
           <a class="nav-link active" href="#">About Us</a>
 
 

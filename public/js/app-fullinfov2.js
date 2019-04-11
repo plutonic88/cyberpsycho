@@ -92149,7 +92149,7 @@ new Vue({
 
 		gotonextgame: function gotonextgame() {
 			window.location.href = "http://127.0.0.1:8000/games/1/" + channel.defordertype;
-			//window.location.href = "http://iasrl1.cs.utep.edu/games/1/"+ channel.defordertype; 
+			//window.location.href = "http://iasrl.cs.utep.edu/games/1/"+ channel.defordertype; 
 			//window.location.href = "http://129.108.156.42/games/1/"+ window.defordertype;
 		},
 
@@ -92663,8 +92663,9 @@ new Vue({
 			console.log('vm.attacker_sequence ', vm.attacker_sequence);
 			console.log('channel.defendertype ', channel.defendertype);
 
-			axios.get('/defstrategy', {
+			axios.get('/defstrategyfullinfo', {
 				params: {
+					game_id: channel.game_id,
 					game_type: channel.game_type,
 					numberofround: vm.numberofround,
 					defender_sequence: vm.defender_sequence,

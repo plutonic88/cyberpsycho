@@ -33,6 +33,8 @@ class SessionsController extends Controller
     public function store()
     {
 
+        //Session::flush();
+
     	//dd(request()->all());
 
     	// attempt to auth the user
@@ -147,6 +149,8 @@ class SessionsController extends Controller
 
 
     	auth()->logout();
+
+        //Session::flush();
 
         session()->flash('message' , 'You are successfully logged out');
 

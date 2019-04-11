@@ -23,11 +23,13 @@ Route::get('/configprac', 'GamesController@configprac');
 
 Route::get('/defstrategy', 'GamesController@getDefStrategy');
 
+Route::get('/testdefstrategy', 'GamesController@testDefStrat');
+
 
 Route::get('/defstrategyfullinfo', 'GamesController@getDefStrategyFullinfo');
 
 
-Route::get('/defstrategynoinfo', 'GamesController@getDefStrategyNoinfo');
+Route::get('/defstrategyallpoint', 'GamesController@getDefStrategyAllPoint');
 
 
 

@@ -92188,7 +92188,7 @@ new Vue({
 		gotonextgame: function gotonextgame() {
 			window.location.href = "http://127.0.0.1:8000/games/0/" + channel.defordertype;
 
-			//window.location.href = "http://iasrl1.cs.utep.edu/games/0/"+ channel.defordertype; 
+			//window.location.href = "http://iasrl.cs.utep.edu/games/0/"+ channel.defordertype; 
 
 			//window.location.href = "http://129.108.156.42/games/0/"+ window.defordertype; 
 		},
@@ -92307,7 +92307,7 @@ new Vue({
 				console.log("lalalalalalala got response " + response.data["END"]);
 
 				if (response.data["END"] == "1") {
-					vm.endpage();
+					//vm.endpage();
 				}
 			}).catch(function (error) {
 				console.log(error);
@@ -92638,8 +92638,9 @@ new Vue({
 
 			console.log('9999999999999   defender defenderBHVRLStrategy... ' + vm.timer);
 
-			axios.get('/defstrategy', {
+			axios.get('/defstrategyallpoint', {
 				params: {
+					game_id: channel.game_id,
 					gametype: channel.game_type,
 					numberofround: vm.numberofround,
 					defender_sequence: vm.defender_sequence,

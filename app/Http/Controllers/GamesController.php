@@ -30,13 +30,244 @@ class GamesController extends Controller
 
 
 
+	public function testDefStrat()
+	{
+
+		//dd('Here');
+
+		$stratfile = 'strategy/g5d5_FI_v2.txt';
+		GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfoV2($stratfile);
+	}
+
+
+	public function readFileDefStrategyFullInfoV2($filename)
+	{
+		// read file 
+
+		//dd('here');
+
+			//$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+			$content = \File::get(storage_path($filename));
+			$strategy = explode("\n", $content);
+			
+			//dd($strategy);
+
+
+			$node_array = array("" => "EMPTY", "N0" => "0", "N1" => "1", "N2" => "2", "N3" => "3", "N4" => "4", "PASS" => "5");
+
+			//dd($node_array); 
+			
+			
+
+
+			$defender_strategy[][][][] = array();
+
+			//$len = sizeof($strategy)
+
+			//dd($strategy);
+
+
+			for($i=0; $i<sizeof($strategy); )
+			{
+
+
+				$def_seq = "";
+				$att_seq = "";
+
+
+				if($strategy[$i] === "")
+				{
+					break;
+				}
+
+
+
+					while(1)
+					{
+
+							// get the current row
+							$row = $strategy[$i];
+
+							//dd($row[10]);
+
+							if($row[11] === "]") // empty sequence
+							{
+								if($row[0] === "D")
+								{
+									$def_seq = "";
+								}
+								else if($row[0] === "A")
+								{
+									$att_seq = "";
+									$i++;
+									break;
+								}
+							}
+							else if($row[10] === "[")
+							{
+								//parse  action sequence
+								$index1 = 11; // starting index for sequence
+								
+								$subs = explode(",",substr($row, $index1, strlen($row)-$index1-1));
+
+
+								for($t=0; $t<sizeof($subs); $t++)
+								{
+									$subs[$t] = substr(trim(explode(":",$subs[$t])[0]), 1);
+								}
+
+								//dd($subs);
+
+								$seq = implode(",", $subs);
+
+								//dd($seq);
+
+								//dd($index1,$subs, $seq, $row[$index1]);
+
+								if($row[0] === "D")
+								{
+									$def_seq = $seq;
+								}
+								else if($row[0] === "A")
+								{
+									$att_seq = $seq;
+									$i++; // move to next row
+									break; // exit from loop
+								}
+
+							}
+							$i++; // move to next row
+						
+					}
+					//dd($def_seq,$att_seq);
+
+
+					$def_seq = str_replace(' ', '', $def_seq);
+					$att_seq = str_replace(' ', '', $att_seq);
+
+					$def_seq_nodes = explode(",", $def_seq);
+					$att_seq_nodes = explode(",", $att_seq);
+
+					//dd($def_seq_nodes, $att_seq_nodes);
+
+
+					for($s=0; $s<sizeof($def_seq_nodes); $s++)
+					{
+						$def_seq_nodes[$s] = $node_array[$def_seq_nodes[$s]];
+					}
+
+					for($s=0; $s<sizeof($att_seq_nodes); $s++)
+					{
+						$att_seq_nodes[$s] = $node_array[$att_seq_nodes[$s]];
+					}
+					
+
+
+
+					$def_seq = implode(",", $def_seq_nodes);
+					$att_seq = implode(",", $att_seq_nodes);
+
+					//dd($def_seq, $att_seq);
+
+
+					$counter = 0;
+					while(1)
+					{
+
+						// get the current row
+
+						// if($i==25)
+						// {
+						// 	dd($row, $i, $strategy);
+						// }
+
+						
+
+						if( $i>=sizeof($strategy))
+						{
+							break;
+						}
+
+						$row = $strategy[$i];
+
+
+						if( ($row === "")   || ($row[0] === "D") )
+						{
+							break;
+						}
+
+						$row = str_replace(' ', '', $row);
+
+
+
+						$arr = explode(":", $row);
+
+						//dd($arr);
+
+						$action = substr(trim($arr[0]), 1);
+
+						$prob = $arr[2];
+
+						//dd($action, $prob);
+
+
+						// convert nodes to node ids
+
+						
+						 //dd($def_seq_nodes, $att_seq_nodes);
+
+
+						
+						
+						//dd($def_seq_nodes, $att_seq_nodes);
+						
+
+						$defender_strategy[$def_seq][$att_seq][$counter][0] = $node_array[$action];
+
+						$defender_strategy[$def_seq][$att_seq][$counter][1] = $prob;
+
+						//dd($defender_strategy, $row);
+
+
+						$i++;
+						$counter++;
+					}
+
+					//dd($defender_strategy);
+	
+			}
+
+			//dd($defender_strategy["EMPTY"]["EMPTY"]);
+
+			return $defender_strategy;
+	}
+
+
+
 	public function  __construct()
 	{
 		 $stratfile1 = 'strategy/g5d5_FI.txt';
-		 $stratfile2 = 'strategy/g5d5_FI.txt';
+		 $stratfile2 = 'strategy/g5d5_FI_v2.txt';
 
 		 GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo($stratfile1);
-         GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfo($stratfile2);
+         GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile2);
+
+
+        // dd('hhh');
+
+         // att: "2,0,0"
+         // def: "5,0,0"
+
+        //dd(GamesController::$defstratfullinfov2["2,0,0"]["5,0,0"]);
+
+
+         $stratfile1 = 'strategy/g5d5_AP.txt';
+		 $stratfile2 = 'strategy/g5d5_AP.txt';
+
+
+         GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint($stratfile1);
+         GamesController::$defstratnoinfov2 = $this->readFileDefStrategyAllPoint($stratfile2);
+
 
         // dd(GamesController::$defstratfullinfov2);
 
@@ -52,7 +283,7 @@ class GamesController extends Controller
 		// {
 		// 	dd("not set");
 		// }
-		 GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint();
+		 
 		 //dd(GamesController::$defstratnoinfo);
 		 $this->middleware('auth')->except(['index']);
 
@@ -63,21 +294,29 @@ class GamesController extends Controller
 	public function index()
 	{
 
-		$playedall = GamesController::checkIfPlayedAllGames();
+         
 
-                 if($playedall)
-                 {
-                    //dd('stop');
-                    session()->flash('message' , 'Thanks! you already participated');
-                    auth()->logout();
-
-        			//session()->flash('message' , 'You are successfully logged out');
-
-    				//return redirect('/');
-                   return $this->showending();
-                 }
+  //       auth()->logout();
+  //       return redirect('/');
 
 
+		// $playedall = GamesController::checkIfPlayedAllGames();
+		// dd($playedall);
+  //                if($playedall)
+  //                {
+  //                   //dd('stop');
+  //                   session()->flash('message' , 'Thanks! you already participated');
+  //                   auth()->logout();
+
+  //                   //Session::flush();
+
+  //       			//session()->flash('message' , 'You are successfully logged out');
+
+  //   				//return redirect('/');
+  //                  return $this->showending();
+  //                }
+
+             
 
 			return view('instruction.index');
 	}
@@ -236,179 +475,257 @@ public function getDefStrategy()
 
 
 			
-			 $cur_def_strat=[]; 	
-			 $def_action_probs = [];
-			 $numberofround = request('numberofround');
-			 $defender_sequence = request('defender_sequence');
-			 $attacker_sequence = request('attacker_sequence');
-			 $defender_type = request('defender_type');
-			 $way = -1;
+			 
 
-			 if($defender_type ==0) // prev study
-			 {
-			 	$cur_def_strat = GamesController::$defstratfullinfo;
-			 }
-			 else if($defender_type ==1)
-			 {
-			 	$cur_def_strat = GamesController::$defstratfullinfov2;
-			 }
+			 	
+			 	 $cur_def_strat=[]; 	
+			 	 $def_action_probs = [];
+			 	 $numberofround = request('numberofround');
+			 	 $defender_sequence = request('defender_sequence');
+			 	 $attacker_sequence = request('attacker_sequence');
+			 	 $defender_type = request('defender_type');
+			 	 $game_type = request('game_type');
+			 	 $way = -1;
 
 
 
-			//var def_actions = [];
+			  // $cur_def_strat=[]; 	
+			 	//  $def_action_probs = [];
+			 	//  $numberofround = 1;
+			 	//  $defender_sequence = null;
+			 	//  $attacker_sequence = null;
+			 	//  $defender_type = 1;
+			 	//  $game_type = 1;
+			 	//  $way = -1;
 
-			if($numberofround==1)
-			{
-				//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
-				//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
-				$def_action_probs = $cur_def_strat["EMPTY"]["EMPTY"];
-				$way = "init";
-				
-			}
-			else
-			{
-				// if undefined act randomly
-				//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
-				//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
-				 if ( (isset($cur_def_strat[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, $cur_def_strat) &&  array_key_exists($attacker_sequence, $cur_def_strat[$defender_sequence] )  ) )
-				 {
-				 	
-				 	$def_action_probs = ($cur_def_strat[$defender_sequence][$attacker_sequence]);
-				 	$way = "defined";
-
-				 	//dd($def_action_probs);
-				 }
-				 else
-				 {
-				 	//dd("Nope");
-				 	$way = "default";
-				 	// default strategy should be node 0
-				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
-				 }
-				
-			}
+			 	 //dd("here");
 
 
-			
+
+			 	 
+			 	 if($defender_type ==0) // prev study
+			 	 {
+			 	 	$cur_def_strat = GamesController::$defstratfullinfo;
+			 	 }
+			 	 else if($defender_type ==1) // prev study 
+			 	 {
+			 	 	$cur_def_strat = GamesController::$defstratfullinfov2;
+			 	 }
+			 	 
+
+			 	 // else if($defender_type ==0 && $game_type==0) // prev study + no infor
+			 	 // {			
+			 	 // 	$cur_def_strat = GamesController::$defstratnoinfo;
+			 	 // }
+			 	 // else if($defender_type ==1 && $game_type==0) // prev study + no infor
+			 	 // {
+			 	 // 	$cur_def_strat = GamesController::$defstratnoinfov2;
+			 	 // }
+			 	 
+
+			 	 //return $cur_def_strat;
 
 
-			
+			 	// dd($cur_def_strat);
 
-			
-			$r = 0 + mt_rand() / mt_getrandmax() * (1 - 0);
-			//console.log("r : " + r);
-		    $a = 0;
-			$cumulativeProbability =  0;
 
-			//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
-			while ($a < (sizeof($def_action_probs)) ) 
-			{
+			 	//var def_actions = [];
 
-				$cumulativeProbability += floatval($def_action_probs[$a][1]);
-				//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
-				if ($r < $cumulativeProbability)
-				{
-					//console.log( "breaking ****** r : "+r+", cumulativeProbability : " + cumulativeProbability);
-					break;
-				}
-				$a++;
-			}
+			 	if($numberofround==1)
+			 	{
+			 		//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
+			 		//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
+			 		$def_action_probs = $cur_def_strat["EMPTY"]["EMPTY"];
+			 		$way = "init";
+			 		
+			 	}
+			 	else
+			 	{
+			 		// if undefined act randomly
+			 		//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
+			 		//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
+			 		 if ( (isset($cur_def_strat[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, $cur_def_strat) &&  array_key_exists($attacker_sequence, $cur_def_strat[$defender_sequence] )  ) )
+			 		 {
+			 		 	
+			 		 	$def_action_probs = ($cur_def_strat[$defender_sequence][$attacker_sequence]);
+			 		 	$way = "defined";
 
-			if($a >= sizeof($def_action_probs))
-			{
-				$a = sizeof($def_action_probs) - 1;
-			}
+			 		 	//dd($def_action_probs);
+			 		 }
+			 		 else
+			 		 {
+			 		 	//dd("Nope");
+			 		 	$way = "default";
+			 		 	// default strategy should be node 0
+			 		 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
+			 		 }
+			 		
+			 	}
 
-			//console.log("a : " + a);
-			//console.log("BHVRLSTRAT : returning action : " + def_action_probs[a][0]);
-					
-			//return $def_action_probs[$a][0];
-			return ["def"=>$defender_sequence, "att" => $attacker_sequence, "probs" => $def_action_probs,"def_strat" => $def_action_probs[$a][0], "r" => $r, "cumuprob" => $cumulativeProbability];
+
+			 	
+
+
+			 	
+
+			 	
+			 	$r = 0 + mt_rand() / mt_getrandmax() * (1 - 0);
+			 	//console.log("r : " + r);
+			     $a = 0;
+			 	$cumulativeProbability =  0;
+
+			 	//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+			 	while ($a < (sizeof($def_action_probs)) ) 
+			 	{
+
+			 		$cumulativeProbability += floatval($def_action_probs[$a][1]);
+			 		//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+			 		if ($r < $cumulativeProbability)
+			 		{
+			 			//console.log( "breaking ****** r : "+r+", cumulativeProbability : " + cumulativeProbability);
+			 			break;
+			 		}
+			 		$a++;
+			 	}
+
+			 	if($a >= sizeof($def_action_probs))
+			 	{
+			 		$a = sizeof($def_action_probs) - 1;
+			 	}
+
+			 	//console.log("a : " + a);
+			 	//console.log("BHVRLSTRAT : returning action : " + def_action_probs[a][0]);
+			 			
+			 	//dd($def_action_probs[$a][0]);
+			 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "probs" => $def_action_probs,"def_strat" => $def_action_probs[$a][0], "r" => $r, "cumuprob" => $cumulativeProbability];
 	}
 
 
-	public function getDefStrategyNoinfo()
+	public function getDefStrategyAllPoint()
 	{
 
 
-			
+				 $cur_def_strat=[]; 	
+				 $def_action_probs = [];
+				 $numberofround = request('numberofround');
+				 $defender_sequence = request('defender_sequence');
+				 $attacker_sequence = request('attacker_sequence');
+				 $defender_type = request('defender_type');
+				 $game_type = request('game_type');
+				 $way = -1;
 
-			 $def_action_probs = [];
-			 $numberofround = request('numberofround');
-			 $defender_sequence = request('defender_sequence');
-			 $attacker_sequence = request('attacker_sequence');
-			 $way = -1;
 
 
-			//var def_actions = [];
+			 // $cur_def_strat=[]; 	
+				//  $def_action_probs = [];
+				//  $numberofround = 1;
+				//  $defender_sequence = null;
+				//  $attacker_sequence = null;
+				//  $defender_type = 1;
+				//  $game_type = 1;
+				//  $way = -1;
 
-			if($numberofround==1)
-			{
-				//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
-				//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
-				$def_action_probs = GamesController::$defstratnoinfo["EMPTY"]["EMPTY"];
-				$way = "init";
-				
-			}
-			else
-			{
-				// if undefined act randomly
-				//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
-				//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
-				 if ( (isset(GamesController::$defstratnoinfo[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, GamesController::$defstratnoinfo ) &&  array_key_exists($attacker_sequence, GamesController::$defstratnoinfo[$defender_sequence] )  ) )
-				 {
-				 	
-				 	$def_action_probs = (GamesController::$defstratnoinfo[$defender_sequence][$attacker_sequence]);
-				 	$way = "defined";
+				 //dd("here");
 
-				 	//dd($def_action_probs);
+
+
+				 
+				 // if($defender_type ==0 && $game_type==1) // prev study + full infor
+				 // {
+				 // 	$cur_def_strat = GamesController::$defstratfullinfo;
+				 // }
+				 // else if($defender_type ==1 && $game_type==1) // prev study + full infor
+				 // {
+				 // 	$cur_def_strat = GamesController::$defstratfullinfov2;
+				 // }
+				  
+
+
+				 if($defender_type ==0) // prev study
+				 {			
+				 	$cur_def_strat = GamesController::$defstratnoinfo;
 				 }
-				 else
+				 else if($defender_type ==1) // new study
 				 {
-				 	//dd("Nope");
-				 	$way = "random";
-				 	// default action should be 0th node
-				 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
+				 	$cur_def_strat = GamesController::$defstratnoinfov2;
 				 }
-				
-			}
+				 
+
+				 //return $cur_def_strat;
 
 
-			
+				// dd($cur_def_strat);
 
 
-			
+				//var def_actions = [];
 
-			
-			$r = 0 + mt_rand() / mt_getrandmax() * (1 - 0);
-			//console.log("r : " + r);
-		    $a = 0;
-			$cumulativeProbability =  0;
-
-			//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
-			while ($a < (sizeof($def_action_probs)) ) 
-			{
-
-				$cumulativeProbability += floatval($def_action_probs[$a][1]);
-				//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
-				if ($r < $cumulativeProbability)
+				if($numberofround==1)
 				{
-					//console.log( "breaking ****** r : "+r+", cumulativeProbability : " + cumulativeProbability);
-					break;
-				}
-				$a++;
-			}
-
-			if($a >= sizeof($def_action_probs))
-			{
-				$a = sizeof($def_action_probs) - 1;
-			}
-
-			//console.log("a : " + a);
-			//console.log("BHVRLSTRAT : returning action : " + def_action_probs[a][0]);
+					//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo();
+					//dd(GamesController::$defstratfullinfo["EMPTY"]["EMPTY"]);
+					$def_action_probs = $cur_def_strat["EMPTY"]["EMPTY"];
+					$way = "init";
 					
-			//return $def_action_probs[$a][0];
-			return ["def"=>$defender_sequence, "att" => $attacker_sequence, "probs" => $def_action_probs,"def_strat" => $def_action_probs[$a][0], "r" => $r, "cumuprob" => $cumulativeProbability];
+				}
+				else
+				{
+					// if undefined act randomly
+					//console.log("BHVRLSTRAT : def seq : "+ vm.defender_sequence);
+					//console.log("BHVRLSTRAT : attckr seq : "+ vm.attacker_sequence);
+					 if ( (isset($cur_def_strat[$defender_sequence][$attacker_sequence]))  || (array_key_exists($defender_sequence, $cur_def_strat) &&  array_key_exists($attacker_sequence, $cur_def_strat[$defender_sequence] )  ) )
+					 {
+					 	
+					 	$def_action_probs = ($cur_def_strat[$defender_sequence][$attacker_sequence]);
+					 	$way = "defined";
+
+					 	//dd($def_action_probs);
+					 }
+					 else
+					 {
+					 	//dd("Nope");
+					 	$way = "default";
+					 	// default strategy should be node 0
+					 	return ["def"=>$defender_sequence, "att" => $attacker_sequence, "def_strat" => 0, "way" => $way];
+					 }
+					
+				}
+
+
+				
+
+
+				
+
+				
+				$r = 0 + mt_rand() / mt_getrandmax() * (1 - 0);
+				//console.log("r : " + r);
+			    $a = 0;
+				$cumulativeProbability =  0;
+
+				//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+				while ($a < (sizeof($def_action_probs)) ) 
+				{
+
+					$cumulativeProbability += floatval($def_action_probs[$a][1]);
+					//console.log("r : "+r+", cumulativeProbability : " + cumulativeProbability);
+					if ($r < $cumulativeProbability)
+					{
+						//console.log( "breaking ****** r : "+r+", cumulativeProbability : " + cumulativeProbability);
+						break;
+					}
+					$a++;
+				}
+
+				if($a >= sizeof($def_action_probs))
+				{
+					$a = sizeof($def_action_probs) - 1;
+				}
+
+				//console.log("a : " + a);
+				//console.log("BHVRLSTRAT : returning action : " + def_action_probs[a][0]);
+						
+				//dd($def_action_probs[$a][0]);
+				return ["def"=>$defender_sequence, "att" => $attacker_sequence, "probs" => $def_action_probs,"def_strat" => $def_action_probs[$a][0], "r" => $r, "cumuprob" => $cumulativeProbability];
 	}
 
 
@@ -580,11 +897,16 @@ public function getDefStrategy()
 	}
 
 
-	public function readFileDefStrategyAllPoint()
+	public function readFileDefStrategyAllPoint($filename)
 	{
 		// read file 
 
-			$content = \File::get(storage_path('strategy/g5d5_AP.txt'));
+			// $content = \File::get(storage_path('strategy/g5d5_AP.txt'));
+			// $strategy = explode("\n", $content);
+
+
+			//$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+			$content = \File::get(storage_path($filename));
 			$strategy = explode("\n", $content);
 			
 			//dd($strategy);
@@ -991,7 +1313,10 @@ public function getDefStrategy()
         	$total_point = $gameplay->total_point;  
         	$user_confirmation = $gameplay->user_confirmation; 
 
-			auth()->logout();         
+			auth()->logout();  
+			//Session::flush();  
+
+
 
 			return view('instruction.end', compact('user_confirmation', 'total_point'));
         } 
@@ -1068,7 +1393,7 @@ public function getDefStrategy()
 
 		$total_point = $gameplay->total_point;   
 
-		auth()->logout();         
+		//auth()->logout();         
 
 		return view('instruction.end', compact('user_confirmation', 'total_point'));
 
@@ -1214,7 +1539,8 @@ public function getDefStrategy()
 		        $selectedgametype  = -1;
 				$selecteddefenderordertype = -1;
 
-				
+				//Session::flush();
+				//dd(session('user_id'));
 
 
 				$gameass = \DB::table('assignedgames')
@@ -1972,6 +2298,8 @@ public function getDefStrategy()
 	{
 		
 
+
+		//dd("here");
 		// check if there is any record
 		// if none, redirect to home page or to games/play
 				$gameass = \DB::table('assignedgames')
