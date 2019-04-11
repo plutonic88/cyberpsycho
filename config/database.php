@@ -45,7 +45,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => 'game',
             'username' => 'root',
-            'password' => '!Th3R3S3arch!',
+            'password' => 'Fl1pitS3rver',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

@@ -689,7 +689,18 @@ Vue.component('node',{
 
 			gotonextgame: function()
 			{
-				window.location.href = "http://127.0.0.1:8000/games/1/"+ channel.defordertype; 
+
+				if(window.location.hostname=="127.0.0.1")
+				{
+					window.location.href = "http://127.0.0.1:8000/games/1/"+ channel.defordertype; 
+				}
+				else
+				{
+					window.location.href = "http://iasrlweb.cs.utep.edu/games/1/"+ channel.defordertype; 
+
+				}
+
+				
 				//window.location.href = "http://iasrl.cs.utep.edu/games/1/"+ channel.defordertype; 
 				//window.location.href = "http://129.108.156.42/games/1/"+ window.defordertype;
 
