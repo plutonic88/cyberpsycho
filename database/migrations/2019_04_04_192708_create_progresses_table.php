@@ -20,12 +20,7 @@ class CreateProgressesTable extends Migration
             $table->integer('instruction');
             $table->integer('instruction_qa');
             $table->integer('practicegame');
-            $table->integer('game1');
-            $table->integer('game2');
-            $table->integer('game3');
-            $table->integer('game4');
-            $table->integer('game5');
-            $table->integer('game6');
+            $table->integer('game');
             $table->integer('endsurvey');
             $table->timestamps();
         });

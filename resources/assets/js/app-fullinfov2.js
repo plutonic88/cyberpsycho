@@ -834,6 +834,18 @@ Vue.component('node',{
 	   			
 
 
+	   			if(vm.numberofround==vm.ROUND_LIMIT && channel.game_id_instance==5)
+	   			{
+	   				axios.post('/updateprogress', {
+	   				            
+	   				            stage : "game"
+	   				             
+
+	   				          }).then(response => this.returndata = response.data);
+
+	   				    
+	   				
+	   			}
 
 
 

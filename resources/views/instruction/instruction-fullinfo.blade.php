@@ -127,6 +127,8 @@ $(document).ready(function() {
     duration = (n - starttime)/1000.0;
 
 
+
+
       axios.post('/instruction/storeend', {
                 
                 slide : curslide,
@@ -184,7 +186,19 @@ $('#Carousel').on('slid.bs.carousel', function (e) {
 
 
 
+    if(curslide==5)
+    {
 
+          axios.post('/updateprogress', {
+                    
+                    stage : "instruction",
+                     
+
+                  }).then(response => this.returndata = response.data);
+
+            
+        
+        }
 
 
 

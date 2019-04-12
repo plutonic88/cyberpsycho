@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Question;
 
+use Auth;
+
 use JavaScript;
 
 //use Illuminate\Database\DatabaseManager\DB;
@@ -316,9 +318,129 @@ class GamesController extends Controller
   //                  return $this->showending();
   //                }
 
+
+			
+
+		
+
+		if(Auth::id() == null)
+		{
+			//dd("hee");
+			return view('instruction.index');
+
+			
+		}
+		else
+		{
+			//dd(session('user_id'), Auth::id());
+			return $this->directToProperState();
+		}
+		
+
+
+
+		         
+
+        
+
              
 
-			return view('instruction.index');
+			
+	}
+
+
+
+	public function directToProperState()
+	{
+			$progress = \DB::table('progresses')
+		            ->where('user_id', session('user_id'))
+		            ->first();
+
+
+
+		    if($progress==NULL)
+		    {
+		    	$prognew = new \App\progress;
+		    	$prognew->user_id =  session('user_id','');
+		    	$prognew->survey = 0;
+		    	$prognew->instruction = 0;
+		    	$prognew->instruction_qa = 0;
+		    	$prognew->practicegame = 0;
+		    	$prognew->game = 0;
+		    	$prognew->endsurvey = 0;
+		    	$prognew->save();
+
+		    }        
+
+
+
+			$progress = \DB::table('progresses')
+		            ->where('user_id', session('user_id'))
+		            ->select('survey', 'instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
+		            ->first();
+
+		     $arr["survey"] = $progress->survey;
+		     $arr["instruction"] = $progress->instruction;
+		     $arr["instruction_qa"] = $progress->instruction_qa;
+		     $arr["practicegame"] = $progress->practicegame;
+		     $arr["game"] = $progress->game;
+		     $arr["endsurvey"] = $progress->endsurvey;
+
+		     //dd($arr);
+
+		     if($arr["survey"]==0)
+		     {
+		     	return view('instruction.index');
+		     }
+		     else if($arr["instruction"]==0)
+		     {
+		     	return redirect('/instruction');
+		     }
+		     else if($arr["instruction_qa"]==0)
+		     {
+		     	return redirect('/instruction/concept');
+		     	
+		     }
+		     else if($arr["practicegame"]==0)
+		     {
+		     	return redirect('/games/prac');
+		     }
+		     else if($arr["game"]==0)
+		     {
+		     	return redirect('/games/play');
+		     }
+		     else if($arr["endsurvey"]==0)
+		     {
+		     	return $this->showending();	
+
+		     }
+		     else if($arr["endsurvey"]==1)
+		     {
+		     	 
+		     			    $gameplay = \DB::table('assignedgames')
+		     			            ->where('user_id', session('user_id'))
+		     			            ->select('total_point', 'pick_def_order', 'game_played', 'user_confirmation')
+		     			            ->first();
+
+
+		     	        
+		     	        	$total_point = $gameplay->total_point;  
+		     	        	$user_confirmation = $gameplay->user_confirmation; 
+
+		     				//auth()->logout();  
+		     				//Session::flush();  
+
+
+
+		     				return view('instruction.end', compact('user_confirmation', 'total_point'));
+
+		     			    
+		     	        
+		     }
+		     else
+		     {
+		     	return redirect('/');
+		     }
 	}
 
 
@@ -1172,6 +1294,9 @@ public function getDefStrategy()
 
 
 
+
+
+
 		$answer = new \App\Answer;
 
 		$answer->user_id =  session('user_id','');
@@ -1209,6 +1334,10 @@ public function getDefStrategy()
 		$answer->save();
 		//session()->flash('message' , 'Thanks! for taking the survey');
 
+
+		//dd("hhh");
+
+		$this->updateProgress("survey");
 
 
 
@@ -1278,8 +1407,6 @@ public function getDefStrategy()
 
 		
 
-
-
 		
 
 		return redirect('/instruction');
@@ -1292,6 +1419,53 @@ public function getDefStrategy()
 
 	}
 
+	public function updateProgress($stage)
+	{
+		
+		
+
+		\DB::table('progresses')
+			            ->where('user_id', session('user_id'))
+			            ->update([ $stage => 1 ]);
+		            
+
+	}
+
+
+
+
+
+	
+
+
+	public function updateProgressAxios()
+	{
+		$progress = \DB::table('progresses')
+		            ->where('user_id', session('user_id'))
+		            ->first();
+
+		if($progress==NULL)
+		{
+			$prognew = new \App\progress;
+			$prognew->user_id =  session('user_id','');
+			$prognew->survey = 0;
+			$prognew->instruction = 0;
+			$prognew->instruction_qa = 0;
+			$prognew->practicegame = 0;
+			$prognew->game = 0;
+			$prognew->endsurvey = 0;
+			$prognew->save();
+
+		}
+		
+
+		\DB::table('progresses')
+			            ->where('user_id', session('user_id'))
+			            ->update([ request('stage') => 1 ]);
+		            
+
+	}
+
 
 	public function showending()
 	{
@@ -1300,27 +1474,9 @@ public function getDefStrategy()
 		// show it in the interface
 		// total point
 
+        //dd("wtwtwt");
 
-
-		$gameplay = \DB::table('assignedgames')
-		            ->where('user_id', session('user_id'))
-		            ->select('total_point', 'pick_def_order', 'game_played', 'user_confirmation')
-		            ->first();
-
-
-        if($gameplay !== NULL)
-        {
-        	$total_point = $gameplay->total_point;  
-        	$user_confirmation = $gameplay->user_confirmation; 
-
-			auth()->logout();  
-			//Session::flush();  
-
-
-
-			return view('instruction.end', compact('user_confirmation', 'total_point'));
-        } 
-
+		
 		
 
 
@@ -1393,7 +1549,10 @@ public function getDefStrategy()
 
 		$total_point = $gameplay->total_point;   
 
-		//auth()->logout();         
+		//auth()->logout();   
+
+
+		$this->updateProgress("endsurvey");      
 
 		return view('instruction.end', compact('user_confirmation', 'total_point'));
 
@@ -3073,6 +3232,10 @@ public function getDefStrategy()
 		
 
 		session()->flash('message', 'Everything is correct. Thanks!');
+
+		$this->updateProgress("instruction_qa");
+
+
 		return view('instruction.qasuccess');
 
 	}

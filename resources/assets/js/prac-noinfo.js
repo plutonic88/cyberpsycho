@@ -817,6 +817,20 @@ Vue.component('node',{
 	   			vm.attacker_perround_gain = 0;
 
 
+	   			if(vm.numberofround==vm.ROUND_LIMIT)
+	   			{
+	   				axios.post('/updateprogress', {
+	   				            
+	   				            stage : "practicegame"
+	   				             
+
+	   				          }).then(response => this.returndata = response.data);
+
+	   				    
+	   				
+	   			}
+
+
 
 
 	   			// axios.post('/gamehistory/save', {

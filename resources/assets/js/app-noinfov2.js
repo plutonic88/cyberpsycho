@@ -881,6 +881,20 @@ Vue.component('node',{
 	   			//console.log(window.location.hostname+"   heheheheheh");
 
 
+	   			if(vm.numberofround==vm.ROUND_LIMIT && channel.game_id_instance==5)
+	   			{
+	   				axios.post('/updateprogress', {
+	   				            
+	   				            stage : "game"
+	   				             
+
+	   				          }).then(response => this.returndata = response.data);
+
+	   				    
+	   				
+	   			}
+
+
 
 	   			axios.post('/gamehistory/save', {
 	   				user_id : channel.user_id,

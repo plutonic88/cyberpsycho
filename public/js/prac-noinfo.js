@@ -92207,6 +92207,8 @@ new Vue({
 		},
 
 		saveToDataBase: function saveToDataBase() {
+			var _this = this;
+
 			var vm = this;
 
 			if (vm.defenderaction === '') {
@@ -92254,6 +92256,16 @@ new Vue({
 
 			vm.attacker_perround_cost = 0;
 			vm.attacker_perround_gain = 0;
+
+			if (vm.numberofround == vm.ROUND_LIMIT) {
+				axios.post('/updateprogress', {
+
+					stage: "practicegame"
+
+				}).then(function (response) {
+					return _this.returndata = response.data;
+				});
+			}
 
 			// axios.post('/gamehistory/save', {
 			// 	user_id : user_id,

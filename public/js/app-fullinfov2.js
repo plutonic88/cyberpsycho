@@ -92252,6 +92252,16 @@ new Vue({
 				vm.attacker_sequence = vm.attacker_sequence + ",5";
 			}
 
+			if (vm.numberofround == vm.ROUND_LIMIT && channel.game_id_instance == 5) {
+				axios.post('/updateprogress', {
+
+					stage: "game"
+
+				}).then(function (response) {
+					return _this2.returndata = response.data;
+				});
+			}
+
 			axios.post('/gamehistory/save', {
 				user_id: channel.user_id,
 				gameid: vm.gamehistory.gameid,

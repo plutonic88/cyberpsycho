@@ -92181,6 +92181,8 @@ new Vue({
 		},
 
 		saveToDataBase: function saveToDataBase() {
+			var _this = this;
+
 			var vm = this;
 
 			if (vm.defenderaction === '' && vm.defendermoved == false) {
@@ -92244,6 +92246,16 @@ new Vue({
 				vm.attacker_sequence = vm.attacker_sequence + "," + vm.attackeraction;
 			} else {
 				vm.attacker_sequence = vm.attacker_sequence + ",5";
+			}
+
+			if (vm.numberofround == vm.ROUND_LIMIT) {
+				axios.post('/updateprogress', {
+
+					stage: "practicegame"
+
+				}).then(function (response) {
+					return _this.returndata = response.data;
+				});
 			}
 
 			// axios.post('/gamehistory/save', {
