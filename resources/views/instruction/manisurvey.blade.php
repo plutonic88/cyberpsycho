@@ -16,7 +16,7 @@
 
 
 
-	<div class="card" style="width: 65rem; height: 430rem;">
+	<div class="card" style="width: 65rem;">
   <div class="card-header">
     Survey
   </div>

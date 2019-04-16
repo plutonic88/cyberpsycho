@@ -16,7 +16,7 @@
 
 
 
-	<div class="card" style="width: 65rem; height: 430rem;">
+	<div class="card" style="width: 65rem; ">
   <div class="card-header">
     Survey
   </div>
@@ -25,6 +25,15 @@
     <p class="card-text">Please indicate how much you agree with the following questions using the scale below:</p>
     <p class="card-text">Strongly Disagree(1)   Disagree(2) Neither Agree nor Disagree(3) Agree(4) Strongly Agree(5)</p>
 
+
+    <div>
+	  	 	
+	  	 	@if(count($errors))
+	  	 		<p>Do you want to skip? Click "Next Survey" button</p> 
+	  	 		<a href='{{ url("/survey2") }}' id="nextbutton" class="btn btn-primary" style="margin-bottom: : 20px;">Next Survey</a>
+	  	 	@endif
+
+	  	 </div>
 
     <form method="POST" action="/storesurvey">
 	 	

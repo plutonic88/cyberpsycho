@@ -389,6 +389,88 @@ class GamesController extends Controller
 	}
 
 
+	public function getNextStage()
+	{
+			$progress = \DB::table('progresses')
+		            ->where('user_id', session('user_id'))
+		            ->first();
+
+
+
+		    if($progress==NULL)
+		    {
+		    	$prognew = new \App\progress;
+		    	$prognew->user_id =  session('user_id','');
+		    	$prognew->survey = 0;
+		    	$prognew->survey2 = 0;
+		    	$prognew->instruction = 0;
+		    	$prognew->instruction_qa = 0;
+		    	$prognew->practicegame = 0;
+		    	$prognew->game = 0;
+		    	$prognew->endsurvey = 0;
+		    	$prognew->save();
+
+		    }        
+
+
+
+			$progress = \DB::table('progresses')
+		            ->where('user_id', session('user_id'))
+		            ->select('survey', 'survey2','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
+		            ->first();
+
+		     $arr["survey"] = $progress->survey;
+		     $arr["survey2"] = $progress->survey2;
+		     $arr["instruction"] = $progress->instruction;
+		     $arr["instruction_qa"] = $progress->instruction_qa;
+		     $arr["practicegame"] = $progress->practicegame;
+		     $arr["game"] = $progress->game;
+		     $arr["endsurvey"] = $progress->endsurvey;
+
+		     //dd($arr);
+
+		     $nextstage = "complete";
+
+		     if($arr["survey"]==0)
+		     {
+		     	$nextstage = "survey";
+		     }
+		     else if($arr["survey2"]==0)
+		     {
+		     	$nextstage = "survey2";
+		     }
+		     else if($arr["instruction"]==0)
+		     {
+		     	$nextstage = "instruction";
+		     }
+		     else if($arr["instruction_qa"]==0)
+		     {
+		     	$nextstage = "instruction_qa";
+		     	
+		     }
+		     else if($arr["practicegame"]==0)
+		     {
+		     	$nextstage = "practicegame";	
+		     }
+		     else if($arr["game"]==0)
+		     {
+		     	$nextstage = "game";
+		     }
+		     else if($arr["endsurvey"]==0)
+		     {
+		     	$nextstage = "endsurvey";
+
+		     }
+		     else
+		     {
+		     	$nextstage = "complete";	
+		     }
+
+		     return $nextstage;
+
+	}
+
+
 
 	public function directToProperState()
 	{
@@ -1314,6 +1396,20 @@ public function getDefStrategy()
 	{
 
 
+		// get what's the next stage 
+		// if it's  survey2 then continue 
+		// if not then redirect to proper page
+
+		$next = $this->getNextStage();
+
+		//dd($next);
+
+		if($next != "survey2")
+		{
+			return $this->directToProperState();
+		}
+
+
 
 
 
@@ -1428,7 +1524,14 @@ public function getDefStrategy()
 
 
 
+		$next = $this->getNextStage();
 
+		//dd($next);
+
+		if($next != "survey")
+		{
+			return $this->directToProperState();
+		}
 
 
 		$questions = Question::all();
@@ -2579,6 +2682,17 @@ public function getDefStrategy()
 
 				//dd([GamesController::$gametypes]);
 
+
+
+				$next = $this->getNextStage();
+
+				//dd($next);
+
+				if($next != "game")
+				{
+					return $this->directToProperState();
+				}
+
 				$selectedgametype  = -1;
 				$selecteddefenderordertype = -1;
 
@@ -2684,6 +2798,16 @@ public function getDefStrategy()
 
 	public function playgamev2($gametype, $defordertype)
 	{
+
+
+		$next = $this->getNextStage();
+
+		//dd($next);
+
+		if($next != "game")
+		{
+			return $this->directToProperState();
+		}
 		
 
 
@@ -3360,6 +3484,17 @@ public function getDefStrategy()
 
 	public function showqaconceptual()
 	{
+
+
+		$next = $this->getNextStage();
+
+		//dd($next);
+
+		if($next != "instruction_qa")
+		{
+			return $this->directToProperState();
+		}
+
 		session()->flash('message' , '');
 
 		return view('instruction.qaconceptual');

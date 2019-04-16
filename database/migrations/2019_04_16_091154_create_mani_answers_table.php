@@ -17,19 +17,19 @@ class CreateManiAnswersTable extends Migration
             $table->increments('id');
             
             $table->string('user_id');
-            $table->integer('Question_1');
-            $table->integer('Question_2');
-            $table->integer('Question_3');
-            $table->integer('Question_4');
-            $table->integer('Question_5');
-            $table->integer('Question_6');
-            $table->integer('Question_7');
-            $table->integer('Question_8');
-            $table->integer('Question_9');
-            $table->integer('Question_10');
-            $table->integer('Question_11');
-            $table->integer('Question_12');
-            $table->integer('Question_13');
+            $table->integer('Question_1')->nullable();
+            $table->integer('Question_2')->nullable();
+            $table->integer('Question_3')->nullable();
+            $table->integer('Question_4')->nullable();
+            $table->integer('Question_5')->nullable();
+            $table->integer('Question_6')->nullable();
+            $table->integer('Question_7')->nullable();
+            $table->integer('Question_8')->nullable();
+            $table->integer('Question_9')->nullable();
+            $table->integer('Question_10')->nullable();
+            $table->integer('Question_11')->nullable();
+            $table->integer('Question_12')->nullable();
+            $table->integer('Question_13')->nullable();
             $table->timestamps();
         });
     }
