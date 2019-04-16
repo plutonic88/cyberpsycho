@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\ManiQuestion;
 
 use Auth;
 
@@ -40,6 +41,45 @@ class GamesController extends Controller
 		$stratfile = 'strategy/g5d5_FI_v2.txt';
 		GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfoV2($stratfile);
 	}
+
+
+
+	public function insertInTable()
+	{
+
+
+
+
+		//$content = \File::get(storage_path('strategy/g5d5_FI.txt'));
+		$q = \File::get(storage_path('strategy/questions.txt'));
+		$qarr = explode("\n", $q);
+
+		//dd($qarr);
+
+
+		
+
+		//$question = new \App\Question;
+
+		//$question = new \App\ManiQuestion;
+
+		for($i=0; $i<sizeof($qarr); )
+		{
+
+			$question = new \App\ManiQuestion;
+
+			$question->name = "Question ".($i+1);
+			$question->body = $qarr[$i];
+
+			$question->save();
+
+
+			$i = $i+1;	
+		}
+
+
+	}
+
 
 
 	public function readFileDefStrategyFullInfoV2($filename)
@@ -264,11 +304,11 @@ class GamesController extends Controller
 
 
          $stratfile1 = 'strategy/g5d5_AP.txt';
-		 $stratfile2 = 'strategy/g5d5_AP.txt';
+		 $stratfile2 = 'strategy/g5d5_AP_v2.txt';
 
 
          GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint($stratfile1);
-         GamesController::$defstratnoinfov2 = $this->readFileDefStrategyAllPoint($stratfile2);
+         GamesController::$defstratnoinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile2);
 
 
         // dd(GamesController::$defstratfullinfov2);
@@ -363,6 +403,7 @@ class GamesController extends Controller
 		    	$prognew = new \App\progress;
 		    	$prognew->user_id =  session('user_id','');
 		    	$prognew->survey = 0;
+		    	$prognew->survey2 = 0;
 		    	$prognew->instruction = 0;
 		    	$prognew->instruction_qa = 0;
 		    	$prognew->practicegame = 0;
@@ -376,10 +417,11 @@ class GamesController extends Controller
 
 			$progress = \DB::table('progresses')
 		            ->where('user_id', session('user_id'))
-		            ->select('survey', 'instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
+		            ->select('survey', 'survey2','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
 		            ->first();
 
 		     $arr["survey"] = $progress->survey;
+		     $arr["survey2"] = $progress->survey2;
 		     $arr["instruction"] = $progress->instruction;
 		     $arr["instruction_qa"] = $progress->instruction_qa;
 		     $arr["practicegame"] = $progress->practicegame;
@@ -391,6 +433,10 @@ class GamesController extends Controller
 		     if($arr["survey"]==0)
 		     {
 		     	return view('instruction.index');
+		     }
+		     else if($arr["survey2"]==0)
+		     {
+		     	return redirect('/survey2');
 		     }
 		     else if($arr["instruction"]==0)
 		     {
@@ -1264,6 +1310,118 @@ public function getDefStrategy()
 	}
 
 
+	public function manistartsurvey()
+	{
+
+
+
+
+
+
+		$questions = ManiQuestion::all();
+
+
+		
+
+
+
+		//dd($questions);
+
+
+
+		return view('instruction.manisurvey', compact('questions'));
+	}
+
+	public function manistoresurvey()
+	{
+
+
+
+
+
+
+		$answer = new \App\ManiAnswer;
+
+		$answer->user_id =  session('user_id','');
+
+		$answer->Question_1 = request('Question_1');
+		$answer->Question_2 = request('Question_2');
+		$answer->Question_3 = request('Question_3');
+		$answer->Question_4 = request('Question_4');
+		$answer->Question_5 = request('Question_5');
+		$answer->Question_6 = request('Question_6');
+		$answer->Question_7 = request('Question_7');
+		$answer->Question_8 = request('Question_8');
+		$answer->Question_9 = request('Question_9');
+		$answer->Question_10 = request('Question_10');
+
+		$answer->Question_11 = request('Question_11');
+		$answer->Question_12 = request('Question_12');
+		$answer->Question_13 = request('Question_13');
+		
+		
+
+		$answer->save();
+		//session()->flash('message' , 'Thanks! for taking the survey');
+
+
+		//dd("hhh");
+
+		$this->updateProgress("survey2");
+
+
+
+		//dd(request()->all());
+	$validator = $this->validate(request(), [
+
+
+    		'Question_1' => 'required',
+
+    		'Question_2' => 'required',
+
+    		'Question_3' => 'required',
+
+    		'Question_4' => 'required',
+
+    		'Question_5' => 'required',
+
+    		'Question_6' => 'required',
+
+    		'Question_7' => 'required',
+
+    		'Question_8' => 'required',
+
+    		'Question_9' => 'required',
+
+    		'Question_10' => 'required',
+
+    		'Question_11' => 'required',
+
+    		'Question_12' => 'required',
+
+    		'Question_13' => 'required'
+
+    		
+
+
+    		]);
+
+
+		
+
+		
+
+		return redirect('/instruction');
+
+		
+
+
+
+
+
+	}
+
+
 
 	public function startsurvey()
 	{
@@ -1330,6 +1488,41 @@ public function getDefStrategy()
 		$answer->Question_25 = request('Question_25');
 		$answer->Question_26 = request('Question_26');
 		$answer->Question_27 = request('Question_27');
+		$answer->Question_28 = request('Question_28');
+		$answer->Question_29 = request('Question_29');
+		$answer->Question_30 = request('Question_30');
+		$answer->Question_31 = request('Question_31');
+		$answer->Question_32 = request('Question_32');
+		$answer->Question_33 = request('Question_33');
+		$answer->Question_34 = request('Question_34');
+		$answer->Question_35 = request('Question_35');
+		$answer->Question_36 = request('Question_36');
+		$answer->Question_37 = request('Question_37');
+		$answer->Question_38 = request('Question_38');
+		$answer->Question_39 = request('Question_39');
+		$answer->Question_40 = request('Question_40');
+		$answer->Question_41 = request('Question_41');
+		$answer->Question_42 = request('Question_42');
+		$answer->Question_43 = request('Question_43');
+		$answer->Question_44 = request('Question_44');
+		$answer->Question_45 = request('Question_45');
+		$answer->Question_46 = request('Question_46');
+		$answer->Question_47 = request('Question_47');
+		$answer->Question_48 = request('Question_48');
+		$answer->Question_49 = request('Question_49');
+		$answer->Question_50 = request('Question_50');
+		$answer->Question_51 = request('Question_51');
+		$answer->Question_52 = request('Question_52');
+		$answer->Question_53 = request('Question_53');
+		$answer->Question_54 = request('Question_54');
+		$answer->Question_55 = request('Question_55');
+		$answer->Question_56 = request('Question_56');
+		$answer->Question_57 = request('Question_57');
+		$answer->Question_58 = request('Question_58');
+		$answer->Question_59 = request('Question_59');
+		$answer->Question_60 = request('Question_60');
+		$answer->Question_61 = request('Question_61');
+		$answer->Question_62 = request('Question_62');
 
 		$answer->save();
 		//session()->flash('message' , 'Thanks! for taking the survey');
@@ -1397,7 +1590,43 @@ public function getDefStrategy()
 
     		'Question_26' => 'required',
 
-    		'Question_27' => 'required'
+    		'Question_27' => 'required',
+    		'Question_28' => 'required',
+    		'Question_29' => 'required',
+    		'Question_30' => 'required',
+    		'Question_31' => 'required',
+    		'Question_32' => 'required',
+    		'Question_33' => 'required',
+    		'Question_34' => 'required',
+    		'Question_35' => 'required',
+    		'Question_36' => 'required',
+    		'Question_37' => 'required',
+    		'Question_38' => 'required',
+    		'Question_39' => 'required',
+    		'Question_40' => 'required',
+    		'Question_41' => 'required',
+    		'Question_42' => 'required',
+    		'Question_43' => 'required',
+    		'Question_44' => 'required',
+    		'Question_45' => 'required',
+    		'Question_46' => 'required',
+    		'Question_47' => 'required',
+    		'Question_48' => 'required',
+    		'Question_49' => 'required',
+    		'Question_50' => 'required',
+    		'Question_51' => 'required',
+    		'Question_52' => 'required',
+    		'Question_53' => 'required',
+    		'Question_54' => 'required',
+    		'Question_55' => 'required',
+    		'Question_56' => 'required',
+    		'Question_57' => 'required',
+    		'Question_58' => 'required',
+    		'Question_59' => 'required',
+    		'Question_60' => 'required',
+    		'Question_61' => 'required',
+    		'Question_62' => 'required'
+
 
 
 
@@ -1409,7 +1638,7 @@ public function getDefStrategy()
 
 		
 
-		return redirect('/instruction');
+		return redirect('/survey2');
 
 		
 

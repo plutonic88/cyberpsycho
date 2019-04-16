@@ -43,6 +43,42 @@ class CreateAnswersTable extends Migration
             $table->integer('Question_25');
             $table->integer('Question_26');
             $table->integer('Question_27');
+            $table->integer('Question_28');
+            $table->integer('Question_29');
+            $table->integer('Question_30');
+            $table->integer('Question_31');
+            $table->integer('Question_32');
+            $table->integer('Question_33');
+            $table->integer('Question_34');
+            $table->integer('Question_35');
+            $table->integer('Question_36');
+            $table->integer('Question_37');
+            $table->integer('Question_38');
+            $table->integer('Question_39');
+            $table->integer('Question_40');
+            $table->integer('Question_41');
+            $table->integer('Question_42');
+            $table->integer('Question_43');
+            $table->integer('Question_44');
+            $table->integer('Question_45');
+            $table->integer('Question_46');
+            $table->integer('Question_47');
+            $table->integer('Question_48');
+            $table->integer('Question_49');
+            $table->integer('Question_50');
+            $table->integer('Question_51');
+            $table->integer('Question_52');
+            $table->integer('Question_53');
+            $table->integer('Question_54');
+            $table->integer('Question_55');
+            $table->integer('Question_56');
+            $table->integer('Question_57');
+            $table->integer('Question_58');
+            $table->integer('Question_59');
+            $table->integer('Question_60');
+            $table->integer('Question_61');
+            $table->integer('Question_62');
+            
             
 
 

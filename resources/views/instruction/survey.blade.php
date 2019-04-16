@@ -48,8 +48,8 @@
 	 	<div>
 	  	 	
 	  	 	@if(count($errors))
-	  	 		<p>Do you want to skip? Click "Game Instruction" button</p> 
-	  	 		<a href='{{ url("/instruction") }}' id="nextbutton" class="btn btn-primary" style="margin-bottom: : 20px;">Game Instruction</a>
+	  	 		<p>Do you want to skip? Click "Next Survey" button</p> 
+	  	 		<a href='{{ url("/survey2") }}' id="nextbutton" class="btn btn-primary" style="margin-bottom: : 20px;">Next Survey</a>
 	  	 	@endif
 
 	  	 </div>

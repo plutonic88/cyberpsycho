@@ -15,6 +15,10 @@ Route::get('/', ['as' => '/', 'uses' => 'GamesController@index']);
 
 
 
+Route::get('/insert', 'GamesController@insertInTable');
+
+
+
 Route::get('/config', 'GamesController@config');
 
 
@@ -97,6 +101,14 @@ Route::get('/survey', 'GamesController@startsurvey');
 
 
 Route::post('storesurvey', 'GamesController@storesurvey');
+
+
+
+Route::get('/survey2', 'GamesController@manistartsurvey');
+
+
+
+Route::post('storesurvey2', 'GamesController@manistoresurvey');
 
 
 
