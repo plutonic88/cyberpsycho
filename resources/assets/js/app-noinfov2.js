@@ -1377,7 +1377,8 @@ Vue.component('node',{
 				      gametype:channel.game_type,
 				      numberofround: vm.numberofround,
 				      defender_sequence: vm.defender_sequence,
-				      attacker_sequence: vm.attacker_sequence
+				      attacker_sequence: vm.attacker_sequence,
+				      defender_type: channel.defendertype
 				    }
 				  })
 				  .then(function (response) {

@@ -300,7 +300,7 @@ class GamesController extends Controller
          // att: "2,0,0"
          // def: "5,0,0"
 
-        //dd(GamesController::$defstratfullinfov2["2,0,0"]["5,0,0"]);
+        //dd(GamesController::$defstratfullinfov2["0,1,0,0"]["4,4,4,0"]);
 
 
          $stratfile1 = 'strategy/g5d5_AP.txt';
@@ -310,6 +310,9 @@ class GamesController extends Controller
          GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint($stratfile1);
          GamesController::$defstratnoinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile2);
 
+         //dd(GamesController::$defstratnoinfov2);
+
+         //dd(GamesController::$defstratnoinfov2["EMPTY"]["EMPTY"]);
 
         // dd(GamesController::$defstratfullinfov2);
 
