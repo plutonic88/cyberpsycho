@@ -1398,6 +1398,7 @@ public function getDefStrategy()
 	public function manistartsurvey()
 	{
 
+		$this->updateProgress("survey");
 
 		// get what's the next stage 
 		// if it's  survey2 then continue 
@@ -1438,7 +1439,6 @@ public function getDefStrategy()
 
 
 
-
 		$answer = new \App\ManiAnswer;
 
 		$answer->user_id =  session('user_id','');
@@ -1466,8 +1466,8 @@ public function getDefStrategy()
 
 		//dd("hhh");
 
-		$this->updateProgress("survey2");
-
+		//$this->updateProgress("survey2");
+		//$this->updateProgress("survey2");
 
 
 		//dd(request()->all());
@@ -1636,8 +1636,8 @@ public function getDefStrategy()
 
 		//dd("hhh");
 
-		$this->updateProgress("survey");
-
+		
+		//$this->updateProgress("survey");
 
 
 		//dd(request()->all());
@@ -1740,8 +1740,8 @@ public function getDefStrategy()
     		]);
 
 
+		//dd($validator);
 		
-
 		
 
 		return redirect('/survey2');
@@ -2189,6 +2189,8 @@ public function getDefStrategy()
 	{
 		// depending on game type return instruction and practice game
 		// 0 no info, 1 fullinfo
+
+		$this->updateProgress("survey2");
 
 
 
@@ -2689,12 +2691,16 @@ public function getDefStrategy()
 
 				$next = $this->getNextStage();
 
-				//dd($next);
+				
 
 				if($next != "game")
 				{
+					//dd($next);
+
 					return $this->directToProperState();
 				}
+
+
 
 				$selectedgametype  = -1;
 				$selecteddefenderordertype = -1;
@@ -2792,6 +2798,8 @@ public function getDefStrategy()
 
 		        	}
 
+		        	//dd($selectedgametype, $selecteddefenderordertype);
+
 		        	return redirect('/games/'.$selectedgametype.'/'.$selecteddefenderordertype);
 	}
 
@@ -2805,16 +2813,19 @@ public function getDefStrategy()
 
 		$next = $this->getNextStage();
 
-		//dd($next);
+		
 
 		if($next != "game")
 		{
+			//dd("here");
 			return $this->directToProperState();
 		}
 		
 
+		
 
-		//dd("here");
+
+		//
 		// check if there is any record
 		// if none, redirect to home page or to games/play
 				$gameass = \DB::table('assignedgames')
@@ -2854,10 +2865,17 @@ public function getDefStrategy()
 		            ->select('game_type', 'pick_def_order', 'game_played')
 		            ->first();
 
+
+
+
+
 		 if($game_id_instance->game_played>=session('total_play_limit'))
 		 {
+		 	//dd($game_id_instance->game_played, session('total_play_limit'));
 		 	return $this->showending();
 		 }
+
+		// dd("IN paygamev2",$next);
 
 
 		

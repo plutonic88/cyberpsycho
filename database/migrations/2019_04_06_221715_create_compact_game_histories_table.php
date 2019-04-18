@@ -22,16 +22,16 @@ class CreateCompactGameHistoriesTable extends Migration
             $table->integer('def_type'); // new or old
             $table->integer('def_order');
             $table->integer('cur_round');
-            $table->integer('a1');
-            $table->integer('a2');
-            $table->integer('a3');
-            $table->integer('a4');
-            $table->integer('a5');
-            $table->integer('d1');
-            $table->integer('d2');
-            $table->integer('d3');
-            $table->integer('d4');
-            $table->integer('d5');
+            $table->integer('a1')->nullable();
+            $table->integer('a2')->nullable();
+            $table->integer('a3')->nullable();
+            $table->integer('a4')->nullable();
+            $table->integer('a5')->nullable();
+            $table->integer('d1')->nullable();
+            $table->integer('d2')->nullable();
+            $table->integer('d3')->nullable();
+            $table->integer('d4')->nullable();
+            $table->integer('d5')->nullable();
             $table->integer('defender_cur_points');
             $table->integer('attacker_cur_points');
             $table->timestamps();

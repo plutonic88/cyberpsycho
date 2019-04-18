@@ -92133,7 +92133,7 @@ new Vue({
 		returndata: '',
 		datetime: '',
 		TIME_LIMIT: 5,
-		ROUND_LIMIT: 3,
+		ROUND_LIMIT: 5,
 		timer: 5,
 		numberofround: 1,
 		attackermoved: false,

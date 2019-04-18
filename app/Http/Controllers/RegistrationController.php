@@ -113,6 +113,7 @@ class RegistrationController extends Controller
             session(['n_defender_type' => 2]);
             session(['n_defender_order_type' => 2]);
             session(['n_each_type_play_limit' => 3]);
+            session(['total_play_limit' => 6]);
              session()->flash('message' , 'Thank you so much for registering');
             //dd(session('user_id', ''));
 

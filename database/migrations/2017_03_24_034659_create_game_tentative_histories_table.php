@@ -19,10 +19,10 @@ class CreateGameTentativeHistoriesTable extends Migration
             $table->integer('game_id_instance');
             $table->string('user_id');
             $table->integer('round');
-            $table->integer('defender_action');
-            $table->bigInteger('time_defender_moved');
-            $table->integer('attacker_action');
-            $table->bigInteger('time_attacker_moved');
+            $table->integer('defender_action')->nullable();
+            $table->bigInteger('time_defender_moved')->nullable();
+            $table->integer('attacker_action')->nullable();
+            $table->bigInteger('time_attacker_moved')->nullable();
             $table->integer('defender_points');
             $table->integer('attacker_points');
             $table->timestamps();
