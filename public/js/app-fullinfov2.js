@@ -92597,7 +92597,7 @@ new Vue({
 				vm.attacker_sequence = vm.attacker_sequence + ",5";
 			}
 
-			if (vm.numberofround == vm.ROUND_LIMIT && channel.game_id_instance == 5) {
+			if (vm.numberofround == vm.ROUND_LIMIT && channel.game_id_instance + 1 == channel.total_play_limit) {
 				axios.post('/updateprogress', {
 
 					stage: "game"
@@ -93073,7 +93073,7 @@ new Vue({
 					//  console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
 					// // console.log('defendermoved is ' + vm.defendermoved );
 					// vm.defendermoved = true;
-				} else if (channel.defendertype === 1) // new study 
+				} else //if(channel.defendertype === 1) // new study 
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();
@@ -93290,7 +93290,7 @@ new Vue({
 				{
 					//vm.defenderteststrategy = [0,2,0];
 					vm.defenderteststrategy = rand_defenderteststrategy.split(",");
-				} else if (channel.defendertype === 1) // maximize expected utility
+				} else //if(channel.defendertype===1) // maximize expected utility
 				{
 					//vm.defenderteststrategy = [3,4,2];
 					vm.defenderteststrategy = max_defenderteststrategy.split(",");

@@ -78,10 +78,10 @@ class SessionsController extends Controller
                  session('user_id', '');
                  session(['user_id' => $user->user_id]);
                  session(['n_game_type' => 2]);
-                 session(['n_defender_type' => 2]);
+                 session(['n_defender_type' => 5]);
                  session(['n_defender_order_type' => 2]);
                  session(['n_each_type_play_limit' => 3]);
-                 session(['total_play_limit' => 6]);
+                 session(['total_play_limit' => 15]);
                  session()->flash('message' , 'Welcome! You are now logged in');
                  //dd(session('user_id', ''));
 

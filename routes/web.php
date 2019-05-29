@@ -14,6 +14,8 @@ Route::get('/', ['as' => '/', 'uses' => 'GamesController@index']);
 
 
 
+Route::get('/motivation', 'GamesController@getMotivation');
+
 
 Route::get('/insert', 'GamesController@insertInTable');
 

@@ -92642,7 +92642,7 @@ new Vue({
 			//console.log(window.location.hostname+"   heheheheheh");
 
 
-			if (vm.numberofround == vm.ROUND_LIMIT && channel.game_id_instance == 5) {
+			if (vm.numberofround == vm.ROUND_LIMIT && channel.game_id_instance + 1 == channel.total_play_limit) {
 				axios.post('/updateprogress', {
 
 					stage: "game"
@@ -92999,12 +92999,12 @@ new Vue({
 			// axios request server for strategy 
 			var def_ac = -1;
 
-			console.log('9999999999999   defender defenderBHVRLStrategy... ' + vm.timer);
+			console.log('9999999999999   defender defenderBHVRLStrategy...channel.game_type ' + channel.game_type);
 
 			axios.get('/defstrategyallpoint', {
 				params: {
 					game_id: channel.game_id,
-					gametype: channel.game_type,
+					game_type: channel.game_type,
 					numberofround: vm.numberofround,
 					defender_sequence: vm.defender_sequence,
 					attacker_sequence: vm.attacker_sequence,
@@ -93027,7 +93027,7 @@ new Vue({
 		// function to make a move for defender
 		makeDefenderMove: function makeDefenderMove() {
 			var vm = this;
-			var defaction = 5;
+			var defaction = 0;
 			//console.log('1111111111   defender moved.... timer ' + vm.timer);
 
 			if (channel.defendertype === 0) //random
@@ -93045,7 +93045,7 @@ new Vue({
 					//  console.log('Defender action random %%%%%%% '+ vm.defenderaction + ' counter  '+ vm.defstrategycounter);
 					// // console.log('defendermoved is ' + vm.defendermoved );
 					// vm.defendermoved = true;
-				} else if (channel.defendertype === 1) // maximizing expected utility
+				} else //if(channel.defendertype === 1) // maximizing expected utility
 				{
 					console.log('1111111111   defender maximizing move.... timer ' + vm.timer);
 					vm.defenderBHVRLStrategy();
@@ -93235,7 +93235,7 @@ new Vue({
 				{
 					//vm.defenderteststrategy = [0,2,0];
 					vm.defenderteststrategy = rand_defenderteststrategy.split(",");
-				} else if (channel.defendertype === 1) // maximize expected utility
+				} else //if(channel.defendertype===1) // maximize expected utility
 				{
 					//vm.defenderteststrategy = [3,4,2];
 					vm.defenderteststrategy = max_defenderteststrategy.split(",");

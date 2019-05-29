@@ -33,13 +33,42 @@ class GamesController extends Controller
 
 
 
+
+
+
+
+public function getMotivation()
+{
+
+	return view('instruction.motivation');
+
+}
+
+
 	public function testDefStrat()
 	{
 
 		//dd('Here');
 
-		$stratfile = 'strategy/g5d5_FI_v2.txt';
-		GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfoV2($stratfile);
+		//$stratfile = 'strategy/g5d5_FI_v2.txt';
+		//GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfoV2($stratfile);
+
+
+
+		for($i=0; $i<session('n_defender_type'); $i=$i+1)
+		{
+
+		 	$stratfile = 'strategy/g5d5_FI_'.$i.'.txt';
+		 	GamesController::$defstratfullinfo[$i] = $this->readFileDefStrategyFullInfoV2($stratfile);
+		 	$stratfile = 'strategy/g5d5_AP_'.$i.'.txt';
+		 	GamesController::$defstratnoinfo[$i] = $this->readFileDefStrategyFullInfoV2($stratfile);
+
+		 	
+
+		 }
+
+		 //dd(GamesController::$defstratnoinfo);
+
 	}
 
 
@@ -288,11 +317,32 @@ class GamesController extends Controller
 
 	public function  __construct()
 	{
-		 $stratfile1 = 'strategy/g5d5_FI.txt';
-		 $stratfile2 = 'strategy/g5d5_FI_v2.txt';
+		 // $stratfile0 = 'strategy/g5d5_FI_0.txt';
+		 // $stratfile1 = 'strategy/g5d5_FI_1.txt';
 
-		 GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo($stratfile1);
-         GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile2);
+
+		 // GamesController::$defstratfullinfo = $this->readFileDefStrategyFullInfo($stratfile0);
+   //       GamesController::$defstratfullinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile1);
+
+
+
+		//dd(session('n_defender_type'));	
+
+
+		  $DEF_LIMIT = 5;
+
+         for($i=0; $i<$DEF_LIMIT; $i=$i+1)
+		 {
+
+		 	$stratfile = 'strategy/g5d5_FI_'.$i.'.txt';
+		 	GamesController::$defstratfullinfo[$i] = $this->readFileDefStrategyFullInfoV2($stratfile);
+		 	$stratfile = 'strategy/g5d5_AP_'.$i.'.txt';
+		 	GamesController::$defstratnoinfo[$i] = $this->readFileDefStrategyFullInfoV2($stratfile);
+
+		 }
+
+		 //dd(GamesController::$defstratfullinfo);
+
 
 
         // dd('hhh');
@@ -303,12 +353,12 @@ class GamesController extends Controller
         //dd(GamesController::$defstratfullinfov2["0,1,0,0"]["4,4,4,0"]);
 
 
-         $stratfile1 = 'strategy/g5d5_AP.txt';
-		 $stratfile2 = 'strategy/g5d5_AP_v2.txt';
+   //       $stratfile1 = 'strategy/g5d5_AP_0.txt';
+		 // $stratfile2 = 'strategy/g5d5_AP_1.txt';
 
 
-         GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint($stratfile1);
-         GamesController::$defstratnoinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile2);
+   //       GamesController::$defstratnoinfo = $this->readFileDefStrategyAllPoint($stratfile0);
+   //       GamesController::$defstratnoinfov2 = $this->readFileDefStrategyFullInfoV2($stratfile1);
 
          //dd(GamesController::$defstratnoinfov2);
 
@@ -364,6 +414,8 @@ class GamesController extends Controller
 
 			
 
+
+		//dd('index');
 		
 
 		if(Auth::id() == null)
@@ -756,14 +808,16 @@ public function getDefStrategy()
 
 
 			 	 
-			 	 if($defender_type ==0) // prev study
-			 	 {
-			 	 	$cur_def_strat = GamesController::$defstratfullinfo;
-			 	 }
-			 	 else if($defender_type ==1) // prev study 
-			 	 {
-			 	 	$cur_def_strat = GamesController::$defstratfullinfov2;
-			 	 }
+			 	 // if($defender_type ==0) // prev study
+			 	 // {
+			 	 // 	$cur_def_strat = GamesController::$defstratfullinfo;
+			 	 // }
+			 	 // else if($defender_type ==1) // prev study 
+			 	 // {
+			 	 // 	$cur_def_strat = GamesController::$defstratfullinfov2;
+			 	 // }
+
+			 	 $cur_def_strat = GamesController::$defstratfullinfo[$defender_type];
 			 	 
 
 			 	 // else if($defender_type ==0 && $game_type==0) // prev study + no infor
@@ -894,14 +948,18 @@ public function getDefStrategy()
 				  
 
 
-				 if($defender_type ==0) // prev study
-				 {			
-				 	$cur_def_strat = GamesController::$defstratnoinfo;
-				 }
-				 else if($defender_type ==1) // new study
-				 {
-				 	$cur_def_strat = GamesController::$defstratnoinfov2;
-				 }
+				 // if($defender_type ==0) // prev study
+				 // {			
+				 // 	$cur_def_strat = GamesController::$defstratnoinfo;
+				 // }
+				 // else if($defender_type ==1) // new study
+				 // {
+				 // 	$cur_def_strat = GamesController::$defstratnoinfov2;
+				 // }
+
+				 $cur_def_strat = GamesController::$defstratnoinfo[$defender_type];
+
+				 
 				 
 
 				 //return $cur_def_strat;
@@ -2154,16 +2212,19 @@ public function getDefStrategy()
 				            		            //create a new record with initial values
 
 				            		            \DB::table('assignedgames')->insert(
-					            	         	    ['user_id' => session('user_id'), 'game_played' => 0 ,'game_type' => $selectedgametype, 'pick_def_order' => $selecteddefenderordertype, 'random_defender_type' => 0,
-					            	         	    'max_defender_type' => 0]
+					            	         	    ['user_id' => session('user_id'), 'game_played' => 0 ,'game_type' => $selectedgametype, 'pick_def_order' => $selecteddefenderordertype]
 					            	         	);
+
+					            	         	// create a loop to update all defender types to 0
+
+
 
 
 
 		        	}
 		        	else
 		        	{
-		        		if($gameass->game_played>=6)
+		        		if($gameass->game_played>=session('total_play_limit'))
 		        		{
 		        			//return redirect()->home();
 		        			return $this->showending();
@@ -2177,6 +2238,8 @@ public function getDefStrategy()
 		        		//             ->update([ GamesController::$deftypes[0] => 0, GamesController::$deftypes[1] => 0, 'total_point' => 0]);
 
 		        	}
+
+		        	//dd('hir');
 
 		        	return $selectedgametype;
 	}
@@ -2780,8 +2843,7 @@ public function getDefStrategy()
 				            		            //create a new record with initial values
 
 				            		            \DB::table('assignedgames')->insert(
-					            	         	    ['user_id' => session('user_id'), 'game_played' => 0 ,'game_type' => $selectedgametype, 'pick_def_order' => $selecteddefenderordertype, 'random_defender_type' => 0,
-					            	         	    'max_defender_type' => 0]
+					            	         	    ['user_id' => session('user_id'), 'game_played' => 0 ,'game_type' => $selectedgametype, 'pick_def_order' => $selecteddefenderordertype]
 					            	         	);
 
 
@@ -2883,11 +2945,21 @@ public function getDefStrategy()
 		// depending on the order(asc, dsc, rand) of picking def, pick a defender 
 
 		$dtypes = \DB::table('assignedgames')
-		            ->where('user_id', session('user_id'))
-		            ->select('random_defender_type','max_defender_type')
-		            ->first();
+		            ->where('user_id', session('user_id'));
 
-		//dd($dtypes);
+		 
+		 
+
+		 for($i=0; $i<session('n_defender_type'); $i=$i+1)
+		 {
+		 	$def = 'def'.$i;
+		 	$dtypes = $dtypes->addSelect($def);  
+
+		}    
+
+		$dtypes = $dtypes->first();     
+
+		//dd($dtypes, 'inplaygamev2');
 
 		 $dtypes_arr = array();
 		 $index = 0;
@@ -2966,16 +3038,20 @@ public function getDefStrategy()
 
 		$def_alert = "";
 
+		//dd($current_play_freq);
+
 		if($current_play_freq == 1)
 		{
-			if($selecteddefender == 0)  // prev study
+
+			//dd($selecteddefender);
+			//if($selecteddefender % 3 == 0)  // prev study
 			{
-				$def_alert = "You are now playing against a purely strategic DEFENDER Version 1. This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
+				$def_alert = "You are now playing a game with node values against a purely strategic DEFENDER Version ".$selecteddefender.". This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
 			}
-			if($selecteddefender == 1)  // new study
-			{
-				$def_alert = "You are playing against a STRATEGIC DEFENDER Version 2.  This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
-			}
+			// if($selecteddefender == 1)  // new study
+			// {
+			// 	$def_alert = "You are playing against a STRATEGIC DEFENDER Version 2.  This means that the defender is using a computer-generated optimal strategy.  The defender will try to take as many points away from you as possible." ;
+			// }
 
 		}
 
@@ -2987,10 +3063,12 @@ public function getDefStrategy()
 
 		$game_id = 1;
 
-		if($selecteddefender==1)
-		{
-			$game_id = 2;
-		}
+		// if($selecteddefender==1)
+		// {
+		// 	$game_id = 2;
+		// }
+
+		$game_id = $selecteddefender+1;
 
 
 		$result = \DB::table('nodes')
@@ -3055,6 +3133,9 @@ public function getDefStrategy()
 		//dd($selecteddefender);  
 
 
+		//dd($gametype);	
+
+
 		if($gametype == 0)
 		{
 			// no info
@@ -3074,7 +3155,8 @@ public function getDefStrategy()
 			        'user_id' => session('user_id'),
 			        'done' => $done,
 			        'def_alert' => $def_alert,
-			        'game_id_instance' => $game_instance
+			        'game_id_instance' => $game_instance,
+			        'total_play_limit' => session('total_play_limit')
 			    	]);
 
 			    	return view('games.two', compact('game_instance', 'nodevalues','node_pos', 'node_ids', 'nodenei'));
@@ -3100,7 +3182,8 @@ public function getDefStrategy()
 			        'user_id' => session('user_id'),
 			        'done' => $done,
 			        'def_alert' => $def_alert,
-			        'game_id_instance' => $game_instance
+			        'game_id_instance' => $game_instance,
+			        'total_play_limit' => session('total_play_limit')
 			    	]);
 
 

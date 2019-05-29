@@ -22,18 +22,27 @@ class GamehistoryController extends Controller
 		->increment('game_played');
 
 
-		if($def_type==0)
-		{
-			\DB::table('assignedgames')
+		// if($def_type==0)
+		// {
+		// 	\DB::table('assignedgames')
+		//  	            ->where('user_id', session('user_id'))
+		//  	            ->increment('random_defender_type');
+		// }
+		// else if($def_type==1)
+		// {
+		// 	\DB::table('assignedgames')
+		//  	            ->where('user_id', session('user_id'))
+		//  	            ->increment('max_defender_type');
+		// }
+
+		$def = 'def'.$def_type;
+
+		\DB::table('assignedgames')
 		 	            ->where('user_id', session('user_id'))
-		 	            ->increment('random_defender_type');
-		}
-		else if($def_type==1)
-		{
-			\DB::table('assignedgames')
-		 	            ->where('user_id', session('user_id'))
-		 	            ->increment('max_defender_type');
-		}
+		 	            ->increment($def);
+
+
+
 
 		
 
