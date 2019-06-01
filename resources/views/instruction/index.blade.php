@@ -20,7 +20,7 @@
   <div class="card-block">
     <h4 class="card-title"> Welcome {{ Auth::user()->name }}!</h4>
     <p class="card-text">Start by taking a survey.</p>
-    <button type="button" onclick="window.location='{{ url("/survey") }}'"  class="btn btn-outline-primary"">Take survey</button>
+    <button type="button" onclick="window.location='{{ url("/survey/1") }}'"  class="btn btn-outline-primary"">Take survey</button>
   </div>
   
 </div>

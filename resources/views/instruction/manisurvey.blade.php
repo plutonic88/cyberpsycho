@@ -30,7 +30,7 @@
     <p class="card-text">Strongly Disagree(1)   Disagree(2) Neither Agree nor Disagree(3) Agree(4) Strongly Agree(5)</p>
 
 
-    <form method="POST" action="/storesurvey2">
+    <form method="POST" action="/storemanisurvey">
 	 	
 	 {{ csrf_field()}}
 

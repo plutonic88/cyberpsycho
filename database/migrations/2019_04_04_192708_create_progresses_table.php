@@ -17,7 +17,7 @@ class CreateProgressesTable extends Migration
             $table->increments('id');
             $table->string('user_id')->unique();
             $table->integer('survey');
-            $table->integer('survey2');
+            $table->integer('manisurvey');
             $table->integer('instruction');
             $table->integer('instruction_qa');
             $table->integer('practicegame');

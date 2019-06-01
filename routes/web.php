@@ -98,19 +98,21 @@ Route::post('/instruction/storeend', 'GamesController@storeend');
 
 
 
-Route::get('/survey', 'GamesController@startsurvey');
+Route::get('/survey/{chunk}', 'GamesController@startsurvey');
 
 
 
-Route::post('storesurvey', 'GamesController@storesurvey');
+Route::post('storesurvey1', 'GamesController@storesurvey1');
+Route::post('storesurvey2', 'GamesController@storesurvey2');
+Route::post('storesurvey3', 'GamesController@storesurvey3');
 
 
 
-Route::get('/survey2', 'GamesController@manistartsurvey');
+Route::get('/manisurvey', 'GamesController@manistartsurvey');
 
 
 
-Route::post('storesurvey2', 'GamesController@manistoresurvey');
+Route::post('storemanisurvey', 'GamesController@manistoresurvey');
 
 
 

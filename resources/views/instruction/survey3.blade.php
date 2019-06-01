@@ -28,7 +28,7 @@
 
     
 
-    <form method="POST" action="/storesurvey">
+    <form method="POST" action="/storesurvey3">
 	 	
 	 {{ csrf_field()}}
 
@@ -51,7 +51,7 @@
 	  	 	
 	  	 	@if(count($errors))
 	  	 		<p>Do you want to skip? Click "Next Survey" button</p> 
-	  	 		<a href='{{ url("/survey2") }}' id="nextbutton" @click="update" class="btn btn-primary" style="margin-bottom: : 20px;">Next Survey</a>
+	  	 		<a href='{{ url("/manisurvey") }}' id="nextbutton" @click="update" class="btn btn-primary" style="margin-bottom: : 20px;">Next Survey</a>
 	  	 	@endif
 
 	  	 </div>

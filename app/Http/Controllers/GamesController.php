@@ -327,7 +327,7 @@ public function getMotivation()
 
 
 		//dd(session('n_defender_type'));	
-
+		ini_set('memory_limit', '2048M');
 
 		  $DEF_LIMIT = 5;
 
@@ -457,7 +457,7 @@ public function getMotivation()
 		    	$prognew = new \App\progress;
 		    	$prognew->user_id =  session('user_id','');
 		    	$prognew->survey = 0;
-		    	$prognew->survey2 = 0;
+		    	$prognew->manisurvey = 0;
 		    	$prognew->instruction = 0;
 		    	$prognew->instruction_qa = 0;
 		    	$prognew->practicegame = 0;
@@ -471,11 +471,11 @@ public function getMotivation()
 
 			$progress = \DB::table('progresses')
 		            ->where('user_id', session('user_id'))
-		            ->select('survey', 'survey2','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
+		            ->select('survey', 'manisurvey','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
 		            ->first();
 
 		     $arr["survey"] = $progress->survey;
-		     $arr["survey2"] = $progress->survey2;
+		     $arr["manisurvey"] = $progress->manisurvey;
 		     $arr["instruction"] = $progress->instruction;
 		     $arr["instruction_qa"] = $progress->instruction_qa;
 		     $arr["practicegame"] = $progress->practicegame;
@@ -490,9 +490,9 @@ public function getMotivation()
 		     {
 		     	$nextstage = "survey";
 		     }
-		     else if($arr["survey2"]==0)
+		     else if($arr["manisurvey"]==0)
 		     {
-		     	$nextstage = "survey2";
+		     	$nextstage = "manisurvey";
 		     }
 		     else if($arr["instruction"]==0)
 		     {
@@ -540,7 +540,7 @@ public function getMotivation()
 		    	$prognew = new \App\progress;
 		    	$prognew->user_id =  session('user_id','');
 		    	$prognew->survey = 0;
-		    	$prognew->survey2 = 0;
+		    	$prognew->manisurvey = 0;
 		    	$prognew->instruction = 0;
 		    	$prognew->instruction_qa = 0;
 		    	$prognew->practicegame = 0;
@@ -554,11 +554,11 @@ public function getMotivation()
 
 			$progress = \DB::table('progresses')
 		            ->where('user_id', session('user_id'))
-		            ->select('survey', 'survey2','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
+		            ->select('survey', 'manisurvey','instruction', 'instruction_qa', 'practicegame', 'game', 'endsurvey')
 		            ->first();
 
 		     $arr["survey"] = $progress->survey;
-		     $arr["survey2"] = $progress->survey2;
+		     $arr["manisurvey"] = $progress->manisurvey;
 		     $arr["instruction"] = $progress->instruction;
 		     $arr["instruction_qa"] = $progress->instruction_qa;
 		     $arr["practicegame"] = $progress->practicegame;
@@ -571,9 +571,9 @@ public function getMotivation()
 		     {
 		     	return view('instruction.index');
 		     }
-		     else if($arr["survey2"]==0)
+		     else if($arr["manisurvey"]==0)
 		     {
-		     	return redirect('/survey2');
+		     	return redirect('/manisurvey');
 		     }
 		     else if($arr["instruction"]==0)
 		     {
@@ -1466,7 +1466,7 @@ public function getDefStrategy()
 
 		//dd($next);
 
-		if($next != "survey2")
+		if($next != "manisurvey")
 		{
 			return $this->directToProperState();
 		}
@@ -1580,7 +1580,7 @@ public function getDefStrategy()
 
 
 
-	public function startsurvey()
+	public function startsurvey($chunk)
 	{
 
 
@@ -1595,23 +1595,38 @@ public function getDefStrategy()
 		}
 
 
-		$questions = Question::all();
+		//$questions = Question::all();
 
 
-		
-
+		if($chunk==1)
+		{
+			$questions = Question::where('id', '<', 21)->get();
+			return view('instruction.survey1', compact('questions'));
+		}
+		else if($chunk==2)
+		{
+			$questions = Question::where('id', '>', 20)
+			->where('id', '<', 41)
+			->get();
+			return view('instruction.survey2', compact('questions'));
+		}else
+		{
+			$questions = Question::where('id', '>', 40)
+			->get();
+			return view('instruction.survey3', compact('questions'));
+		}
 
 
 		//dd($questions);
 
 
 
-		return view('instruction.survey', compact('questions'));
+		
 	}
 
 
 
-	public function storesurvey()
+	public function storesurvey1()
 	{
 
 
@@ -1645,48 +1660,48 @@ public function getDefStrategy()
 		$answer->Question_19 = request('Question_19');
 		$answer->Question_20= request('Question_20');
 
-		$answer->Question_21 = request('Question_21');
-		$answer->Question_22 = request('Question_22');
-		$answer->Question_23 = request('Question_23');
-		$answer->Question_24 = request('Question_24');
-		$answer->Question_25 = request('Question_25');
-		$answer->Question_26 = request('Question_26');
-		$answer->Question_27 = request('Question_27');
-		$answer->Question_28 = request('Question_28');
-		$answer->Question_29 = request('Question_29');
-		$answer->Question_30 = request('Question_30');
-		$answer->Question_31 = request('Question_31');
-		$answer->Question_32 = request('Question_32');
-		$answer->Question_33 = request('Question_33');
-		$answer->Question_34 = request('Question_34');
-		$answer->Question_35 = request('Question_35');
-		$answer->Question_36 = request('Question_36');
-		$answer->Question_37 = request('Question_37');
-		$answer->Question_38 = request('Question_38');
-		$answer->Question_39 = request('Question_39');
-		$answer->Question_40 = request('Question_40');
-		$answer->Question_41 = request('Question_41');
-		$answer->Question_42 = request('Question_42');
-		$answer->Question_43 = request('Question_43');
-		$answer->Question_44 = request('Question_44');
-		$answer->Question_45 = request('Question_45');
-		$answer->Question_46 = request('Question_46');
-		$answer->Question_47 = request('Question_47');
-		$answer->Question_48 = request('Question_48');
-		$answer->Question_49 = request('Question_49');
-		$answer->Question_50 = request('Question_50');
-		$answer->Question_51 = request('Question_51');
-		$answer->Question_52 = request('Question_52');
-		$answer->Question_53 = request('Question_53');
-		$answer->Question_54 = request('Question_54');
-		$answer->Question_55 = request('Question_55');
-		$answer->Question_56 = request('Question_56');
-		$answer->Question_57 = request('Question_57');
-		$answer->Question_58 = request('Question_58');
-		$answer->Question_59 = request('Question_59');
-		$answer->Question_60 = request('Question_60');
-		$answer->Question_61 = request('Question_61');
-		$answer->Question_62 = request('Question_62');
+		// $answer->Question_21 = request('Question_21');
+		// $answer->Question_22 = request('Question_22');
+		// $answer->Question_23 = request('Question_23');
+		// $answer->Question_24 = request('Question_24');
+		// $answer->Question_25 = request('Question_25');
+		// $answer->Question_26 = request('Question_26');
+		// $answer->Question_27 = request('Question_27');
+		// $answer->Question_28 = request('Question_28');
+		// $answer->Question_29 = request('Question_29');
+		// $answer->Question_30 = request('Question_30');
+		// $answer->Question_31 = request('Question_31');
+		// $answer->Question_32 = request('Question_32');
+		// $answer->Question_33 = request('Question_33');
+		// $answer->Question_34 = request('Question_34');
+		// $answer->Question_35 = request('Question_35');
+		// $answer->Question_36 = request('Question_36');
+		// $answer->Question_37 = request('Question_37');
+		// $answer->Question_38 = request('Question_38');
+		// $answer->Question_39 = request('Question_39');
+		// $answer->Question_40 = request('Question_40');
+		// $answer->Question_41 = request('Question_41');
+		// $answer->Question_42 = request('Question_42');
+		// $answer->Question_43 = request('Question_43');
+		// $answer->Question_44 = request('Question_44');
+		// $answer->Question_45 = request('Question_45');
+		// $answer->Question_46 = request('Question_46');
+		// $answer->Question_47 = request('Question_47');
+		// $answer->Question_48 = request('Question_48');
+		// $answer->Question_49 = request('Question_49');
+		// $answer->Question_50 = request('Question_50');
+		// $answer->Question_51 = request('Question_51');
+		// $answer->Question_52 = request('Question_52');
+		// $answer->Question_53 = request('Question_53');
+		// $answer->Question_54 = request('Question_54');
+		// $answer->Question_55 = request('Question_55');
+		// $answer->Question_56 = request('Question_56');
+		// $answer->Question_57 = request('Question_57');
+		// $answer->Question_58 = request('Question_58');
+		// $answer->Question_59 = request('Question_59');
+		// $answer->Question_60 = request('Question_60');
+		// $answer->Question_61 = request('Question_61');
+		// $answer->Question_62 = request('Question_62');
 
 		$answer->save();
 		//session()->flash('message' , 'Thanks! for taking the survey');
@@ -1742,6 +1757,157 @@ public function getDefStrategy()
 
     		'Question_20' => 'required',
 
+    		// 'Question_21' => 'required',
+
+    		// 'Question_22' => 'required',
+
+    		// 'Question_23' => 'required',
+
+    		// 'Question_24' => 'required',
+
+    		// 'Question_25' => 'required',
+
+    		// 'Question_26' => 'required',
+
+    		// 'Question_27' => 'required',
+    		// 'Question_28' => 'required',
+    		// 'Question_29' => 'required',
+    		// 'Question_30' => 'required',
+    		// 'Question_31' => 'required',
+    		// 'Question_32' => 'required',
+    		// 'Question_33' => 'required',
+    		// 'Question_34' => 'required',
+    		// 'Question_35' => 'required',
+    		// 'Question_36' => 'required',
+    		// 'Question_37' => 'required',
+    		// 'Question_38' => 'required',
+    		// 'Question_39' => 'required',
+    		// 'Question_40' => 'required',
+    		// 'Question_41' => 'required',
+    		// 'Question_42' => 'required',
+    		// 'Question_43' => 'required',
+    		// 'Question_44' => 'required',
+    		// 'Question_45' => 'required',
+    		// 'Question_46' => 'required',
+    		// 'Question_47' => 'required',
+    		// 'Question_48' => 'required',
+    		// 'Question_49' => 'required',
+    		// 'Question_50' => 'required',
+    		// 'Question_51' => 'required',
+    		// 'Question_52' => 'required',
+    		// 'Question_53' => 'required',
+    		// 'Question_54' => 'required',
+    		// 'Question_55' => 'required',
+    		// 'Question_56' => 'required',
+    		// 'Question_57' => 'required',
+    		// 'Question_58' => 'required',
+    		// 'Question_59' => 'required',
+    		// 'Question_60' => 'required',
+    		// 'Question_61' => 'required',
+    		// 'Question_62' => 'required'
+
+
+
+
+
+    		]);
+
+
+		//dd($validator);
+		
+		
+
+		return redirect('/survey/2');
+
+		
+
+
+
+
+
+	}
+
+	public function storesurvey2()
+	{
+
+
+
+
+
+
+		$answer =  \App\Answer::where('user_id', session('user_id'))
+		//->where('id', '>', 20)
+		//->where('id', '<', 41)
+		->update(['Question_21' => request('Question_21'), 'Question_22' => request('Question_22'), 'Question_23' => request('Question_23'), 'Question_24' => request('Question_24'), 'Question_25' => request('Question_25'), 'Question_26' => request('Question_26'), 'Question_27' => request('Question_27'), 'Question_28' => request('Question_28'), 'Question_29' => request('Question_29'), 'Question_30' => request('Question_30'), 'Question_31' => request('Question_31'), 'Question_32' => request('Question_32'), 'Question_33' => request('Question_33'), 'Question_34' => request('Question_34'), 'Question_35' => request('Question_35'), 'Question_36' => request('Question_36'), 'Question_37' => request('Question_37'), 'Question_38' => request('Question_38'), 'Question_39' => request('Question_39'), 'Question_40' => request('Question_40')]);
+
+		// $answer->Question_21 = request('Question_21');
+		// $answer->Question_22 = request('Question_22');
+		// $answer->Question_23 = request('Question_23');
+		// $answer->Question_24 = request('Question_24');
+		// $answer->Question_25 = request('Question_25');
+		// $answer->Question_26 = request('Question_26');
+		// $answer->Question_27 = request('Question_27');
+		// $answer->Question_28 = request('Question_28');
+		// $answer->Question_29 = request('Question_29');
+		// $answer->Question_30 = request('Question_30');
+		// $answer->Question_31 = request('Question_31');
+		// $answer->Question_32 = request('Question_32');
+		// $answer->Question_33 = request('Question_33');
+		// $answer->Question_34 = request('Question_34');
+		// $answer->Question_35 = request('Question_35');
+		// $answer->Question_36 = request('Question_36');
+		// $answer->Question_37 = request('Question_37');
+		// $answer->Question_38 = request('Question_38');
+		// $answer->Question_39 = request('Question_39');
+		// $answer->Question_40 = request('Question_40');
+
+		//->get();
+
+		//dd($answer);
+
+		//$answer->user_id =  session('user_id','');
+
+		// $answer->Question_1 = request('Question_1');
+		// $answer->Question_2 = request('Question_2');
+		// $answer->Question_3 = request('Question_3');
+		// $answer->Question_4 = request('Question_4');
+		// $answer->Question_5 = request('Question_5');
+		// $answer->Question_6 = request('Question_6');
+		// $answer->Question_7 = request('Question_7');
+		// $answer->Question_8 = request('Question_8');
+		// $answer->Question_9 = request('Question_9');
+		// $answer->Question_10 = request('Question_10');
+
+		// $answer->Question_11 = request('Question_11');
+		// $answer->Question_12 = request('Question_12');
+		// $answer->Question_13 = request('Question_13');
+		// $answer->Question_14 = request('Question_14');
+		// $answer->Question_15 = request('Question_15');
+		// $answer->Question_16 = request('Question_16');
+		// $answer->Question_17 = request('Question_17');
+		// $answer->Question_18 = request('Question_18');
+		// $answer->Question_19 = request('Question_19');
+		// $answer->Question_20= request('Question_20');
+
+		
+		
+
+		//$answer->save();
+		//session()->flash('message' , 'Thanks! for taking the survey');
+
+
+		//dd("hhh");
+
+		
+		//$this->updateProgress("survey");
+
+
+		//dd(request()->all());
+	$validator = $this->validate(request(), [
+
+
+    		
+
     		'Question_21' => 'required',
 
     		'Question_22' => 'required',
@@ -1768,6 +1934,185 @@ public function getDefStrategy()
     		'Question_38' => 'required',
     		'Question_39' => 'required',
     		'Question_40' => 'required',
+    		
+
+    		]);
+
+
+		//dd($validator);
+		
+		
+
+		return redirect('/survey/3');
+
+		
+
+
+
+
+
+	}
+
+	public function storesurvey3()
+	{
+
+
+
+
+
+
+		//$answer = new \App\Answer;
+
+		$answer = \App\Answer::where('user_id', session('user_id'))
+		->update(['Question_41' => request('Question_41'), 'Question_42' => request('Question_42'), 'Question_43' => request('Question_43'), 'Question_44' => request('Question_44'), 'Question_45' => request('Question_45'), 'Question_46' => request('Question_46'), 'Question_47' => request('Question_47'), 'Question_48' => request('Question_48'), 'Question_49' => request('Question_49'), 'Question_50' => request('Question_50'), 'Question_51' => request('Question_51'), 'Question_52' => request('Question_52'), 'Question_53' => request('Question_53'), 'Question_54' => request('Question_54'), 'Question_55' => request('Question_55'), 'Question_56' => request('Question_56'), 'Question_57' => request('Question_57'), 'Question_58' => request('Question_58'), 'Question_59' => request('Question_59'), 'Question_60' => request('Question_60'), 'Question_61' => request('Question_61'), 'Question_62' => request('Question_62')]);
+
+		//$answer->user_id =  session('user_id','');
+
+		// $answer->Question_1 = request('Question_1');
+		// $answer->Question_2 = request('Question_2');
+		// $answer->Question_3 = request('Question_3');
+		// $answer->Question_4 = request('Question_4');
+		// $answer->Question_5 = request('Question_5');
+		// $answer->Question_6 = request('Question_6');
+		// $answer->Question_7 = request('Question_7');
+		// $answer->Question_8 = request('Question_8');
+		// $answer->Question_9 = request('Question_9');
+		// $answer->Question_10 = request('Question_10');
+
+		// $answer->Question_11 = request('Question_11');
+		// $answer->Question_12 = request('Question_12');
+		// $answer->Question_13 = request('Question_13');
+		// $answer->Question_14 = request('Question_14');
+		// $answer->Question_15 = request('Question_15');
+		// $answer->Question_16 = request('Question_16');
+		// $answer->Question_17 = request('Question_17');
+		// $answer->Question_18 = request('Question_18');
+		// $answer->Question_19 = request('Question_19');
+		// $answer->Question_20= request('Question_20');
+
+		// $answer->Question_21 = request('Question_21');
+		// $answer->Question_22 = request('Question_22');
+		// $answer->Question_23 = request('Question_23');
+		// $answer->Question_24 = request('Question_24');
+		// $answer->Question_25 = request('Question_25');
+		// $answer->Question_26 = request('Question_26');
+		// $answer->Question_27 = request('Question_27');
+		// $answer->Question_28 = request('Question_28');
+		// $answer->Question_29 = request('Question_29');
+		// $answer->Question_30 = request('Question_30');
+		// $answer->Question_31 = request('Question_31');
+		// $answer->Question_32 = request('Question_32');
+		// $answer->Question_33 = request('Question_33');
+		// $answer->Question_34 = request('Question_34');
+		// $answer->Question_35 = request('Question_35');
+		// $answer->Question_36 = request('Question_36');
+		// $answer->Question_37 = request('Question_37');
+		// $answer->Question_38 = request('Question_38');
+		// $answer->Question_39 = request('Question_39');
+		// $answer->Question_40 = request('Question_40');
+		// $answer->Question_41 = request('Question_41');
+		// $answer->Question_42 = request('Question_42');
+		// $answer->Question_43 = request('Question_43');
+		// $answer->Question_44 = request('Question_44');
+		// $answer->Question_45 = request('Question_45');
+		// $answer->Question_46 = request('Question_46');
+		// $answer->Question_47 = request('Question_47');
+		// $answer->Question_48 = request('Question_48');
+		// $answer->Question_49 = request('Question_49');
+		// $answer->Question_50 = request('Question_50');
+		// $answer->Question_51 = request('Question_51');
+		// $answer->Question_52 = request('Question_52');
+		// $answer->Question_53 = request('Question_53');
+		// $answer->Question_54 = request('Question_54');
+		// $answer->Question_55 = request('Question_55');
+		// $answer->Question_56 = request('Question_56');
+		// $answer->Question_57 = request('Question_57');
+		// $answer->Question_58 = request('Question_58');
+		// $answer->Question_59 = request('Question_59');
+		// $answer->Question_60 = request('Question_60');
+		// $answer->Question_61 = request('Question_61');
+		// $answer->Question_62 = request('Question_62');
+
+		// $answer->save();
+		//session()->flash('message' , 'Thanks! for taking the survey');
+
+
+		//dd("hhh");
+
+		
+		//$this->updateProgress("survey");
+
+
+		//dd(request()->all());
+	$validator = $this->validate(request(), [
+
+
+    		// 'Question_1' => 'required',
+
+    		// 'Question_2' => 'required',
+
+    		// 'Question_3' => 'required',
+
+    		// 'Question_4' => 'required',
+
+    		// 'Question_5' => 'required',
+
+    		// 'Question_6' => 'required',
+
+    		// 'Question_7' => 'required',
+
+    		// 'Question_8' => 'required',
+
+    		// 'Question_9' => 'required',
+
+    		// 'Question_10' => 'required',
+
+    		// 'Question_11' => 'required',
+
+    		// 'Question_12' => 'required',
+
+    		// 'Question_13' => 'required',
+
+    		// 'Question_14' => 'required',
+
+    		// 'Question_15' => 'required',
+
+    		// 'Question_16' => 'required',
+
+    		// 'Question_17' => 'required',
+
+    		// 'Question_18' => 'required',
+    		
+    		// 'Question_19' => 'required',
+
+    		// 'Question_20' => 'required',
+
+    		// 'Question_21' => 'required',
+
+    		// 'Question_22' => 'required',
+
+    		// 'Question_23' => 'required',
+
+    		// 'Question_24' => 'required',
+
+    		// 'Question_25' => 'required',
+
+    		// 'Question_26' => 'required',
+
+    		// 'Question_27' => 'required',
+    		// 'Question_28' => 'required',
+    		// 'Question_29' => 'required',
+    		// 'Question_30' => 'required',
+    		// 'Question_31' => 'required',
+    		// 'Question_32' => 'required',
+    		// 'Question_33' => 'required',
+    		// 'Question_34' => 'required',
+    		// 'Question_35' => 'required',
+    		// 'Question_36' => 'required',
+    		// 'Question_37' => 'required',
+    		// 'Question_38' => 'required',
+    		// 'Question_39' => 'required',
+    		// 'Question_40' => 'required',
     		'Question_41' => 'required',
     		'Question_42' => 'required',
     		'Question_43' => 'required',
@@ -1802,7 +2147,7 @@ public function getDefStrategy()
 		
 		
 
-		return redirect('/survey2');
+		return redirect('/manisurvey');
 
 		
 
@@ -1905,6 +2250,8 @@ public function getDefStrategy()
     		'age' => 'required|numeric',
 
     		'country' => 'required|min: 3',
+
+    		'comment' => 'required'
 
 
     		]);
@@ -2253,7 +2600,7 @@ public function getDefStrategy()
 		// depending on game type return instruction and practice game
 		// 0 no info, 1 fullinfo
 
-		$this->updateProgress("survey2");
+		$this->updateProgress("manisurvey");
 
 
 
