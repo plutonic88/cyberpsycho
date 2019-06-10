@@ -2135,7 +2135,10 @@ public function getDefStrategy()
     		'Question_59' => 'required',
     		'Question_60' => 'required',
     		'Question_61' => 'required',
-    		'Question_62' => 'required'
+    		'Question_62' => 'required',
+    		'ballcost' => 'required',
+    		'widgettime' => 'required',
+    		'lakearea' => 'required'
 
 
 
@@ -2252,7 +2255,7 @@ public function getDefStrategy()
 
     		'country' => 'required|min: 3',
 
-    		'comment' => 'required'
+    		'comment' => 'required|Max: 2000'
 
 
     		]);
@@ -3965,7 +3968,7 @@ public function getDefStrategy()
 
     		'question_1' => 'required|min:1|max:1',
     		'question_2' => 'required|min:1|max:1',
-    		'question_3' => 'required|min:1|max:1',
+    		//'question_3' => 'required|min:1|max:1',
 
     	
 
@@ -3974,7 +3977,7 @@ public function getDefStrategy()
 
 		$wrongques1 = '';
 		$wrongques2 = '';
-		$wrongques3 = '';
+		//$wrongques3 = '';
 		$flag = true;
 		
 
@@ -4007,16 +4010,16 @@ public function getDefStrategy()
 
 		}
 
-		if(request('question_3') !== "3")
-		{
-			$wrongques3 = $wrongques3 . ' Question 3: Wrong! Correct answer is 45 cents. Your monetary reward is based off of how many points you finish with. It does not matter how many you start with.'; 
-			$flag = false;
-		}
-		else
-		{
-			$wrongques3 = $wrongques3 .'Question 3: Correct answer';
+		// if(request('question_3') !== "3")
+		// {
+		// 	$wrongques3 = $wrongques3 . ' Question 3: Wrong! Correct answer is 45 cents. Your monetary reward is based off of how many points you finish with. It does not matter how many you start with.'; 
+		// 	$flag = false;
+		// }
+		// else
+		// {
+		// 	$wrongques3 = $wrongques3 .'Question 3: Correct answer';
 
-		}
+		// }
 
 
 		// else if(request('question_2') === "2")
