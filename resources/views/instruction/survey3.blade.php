@@ -41,6 +41,121 @@
 
 	@endforeach	
 
+	<p>Some additional questions:</p>
+
+	<fieldset class="form-group row" >
+			      <legend class="col-form-legend col-sm-10">A bat and a ball cost $1.10 in total. The bat costs a dollar more than the ball. How much does the ball cost? ____ cents</legend>
+			      <div class="col-sm-10">
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="ballcost" {{ old('ballcost')=="0.5 cents" ? 'checked='.'"'.'checked'.'"' : '' }} value="0.5 cents" required>
+			            0.5 cents
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="ballcost" {{ old('ballcost')=="5 cents" ? 'checked='.'"'.'checked'.'"' : '' }} value="5 cents">
+			            5 cents
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="ballcost" {{ old('ballcost')=="55 cents" ? 'checked='.'"'.'checked'.'"' : '' }} value="55 cents" >
+			            55 cents
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="ballcost" {{ old('ballcost')=="0.5 dollar" ? 'checked='.'"'.'checked'.'"' : '' }} value="0.5 dollar" >
+			            0.5 dollar
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="ballcost" {{ old('ballcost')=="0.05 cents" ? 'checked='.'"'.'checked'.'"' : '' }} value="0.05 cents" >
+			            0.05 cents
+			          </label>
+			        </div>
+			        
+			      </div>
+  		</fieldset>
+
+
+  		<fieldset class="form-group row" >
+			      <legend class="col-form-legend col-sm-10">If it takes 5 machines 5 min to make 5 widgets, how long would it take 100 machines to make 100 widgets? ____ min</legend>
+			      <div class="col-sm-10">
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="widgettime" {{ old('widgettime')=="1 min" ? 'checked='.'"'.'checked'.'"' : '' }} value="1 min" required>
+			            1 min
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="widgettime" {{ old('widgettime')=="5 min" ? 'checked='.'"'.'checked'.'"' : '' }} value="5 min">
+			            5 min
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="widgettime" {{ old('widgettime')=="10 min" ? 'checked='.'"'.'checked'.'"' : '' }} value="10 min" >
+			            10 min
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="widgettime" {{ old('widgettime')=="25 min" ? 'checked='.'"'.'checked'.'"' : '' }} value="25 min" >
+			            25 min
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="widgettime" {{ old('widgettime')=="50 min" ? 'checked='.'"'.'checked'.'"' : '' }} value="50 min" >
+			            50 min
+			          </label>
+			        </div>
+			        
+			      </div>
+  		</fieldset>
+
+  		
+  		<fieldset class="form-group row" >
+			      <legend class="col-form-legend col-sm-10">In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake? ____ days</legend>
+			      <div class="col-sm-10">
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="lakearea" {{ old('lakearea')=="24 days" ? 'checked='.'"'.'checked'.'"' : '' }} value="24 days" required>
+			            24 days
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="lakearea" {{ old('lakearea')=="48 hours" ? 'checked='.'"'.'checked'.'"' : '' }} value="48 hours">
+			            48 hours
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="lakearea" {{ old('lakearea')=="40 days" ? 'checked='.'"'.'checked'.'"' : '' }} value="40 days" >
+			            40 days
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="lakearea" {{ old('lakearea')=="45 days" ? 'checked='.'"'.'checked'.'"' : '' }} value="45 days" >
+			            45 days
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="lakearea" {{ old('lakearea')=="47 days" ? 'checked='.'"'.'checked'.'"' : '' }} value="47 days" >
+			            47 days
+			          </label>
+			        </div>
+			        
+			      </div>
+  		</fieldset>
+
    		
 
     <div  class="form-group">

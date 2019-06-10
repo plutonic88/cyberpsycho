@@ -1612,6 +1612,7 @@ public function getDefStrategy()
 		}else
 		{
 			$questions = Question::where('id', '>', 40)
+			->where('id', '<', 63)
 			->get();
 			return view('instruction.survey3', compact('questions'));
 		}
@@ -1964,7 +1965,7 @@ public function getDefStrategy()
 		//$answer = new \App\Answer;
 
 		$answer = \App\Answer::where('user_id', session('user_id'))
-		->update(['Question_41' => request('Question_41'), 'Question_42' => request('Question_42'), 'Question_43' => request('Question_43'), 'Question_44' => request('Question_44'), 'Question_45' => request('Question_45'), 'Question_46' => request('Question_46'), 'Question_47' => request('Question_47'), 'Question_48' => request('Question_48'), 'Question_49' => request('Question_49'), 'Question_50' => request('Question_50'), 'Question_51' => request('Question_51'), 'Question_52' => request('Question_52'), 'Question_53' => request('Question_53'), 'Question_54' => request('Question_54'), 'Question_55' => request('Question_55'), 'Question_56' => request('Question_56'), 'Question_57' => request('Question_57'), 'Question_58' => request('Question_58'), 'Question_59' => request('Question_59'), 'Question_60' => request('Question_60'), 'Question_61' => request('Question_61'), 'Question_62' => request('Question_62')]);
+		->update(['Question_41' => request('Question_41'), 'Question_42' => request('Question_42'), 'Question_43' => request('Question_43'), 'Question_44' => request('Question_44'), 'Question_45' => request('Question_45'), 'Question_46' => request('Question_46'), 'Question_47' => request('Question_47'), 'Question_48' => request('Question_48'), 'Question_49' => request('Question_49'), 'Question_50' => request('Question_50'), 'Question_51' => request('Question_51'), 'Question_52' => request('Question_52'), 'Question_53' => request('Question_53'), 'Question_54' => request('Question_54'), 'Question_55' => request('Question_55'), 'Question_56' => request('Question_56'), 'Question_57' => request('Question_57'), 'Question_58' => request('Question_58'), 'Question_59' => request('Question_59'), 'Question_60' => request('Question_60'), 'Question_61' => request('Question_61'), 'Question_62' => request('Question_62'), 'ballcost' => request('ballcost'), 'widgettime' => request('widgettime'), 'lakearea' => request('lakearea')]);
 
 		//$answer->user_id =  session('user_id','');
 

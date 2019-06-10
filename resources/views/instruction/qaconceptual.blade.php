@@ -89,36 +89,7 @@
 						        
 							</div>
 		</fieldset>	
-		<fieldset class="form-group row">
-						    <legend class="col-form-legend col-sm-10">3. 1.	If you start the game with 50 points and finish with 45, how much will your additional monetary reward be?</legend>
-						    <div class="col-sm-10">
-						        <div class="form-check">
-						          <label class="form-check-label">
-						            <input class="form-check-input" type="radio" name="question_3"  value="1" >
-						            0 cent
-						          </label>
-						        </div>
-						        <div class="form-check">
-						          <label class="form-check-label">
-						            <input class="form-check-input" type="radio" name="question_3"  value="2">
-						            -5 cent
-						          </label>
-						        </div>
-						        <div class="form-check">
-						          <label class="form-check-label">
-						            <input class="form-check-input" type="radio" name="question_3" value="3" >
-						            45 cents
-						          </label>
-						        </div>
-						        <div class="form-check">
-						          <label class="form-check-label">
-						            <input class="form-check-input" type="radio" name="question_3" value="4" >
-						            50 cents
-						          </label>
-						        </div>
-						        
-							</div>
-		</fieldset>		  	  
+		
 	  	  
 
 	  	 

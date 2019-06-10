@@ -78,6 +78,9 @@ class CreateAnswersTable extends Migration
             $table->integer('Question_60')->nullable();
             $table->integer('Question_61')->nullable();
             $table->integer('Question_62')->nullable();
+            $table->string('ballcost')->nullable();
+            $table->string('widgettime')->nullable();
+            $table->string('lakearea')->nullable();
             $table->timestamps();
         });
     }
